@@ -1,1 +1,28 @@
-<p>comment works!</p>
+<div id="{{comment.guid}}"
+     class="comment p-1 "
+     [style.background-color]="comment.color"
+     cdkDrag>
+    <div class="head text-white d-flex align-items-center justify-content-between mb-1">
+        <div class="d-flex">
+            <div>Comment</div>
+            <div class="color-picker">
+                <input type="color"
+                       name="color"
+                       value="{{comment.color}}"
+                       (input)="updateColor($event)">
+            </div>
+        </div>
+
+        <button class="btn btn-danger p-0 me-1"
+                (click)="onDeleteClicked()">
+            <svg-icon name="icon_delete"></svg-icon>
+        </button>
+    </div>
+    <div class="body">
+
+
+        <textarea class="text-white"
+                  spellcheck="false"
+                  (input)="updateContent($event)">{{comment.content}}</textarea>
+    </div>
+</div>

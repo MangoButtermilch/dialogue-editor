@@ -32,14 +32,6 @@ export abstract class GuiObject {
         public guid: string,
         public position: Vector2,
         public transformStyle: string = "") { }
-
-    protected setPosition(pos: Vector2): void {
-        this.position = pos;
-    }
-
-    protected setTransformStyle(style: string): void {
-        this.transformStyle = style;
-    }
 }
 
 export class Port extends GuiObject {
@@ -121,6 +113,7 @@ export class Dialogue {
         public guid: string,
         public dateTime: string,
         public nodes: DialogueNode[],
+        public comments: CommentNode[] = []
     ) { }
 }
 
@@ -128,6 +121,7 @@ export class CommentNode extends GuiObject {
     constructor(
         guid: string,
         pos: Vector2,
+        public color: string,
         public content: string
     ) {
         super(guid, pos);

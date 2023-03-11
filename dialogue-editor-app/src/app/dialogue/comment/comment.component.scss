@@ -1,0 +1,30 @@
+.comment {
+    position: absolute;
+    z-index: 1;
+    border-radius: 5px;
+
+    textarea {
+        border: none;
+        outline: none;
+        display: block;
+        background-color: inherit;
+        resize: none;
+        overflow: hidden;
+        min-height: 52px;
+    }
+
+    .color-picker {
+        margin-left: 10px;
+        input {
+            border: 1px solid black;
+            width: 20px;
+            height: 20px;
+            box-shadow: none;
+            outline: none;
+            border: none;
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
+}

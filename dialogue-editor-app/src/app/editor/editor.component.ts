@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { PanZoomConfig, PanZoomModel } from 'ngx-panzoom';
 import { Subject, Subscription, takeUntil } from 'rxjs';
-import { DialogueNode, Dialogue, Choice, Vector2 } from 'src/models/models';
+import { DialogueNode, Dialogue, Choice, Vector2, CommentNode } from 'src/models/models';
+import { CommentService } from '../services/dialogue/comment.service';
 import { DialogueService } from '../services/dialogue/dialogue.service';
 import { EdgeService } from '../services/dialogue/edge.service';
 import { NodeService } from '../services/dialogue/node.service';
@@ -19,6 +20,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   panZoomConfig: PanZoomConfig;
 
   public dialogue: Dialogue = this.dialogueService.generateDialogue();
+
   private destroy$: Subject<boolean> = new Subject<boolean>();
   private panPosition: Vector2 = { x: 0, y: 0 };
 
@@ -26,6 +28,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   public helpModalVisible: boolean = false;
 
   constructor(
+    private commentService: CommentService,
     private editorStateService: EditorStateService,
     private dialogueService: DialogueService,
     private edgeService: EdgeService,
@@ -81,6 +84,10 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       ? { x: position.x + this.panPosition.x, y: position.y + this.panPosition.y }
       : null;
 
+    this.dialogue.comments.push(
+      this.commentService.generateComment(instantiatePos)
+    );
+
   }
 
   public deleteNode(node: DialogueNode): void {
@@ -115,6 +122,16 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.editorStateService.openContextMenu(
       { x: eventData.pageX, y: eventData.pageY }
     );
+  }
+
+  public updateComment(comment: CommentNode): void {
+    const index = this.dialogue.comments.findIndex((other: CommentNode) => other.guid === comment.guid);
+    this.dialogue.comments[index] = comment;
+  }
+
+  public deleteComment(comment: CommentNode): void {
+    const index = this.dialogue.comments.findIndex((other: CommentNode) => other.guid === comment.guid);
+    this.dialogue.comments.splice(index, 1);
   }
 }
 

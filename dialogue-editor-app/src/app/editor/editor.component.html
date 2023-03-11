@@ -25,5 +25,10 @@
               (onUpdate)="updateNode($event)"
               (onDelete)="deleteNode($event)"
               [dialogueNode]="node"></app-node>
+              
+    <app-comment *ngFor="let comment of dialogue.comments"
+                 (onUpdate)="updateComment($event)"
+                 (onDelete)="deleteComment($event)"
+                 [comment]="comment"></app-comment>
 
 </pan-zoom>
