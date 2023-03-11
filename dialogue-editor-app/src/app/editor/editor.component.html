@@ -1,12 +1,17 @@
 <app-toolbar (onNewNodeClicked)="generateNewNode()"
              (onBackToOriginClicked)="panToOrigin()"
-             (onCharactersClicked)="showCharacterModal()"></app-toolbar>
+             (onCharactersClicked)="showCharacterModal()"
+             (onHelpClicked)="showHelpModal()"></app-toolbar>
 
 <app-canvas></app-canvas>
 
 <app-modal *ngIf="characterModalVisible"
            (onClose)="hideAllModals();">
     <app-character-modal></app-character-modal>
+</app-modal>
+<app-modal *ngIf="helpModalVisible"
+           (onClose)="hideAllModals();">
+    <app-help-modal></app-help-modal>
 </app-modal>
 
 <app-context-menu (onNewNode)="generateNewNode($event)"

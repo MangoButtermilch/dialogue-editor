@@ -14,6 +14,10 @@ justify-content-between">
                 (click)="onCharactersClicked.emit()">
             Characters
         </button>
+        <button class="btn btn-dark m-1"
+                (click)="onHelpClicked.emit()">
+            <svg-icon name="icon_help"></svg-icon>
+        </button>
         <button class="btn btn-primary m-1 disabled"
                 (click)="save()">
             Save

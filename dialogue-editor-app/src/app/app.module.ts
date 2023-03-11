@@ -19,6 +19,7 @@ import { NodeComponent } from './dialogue/node/node.component';
 import { PortComponent } from './dialogue/port/port.component';
 import { ModalComponent } from './global/modal/modal.component';
 import { CharacterModalComponent } from './editor/character-modal/character-modal.component';
+import { HelpModalComponent } from './editor/help-modal/help-modal.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { CharacterModalComponent } from './editor/character-modal/character-moda
     NodeComponent,
     PortComponent,
     ModalComponent,
-    CharacterModalComponent
+    CharacterModalComponent,
+    HelpModalComponent
   ],
   imports: [
     NgxPanZoomModule,

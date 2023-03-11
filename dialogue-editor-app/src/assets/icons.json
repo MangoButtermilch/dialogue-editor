@@ -15,6 +15,10 @@
         {
             "iconName": "icon_chevron_right",
             "iconPath": "/assets/icons/chevron-right.svg"
+        },
+        {
+            "iconName": "icon_help",
+            "iconPath": "/assets/icons/help-circle.svg"
         }
     ],
     "customIcons": []

@@ -23,6 +23,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   private panPosition: Vector2 = { x: 0, y: 0 };
 
   public characterModalVisible: boolean = false;
+  public helpModalVisible: boolean = false;
 
   constructor(
     private editorStateService: EditorStateService,
@@ -53,11 +54,16 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public hideAllModals(): void {
+    this.helpModalVisible = false;
     this.characterModalVisible = false;
   }
 
   public showCharacterModal(): void {
     this.characterModalVisible = true;
+  }
+
+  public showHelpModal(): void {
+    this.helpModalVisible = true;
   }
 
   public generateNewNode(position: Vector2 | null = null): void {

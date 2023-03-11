@@ -10,6 +10,7 @@ import { PanZoomService } from 'src/app/services/editor/pan-zoom.service';
 })
 export class ToolbarComponent implements OnDestroy {
 
+  @Output() onHelpClicked: EventEmitter<void> = new EventEmitter<void>();
   @Output() onNewNodeClicked: EventEmitter<void> = new EventEmitter<void>();
   @Output() onCharactersClicked: EventEmitter<void> = new EventEmitter<void>();
   @Output() onBackToOriginClicked: EventEmitter<void> = new EventEmitter<void>();
