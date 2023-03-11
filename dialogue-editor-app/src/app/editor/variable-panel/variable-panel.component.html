@@ -1,0 +1,21 @@
+<div class="panel bg-dark p-2">
+    <h4 class="text-light">Variables</h4>
+    <button class="btn btn-success m-1"
+            (click)="generateVariable()">
+        <svg-icon name="icon_add"></svg-icon>
+    </button>
+
+    <div class="p-2">
+
+        <div class="head text-white d-flex p-1 mb-2">
+            <span>Name</span>
+            <span style="margin-left: 35px;">Value</span>
+            <span style="margin-left: 25px;">Type</span>
+        </div>
+        <app-variable class="mb-2"
+                      *ngFor="let variable of variables$ | async"
+                      (onUpdateVariable)="updateVariable($event)"
+                      (onDeleteVariable)="deleteVariable($event)"
+                      [variable]="variable"></app-variable>
+    </div>
+</div>

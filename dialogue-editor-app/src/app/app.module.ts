@@ -20,6 +20,9 @@ import { PortComponent } from './dialogue/port/port.component';
 import { ModalComponent } from './global/modal/modal.component';
 import { CharacterModalComponent } from './editor/character-modal/character-modal.component';
 import { HelpModalComponent } from './editor/help-modal/help-modal.component';
+import { EventComponent } from './dialogue/event/event.component';
+import { VariablePanelComponent } from './editor/variable-panel/variable-panel.component';
+import { VariableComponent } from './editor/variable-panel/variable/variable.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,10 @@ import { HelpModalComponent } from './editor/help-modal/help-modal.component';
     PortComponent,
     ModalComponent,
     CharacterModalComponent,
-    HelpModalComponent
+    HelpModalComponent,
+    EventComponent,
+    VariablePanelComponent,
+    VariableComponent
   ],
   imports: [
     NgxPanZoomModule,

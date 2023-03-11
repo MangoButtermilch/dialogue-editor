@@ -21,9 +21,13 @@ export interface Character {
     isDefault: boolean
 }
 
+export enum VariableType { TEXT = "text", NUM = "number", BOOL = "bool" }
+
 export interface Variable {
+    guid: string,
     name: string,
-    value: any
+    value: any,
+    type: VariableType
 }
 
 

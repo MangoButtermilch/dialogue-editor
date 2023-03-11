@@ -1,0 +1,30 @@
+<div class="d-flex align-items-center justify-content-between">
+
+
+
+    <input type="text"
+           class="w-100 bg-dark me-1 text-white"
+           value="{{variable.name}}"
+           (input)="updateVariableName($event)" />
+
+    <input type="text"
+           class="w-100 bg-dark me-1 text-white"
+           value="{{variable.value}}"
+           (input)="updateVariableValue($event)" />
+
+    <select class="bg-dark me-1 text-white"
+            (input)="updateVariableType($event)">
+        <option *ngFor="let enum of variableTypes | keyvalue">
+            {{enum.key}}
+        </option>
+    </select>
+
+
+    <button class="btn btn-danger p-0 me-1"
+            (click)="onDeleteVariable.emit(variable);">
+        <svg-icon name="icon_delete"></svg-icon>
+    </button>
+
+</div>
+
+<hr class="border-white" />
