@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Port, Vector2 } from 'src/models/models';
 import { EditorStateService } from '../editor/editor-state.service';
 
@@ -8,6 +8,7 @@ import { EditorStateService } from '../editor/editor-state.service';
 })
 export class DomEventService {
 
+  private domResize$: Subject<void> = new Subject<void>();
   private selectedPort$: Observable<Port | null> = this.editorStateService.onPortSelected();
   private portClickCount: number = 0;
 
@@ -59,11 +60,12 @@ export class DomEventService {
     this.editorStateService.closeContextMenu();
   }
 
-  /**
-   * @TODO 
-   */
   private domResizeEvent(event: any): void {
+    this.domResize$.next();
+  }
 
+  public onDomResize(): Observable<void> {
+    return this.domResize$.asObservable();
   }
 
   public getMousePosition(): Vector2 {

@@ -24,22 +24,24 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
   private canvasWidth: number = 0;
   private canvasHeight: number = 0;
 
-  private currentPort: Port | null = null;
-
-  private renderEdges: Edge[] = [];
-
-  private portSelected$: Observable<Port | null> = this.editorStateService.onPortSelected();
-
-  private draggingChoice$: Observable<Choice | null> = this.editorStateService.onChoiceDrag();
-
   private destroy$: Subject<boolean> = new Subject<boolean>();
-
+  private portSelected$: Observable<Port | null> = this.editorStateService.onPortSelected();
+  private draggingChoice$: Observable<Choice | null> = this.editorStateService.onChoiceDrag();
   private drawEdgesInterval: any = null;
   private drawLineToMouseInterval: any = null;
 
-  private elementIdCache: Map<string, HTMLElement> = new Map<string, HTMLElement>();
+  private currentPort: Port | null = null;
+  private renderEdges: Edge[] = [];
 
-  private readonly drawDelayMs = 20;
+  /**
+   * HTML elements will first be fetched by guid in id attribute, then cached inside this Map.
+   * Map key is the guid.
+   */
+  private elementIdCache: Map<string, HTMLElement> = new Map<string, HTMLElement>();
+  /**
+   * Lines will be drawn every x milliseconds
+   */
+  private readonly drawDelayMs = 16;
 
   constructor(
     private editorStateService: EditorStateService,
@@ -59,7 +61,8 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.canvasSetup();
-    this.handleResize();
+    this.handlePanZoomChange();
+    this.handleWindowResize();
   }
 
   ngOnDestroy(): void {
@@ -177,7 +180,16 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getCtx(type).stroke();
   }
 
-  private handleResize(): void {
+  private handleWindowResize(): void {
+    this.domEventService.onDomResize()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.initialized = false;
+        this.canvasSetup();
+      });
+  }
+
+  private handlePanZoomChange(): void {
     this.panZoomSerivce.panZoomConfig.modelChanged
       .pipe(takeUntil(this.destroy$))
       .subscribe((model: PanZoomModel) => {
