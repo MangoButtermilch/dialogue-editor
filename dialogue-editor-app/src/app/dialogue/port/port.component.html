@@ -1,0 +1,12 @@
+<div *ngIf="port"
+     (click)="onClicked()"
+     class="{{port.direction === 'out' ? 'reverse'  :''}} 
+     {{canBeClicked ? 'clickable' : 'unclickable'}}
+     {{isCurrentlySelected ? 'selected' : ''}}
+     d-flex align-items-center">
+    <button class="btn-port"
+            id="{{port.guid}}">
+        <svg-icon name="icon_port"></svg-icon>
+    </button>
+    <div class="ms-1 text-muted p-1">{{port.direction === 'out' ? 'Out' :'In'}}</div>
+</div>

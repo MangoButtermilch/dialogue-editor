@@ -1,0 +1,32 @@
+.modal {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+
+    &.backdrop {
+        background-color: #0000007e;
+    }
+
+    .close {
+        display: block;
+        width: fit-content;
+        margin-left: auto;
+    }
+
+    .content {
+        background-color: var(--colorDark);
+        margin: 0px;
+        color: white;
+        padding: 10px;
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        width: fit-content;
+        height: fit-content;
+        border: 1px solid white;
+        z-index: 100;
+    }
+}

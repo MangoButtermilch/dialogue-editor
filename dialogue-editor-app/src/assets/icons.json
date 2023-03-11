@@ -1,0 +1,21 @@
+{
+    "iconImageFiles": [
+        {
+            "iconName": "icon_delete",
+            "iconPath": "/assets/icons/x.svg"
+        },
+        {
+            "iconName": "icon_add",
+            "iconPath": "/assets/icons/plus.svg"
+        },
+        {
+            "iconName": "icon_port",
+            "iconPath": "/assets/icons/focus.svg"
+        },
+        {
+            "iconName": "icon_chevron_right",
+            "iconPath": "/assets/icons/chevron-right.svg"
+        }
+    ],
+    "customIcons": []
+}

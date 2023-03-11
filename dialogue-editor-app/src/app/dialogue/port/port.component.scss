@@ -1,0 +1,18 @@
+.reverse {
+    flex-direction: row-reverse !important;
+}
+
+.clickable {
+    pointer-events: all;
+    filter: var(--portClickableFilter);
+}
+
+.unclickable {
+    pointer-events: none;
+    filter: var(--portUnclickableFilter);
+}
+
+.selected {
+    pointer-events: all;
+    filter: var(--portSelectedFilter);
+}

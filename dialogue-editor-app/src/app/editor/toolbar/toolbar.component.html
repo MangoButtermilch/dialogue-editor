@@ -1,0 +1,38 @@
+<div class="bg-dark d-flex
+justify-content-between">
+    <div class="actions">
+
+        <button class="btn btn-success m-1"
+                (click)="onNewNodeClicked.emit()">
+            <svg-icon name="icon_add"></svg-icon> Node
+        </button>
+        <button class="btn btn-warning m-1"
+                (click)="onBackToOriginClicked.emit()">
+            Origin
+        </button>
+        <button class="btn btn-info m-1"
+                (click)="onCharactersClicked.emit()">
+            Characters
+        </button>
+        <button class="btn btn-primary m-1 disabled"
+                (click)="save()">
+            Save
+        </button>
+        <button class="btn btn-primary m-1 disabled"
+                (click)="load()">
+            Load
+        </button>
+        <button class="btn btn-primary m-1 disabled">
+            Settings
+        </button>
+    </div>
+    <div class="info text-white d-flex flex-column align-items-end justify-content-center">
+        <span>Zoom: {{zoom}}</span>
+        <span>
+            <span>x: {{x}}</span>
+            <span> y: {{y}}</span>
+        </span>
+
+    </div>
+
+</div>

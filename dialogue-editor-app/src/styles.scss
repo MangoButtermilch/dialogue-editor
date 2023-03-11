@@ -1,1 +1,87 @@
-/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+
+:root {
+    --colorDark: #333;
+
+    --portColor: #0a58ca;
+    --portColorHover: #307ae7;
+    --portClickableFilter: saturate(1.5);
+    --portUnclickableFilter: saturate(0.5) brightness(0.5);
+    --portSelectedFilter: saturate(2);
+
+    --nodeBoxShadow: 0px 0px 1px 2px #24416c;
+    --nodeBoxShadowHover: 0px 0px 1px 3px #428eff;
+
+    --contextMenuBackground: #333;
+    --contextMenuBoxShadow: 0px 0px 1px 2px #24416c;
+    --contextMenuSelectHover: #24416c;
+    --contextMenuOptionHover: #24416c;
+
+    --inputBoxShadow: 0px 0px 0px 1px rgb(168, 168, 168);
+
+    --commentBoxShadow: 0px 0px 1px 2px #246c42;
+    --commentBoxShadowHover: 0px 0px 1px 2px white;
+    --commentBackgroundColor: #50bb42;
+}
+
+app-editor,
+app-root,
+body {
+    width: 100vw;
+    height: 100vh;
+    background-size: cover 10%;
+}
+
+.bg-gray {
+    background-color: var(--colorDark);
+}
+
+svg-icon {
+    fill: white;
+    color: white;
+}
+
+app-toolbar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    margin: auto;
+    width: 100%;
+    z-index: 10;
+}
+
+.btn-port {
+    border: none;
+    outline: none;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--portColor);
+    border-radius: 100%;
+
+    &:hover {
+        background-color: var(--portColorHover);
+    }
+}
+input:not(input[type="color"]) {
+    height: fit-content;
+}
+
+input,
+textarea,
+select {
+    border: none;
+    border-radius: 5px;
+    box-shadow: var(--inputBoxShadow);
+}
+.cdk-drag-placeholder {
+    filter: brightness(0.5);
+}
+
+.cdk-drag-preview {
+    filter: brightness(1.5);
+}

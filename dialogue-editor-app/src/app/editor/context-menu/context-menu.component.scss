@@ -1,0 +1,46 @@
+.menu {
+    width: 200px;
+    height: 200px;
+    background-color: var(--contextMenuBackground);
+    border-radius: 5px;
+    position: absolute;
+    box-shadow: var(--contextMenuBoxShadow);
+    z-index: 10;
+
+    .title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .icon {
+            width: 22px;
+            height: 24px;
+        }
+    }
+
+    .option {
+        &:hover {
+            background-color: var(--contextMenuSelectHover);
+            cursor: pointer;
+        }
+    }
+
+    .select {
+        position: relative;
+
+        .option-list {
+            width: 200px;
+            position: absolute;
+            top: 0;
+            right: -200px;
+            flex-direction: column;
+            display: none;
+        }
+        &:hover {
+            background-color: var(--contextMenuOptionHover) !important;
+            .option-list {
+                display: flex;
+            }
+        }
+    }
+}

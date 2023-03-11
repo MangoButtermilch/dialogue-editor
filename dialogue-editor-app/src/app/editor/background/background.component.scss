@@ -1,0 +1,14 @@
+.bg {
+    width: 1000vw;
+    height: 1000vh;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    z-index: -1;
+    pointer-events: none;
+    user-select: none;
+    background-image: url("/assets/grid.png");
+    background-position: center;
+    background-size: 6%; 
+    transform: translateX(-50%);
+}

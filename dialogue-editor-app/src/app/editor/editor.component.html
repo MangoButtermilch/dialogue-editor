@@ -1,0 +1,24 @@
+<app-toolbar (onNewNodeClicked)="generateNewNode()"
+             (onBackToOriginClicked)="panToOrigin()"
+             (onCharactersClicked)="showCharacterModal()"></app-toolbar>
+
+<app-canvas></app-canvas>
+
+<app-modal *ngIf="characterModalVisible"
+           (onClose)="hideAllModals();">
+    <app-character-modal></app-character-modal>
+</app-modal>
+
+<app-context-menu (onNewNode)="generateNewNode($event)"
+                  (onNewComment)="generateNewComment($event)"></app-context-menu>
+
+<pan-zoom [config]="panZoomConfig"
+          (contextmenu)="openContextMenu($event)">
+
+    <app-background></app-background>
+    <app-node *ngFor="let node of dialogue.nodes"
+              (onUpdate)="updateNode($event)"
+              (onDelete)="deleteNode($event)"
+              [dialogueNode]="node"></app-node>
+
+</pan-zoom>

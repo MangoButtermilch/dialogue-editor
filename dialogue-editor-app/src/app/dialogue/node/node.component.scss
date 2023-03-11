@@ -1,0 +1,21 @@
+.node {
+    z-index: 0;
+    position: absolute;
+    width: 500px;
+    height: fit-content;
+    border-radius: 5px;
+    box-shadow: var(--nodeBoxShadow);
+    &:hover {
+        box-shadow: var(--nodeBoxShadowHover);
+    }
+    .character-indicator {
+        border-radius: 5px;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+
+    select {
+        width: 150px;
+        height: 25px;
+    }
+}

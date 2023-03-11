@@ -1,0 +1,16 @@
+<div class="modal backdrop ">
+
+    <div class="content d-flex justify-content-between">
+        <div class="col-left d-flex flex-column">
+
+            <ng-content></ng-content>
+        </div>
+        <div class="col-right">
+            <button class="btn btn-danger p-0 me-1"
+                    (click)="close()">
+                <svg-icon name="icon_delete"></svg-icon>
+            </button>
+        </div>
+
+    </div>
+</div>
