@@ -15,7 +15,8 @@
 </app-modal>
 
 <app-context-menu (onNewNode)="generateNewNode($event)"
-                  (onNewComment)="generateNewComment($event)"></app-context-menu>
+                  (onNewComment)="generateNewComment($event)"
+                  (onNewEventNode)="generateNewEventNode($event)"></app-context-menu>
 
 <pan-zoom [config]="panZoomConfig"
           (contextmenu)="openContextMenu($event)">
@@ -25,10 +26,15 @@
               (onUpdate)="updateNode($event)"
               (onDelete)="deleteNode($event)"
               [dialogueNode]="node"></app-node>
-              
+
     <app-comment *ngFor="let comment of dialogue.comments"
                  (onUpdate)="updateComment($event)"
                  (onDelete)="deleteComment($event)"
                  [comment]="comment"></app-comment>
+
+    <app-event *ngFor="let event of dialogue.events"
+               (onUpdate)="updateEventNode($event)"
+               (onDelete)="deleteEventNode($event)"
+               [eventNode]="event"></app-event>
 
 </pan-zoom>

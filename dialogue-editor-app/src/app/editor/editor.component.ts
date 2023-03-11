@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { PanZoomConfig, PanZoomModel } from 'ngx-panzoom';
 import { Subject, Subscription, takeUntil } from 'rxjs';
-import { DialogueNode, Dialogue, Choice, Vector2, CommentNode } from 'src/models/models';
+import { DialogueNode, Dialogue, Choice, Vector2, CommentNode, EventNode } from 'src/models/models';
 import { CommentService } from '../services/dialogue/comment.service';
 import { DialogueService } from '../services/dialogue/dialogue.service';
 import { EdgeService } from '../services/dialogue/edge.service';
+import { EventNodeService } from '../services/dialogue/event-node.service';
 import { NodeService } from '../services/dialogue/node.service';
 import { EditorStateService } from '../services/editor/editor-state.service';
 import { GuidService } from '../services/editor/guid.service';
@@ -28,6 +29,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   public helpModalVisible: boolean = false;
 
   constructor(
+    private eventNodeService: EventNodeService,
     private commentService: CommentService,
     private editorStateService: EditorStateService,
     private dialogueService: DialogueService,
@@ -78,18 +80,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       this.nodeService.generateNode(false, instantiatePos)
     );
   }
-
-  public generateNewComment(position: Vector2 | null = null): void {
-    const instantiatePos = position
-      ? { x: position.x + this.panPosition.x, y: position.y + this.panPosition.y }
-      : null;
-
-    this.dialogue.comments.push(
-      this.commentService.generateComment(instantiatePos)
-    );
-
-  }
-
   public deleteNode(node: DialogueNode): void {
     if (node.isRoot) return;
 
@@ -106,13 +96,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.panZoomService.panToOrigin();
   }
 
-  public focusNode(node: DialogueNode): void {
-    const target = document.getElementById(node.guid);
-    const rect = target.getBoundingClientRect();
-
-    this.panZoomService.panTo({ x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 });
-  };
-
   public updateNode(node: DialogueNode): void {
     const index = this.dialogue.nodes.findIndex((other: DialogueNode) => other.guid === node.guid);
     this.dialogue.nodes[index] = node;
@@ -121,6 +104,16 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   public openContextMenu(eventData: MouseEvent): void {
     this.editorStateService.openContextMenu(
       { x: eventData.pageX, y: eventData.pageY }
+    );
+  }
+
+  public generateNewComment(position: Vector2 | null = null): void {
+    const instantiatePos = position
+      ? { x: position.x + this.panPosition.x, y: position.y + this.panPosition.y }
+      : null;
+
+    this.dialogue.comments.push(
+      this.commentService.generateComment(instantiatePos)
     );
   }
 
@@ -133,5 +126,27 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     const index = this.dialogue.comments.findIndex((other: CommentNode) => other.guid === comment.guid);
     this.dialogue.comments.splice(index, 1);
   }
+
+  public generateNewEventNode(position: Vector2 | null = null): void {
+    const instantiatePos = position
+      ? { x: position.x + this.panPosition.x, y: position.y + this.panPosition.y }
+      : null;
+
+    this.dialogue.events.push(
+      this.eventNodeService.generateNode(instantiatePos)
+    );
+  }
+
+  public updateEventNode(event: EventNode): void {
+    const index = this.dialogue.events.findIndex((other: EventNode) => other.guid === event.guid);
+    this.dialogue.events[index] = event;
+  }
+
+  public deleteEventNode(event: EventNode): void {
+    const index = this.dialogue.events.findIndex((other: EventNode) => other.guid === event.guid);
+    this.dialogue.events.splice(index, 1);
+  }
+
+
 }
 

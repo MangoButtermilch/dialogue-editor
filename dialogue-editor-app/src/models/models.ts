@@ -104,17 +104,6 @@ export class DialogueNode extends GuiObject {
     ) {
         super(guid, pos);
     }
-
-}
-
-export class Dialogue {
-    constructor(
-        public name: string,
-        public guid: string,
-        public dateTime: string,
-        public nodes: DialogueNode[],
-        public comments: CommentNode[] = []
-    ) { }
 }
 
 export class CommentNode extends GuiObject {
@@ -126,4 +115,27 @@ export class CommentNode extends GuiObject {
     ) {
         super(guid, pos);
     }
+}
+
+export class EventNode extends GuiObject {
+    constructor(
+        guid: string,
+        pos: Vector2,
+        public name: string,
+        public inPort: Port,
+        public outPort: Port
+    ) {
+        super(guid, pos);
+    }
+}
+
+export class Dialogue {
+    constructor(
+        public name: string,
+        public guid: string,
+        public dateTime: string,
+        public nodes: DialogueNode[],
+        public comments: CommentNode[] = [],
+        public events: EventNode[] = []
+    ) { }
 }
