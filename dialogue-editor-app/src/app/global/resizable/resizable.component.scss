@@ -1,0 +1,33 @@
+.boundary {
+    position: fixed;
+    z-index: 1;
+    //background-color: rgba(255, 0, 0, 0.39);
+    pointer-events: none;
+    width: 100vw;
+    height: 100vh;
+    margin-top: 51px; //toolbaar
+    .resizable-draggable {
+        display: block;
+        width: fit-content;
+        height: fit-content;
+        position: fixed;
+        z-index: 3;
+        pointer-events: all;
+
+        .resizer {
+            z-index: 9;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            height: 20px;
+            width: 20px;
+            background-color: var(--bs-gray-700);
+            border-radius: 5px;
+
+            &:hover {
+                cursor: se-resize;
+                background-color: var(--bs-gray);
+            }
+        }
+    }
+}

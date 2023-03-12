@@ -23,6 +23,7 @@ import { HelpModalComponent } from './editor/help-modal/help-modal.component';
 import { EventComponent } from './dialogue/event/event.component';
 import { VariablePanelComponent } from './editor/variable-panel/variable-panel.component';
 import { VariableComponent } from './editor/variable-panel/variable/variable.component';
+import { ResizableComponent } from './global/resizable/resizable.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { VariableComponent } from './editor/variable-panel/variable/variable.com
     HelpModalComponent,
     EventComponent,
     VariablePanelComponent,
-    VariableComponent
+    VariableComponent,
+    ResizableComponent
   ],
   imports: [
     NgxPanZoomModule,

@@ -1,9 +1,7 @@
 .panel {
-    width: 300px;
-    height: 500px;
+    width: inherit;
+    height: inherit;
     position: fixed;
-    left: 5px;
-    top: 52px;
     z-index: 1;
     border-radius: 5px;
     box-shadow: var(--nodeBoxShadow);
