@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Dialogue } from 'src/models/models';
 import { GuidService } from '../editor/guid.service';
+import { EventNodeService } from './event-node.service';
 import { NodeService } from './node.service';
 
 @Injectable({
@@ -9,6 +10,7 @@ import { NodeService } from './node.service';
 export class DialogueService {
 
   constructor(
+    private eventNodeService: EventNodeService,
     private guidService: GuidService,
     private nodeService: NodeService) { }
 
@@ -18,7 +20,8 @@ export class DialogueService {
       "New Dialogue",
       guid,
       new Date("now").toUTCString(),
-      [this.nodeService.generateNode(true)]
+      [this.nodeService.generateNode(true)],
     );
   }
+
 }

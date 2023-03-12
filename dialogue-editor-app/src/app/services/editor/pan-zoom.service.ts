@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { PanZoomConfig, PanZoomAPI } from 'ngx-panzoom';
+import { ReplaySubject } from 'rxjs';
 import { Vector2 } from 'src/models/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PanZoomService {
+
+  private origin$: ReplaySubject<Vector2> = new ReplaySubject<Vector2>();
 
   public panZoomConfig: PanZoomConfig = new PanZoomConfig({
     zoomOnDoubleClick: false,
@@ -32,10 +35,9 @@ export class PanZoomService {
    * Also resets zoom level to 2 (initial value)
    * @param position 
    */
-  public panTo(position: Vector2): void {
+  private panTo(position: Vector2): void {
     this.panZoomApi?.changeZoomLevel(2, { x: position.x, y: position.y })
-    const target = { x: position.x - 960, y: position.y - 469 };
-    this.panZoomApi?.panDelta(target);
+    this.panZoomApi?.panDelta(position);
   }
 
   /**

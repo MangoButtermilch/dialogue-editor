@@ -2,6 +2,10 @@
     position: absolute;
     z-index: 1;
     border-radius: 5px;
+    box-shadow: var(--nodeBoxShadow);
+    &:hover {
+        box-shadow: var(--nodeBoxShadowHover);
+    }
 
     textarea {
         border: none;

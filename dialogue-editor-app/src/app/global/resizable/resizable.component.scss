@@ -6,6 +6,9 @@
     width: 100vw;
     height: 100vh;
     margin-top: 51px; //toolbaar
+    *{
+        user-select: none;
+    }
 
     .content {
         user-select: none;
@@ -34,6 +37,7 @@
         pointer-events: all;
 
         .resizer {
+            background-color: red;
             user-select: all;
             z-index: 9;
             position: absolute;
@@ -43,7 +47,6 @@
             width: 20px;
             border-radius: 5px;
             filter: invert(1);
-            background: url("/assets/icons/chevron-down-right.svg");
 
             &:hover {
                 cursor: se-resize;

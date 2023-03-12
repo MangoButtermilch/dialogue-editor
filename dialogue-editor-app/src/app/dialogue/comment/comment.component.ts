@@ -20,6 +20,10 @@ export class CommentComponent implements AfterViewInit {
     this.calcInputHeight(inputField);
   }
 
+  public getTransformStyle(): string {
+    return `translate3d(${this.comment.position.x}px, ${this.comment.position.y}px, 0px)`;
+  }
+
   public updateColor(eventData: any): void {
     const value = eventData.target.value;
     this.comment.color = value;
