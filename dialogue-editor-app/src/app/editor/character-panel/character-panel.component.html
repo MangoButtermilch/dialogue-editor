@@ -2,13 +2,13 @@
                [width]="300"
                [fitWidth]="true"
                [fitHeight]="true"
-               [left]="0"
+               [left]="5"
                [top]="265">
 
-    <div class="character-panel text-white bg-dark p-2">
-        <div class="d-flex justify-content-betwen align-items-center">
+    <div class="character-panel bg-dark p-2">
+        <div class="d-flex align-items-center justify-content-betwen">
 
-            <h4>Characters</h4>
+            <h4 class="text-light">Characters</h4>
             <button class="btn btn-success m-1"
                     (click)="generateNew()">
                 <svg-icon name="icon_add"></svg-icon>
@@ -35,7 +35,7 @@
                      class="placeholder"></div>
 
                 <button *ngIf="!char.isDefault"
-                        class="btn btn-danger m-1"
+                        class="btn btn-danger m-1 p-0"
                         (click)="removeCharacter(char)">
                     <svg-icon name="icon_delete"></svg-icon>
                 </button>
