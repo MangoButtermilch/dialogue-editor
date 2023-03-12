@@ -1,3 +1,4 @@
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Variable, VariableType } from 'src/models/models';
@@ -37,6 +38,11 @@ export class VariableService {
   public removeVariable(guid: string): void {
     const index = this.variables.findIndex((other: Variable) => other.guid === guid);
     this.variables.splice(index, 1);
+    this.variables$.next(this.variables);
+  }
+
+  public moveItemInArray(previousIndex: number, currentIndex: number): void {
+    moveItemInArray(this.variables, previousIndex, currentIndex);
     this.variables$.next(this.variables);
   }
 

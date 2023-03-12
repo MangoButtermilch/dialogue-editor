@@ -3,7 +3,7 @@
                [fitWidth]="true"
                [fitHeight]="true"
                [left]="5"
-               [top]="465">
+               [top]="565">
 
     <div class="character-panel bg-dark p-2">
         <div class="d-flex align-items-center justify-content-betwen">
@@ -14,33 +14,37 @@
                 <svg-icon name="icon_add"></svg-icon>
             </button>
         </div>
-        <div *ngFor="let char of characters$|async"
-             class="">
+        <div class="list"
+             cdkDropList
+             (cdkDropListDropped)="cdkCharacterDropped($event)">
 
+            <div *ngFor="let char of characters$|async"
+                 cdkDrag
+                 class="">
+                <div class="group d-flex  align-items-center">
 
-            <div class="group d-flex  align-items-center">
+                    <input class="bg-dark text-white p-1"
+                           type="text"
+                           name="name"
+                           value="{{char.name}}"
+                           (input)="updateCharacterName($event, char)">
+                    <input class="bg-dark text-white p-0"
+                           type="color"
+                           name="color"
+                           value="{{char.color}}"
+                           (input)="updateCharacterColor($event, char)">
 
-                <input class="bg-dark text-white p-1"
-                       type="text"
-                       name="name"
-                       value="{{char.name}}"
-                       (input)="updateCharacterName($event, char)">
-                <input class="bg-dark text-white p-0"
-                       type="color"
-                       name="color"
-                       value="{{char.color}}"
-                       (input)="updateCharacterColor($event, char)">
+                    <div *ngIf="char.isDefault"
+                         class="placeholder"></div>
 
-                <div *ngIf="char.isDefault"
-                     class="placeholder"></div>
-
-                <button *ngIf="!char.isDefault"
-                        class="btn btn-danger m-1 p-0"
-                        (click)="removeCharacter(char)">
-                    <svg-icon name="icon_delete"></svg-icon>
-                </button>
+                    <button *ngIf="!char.isDefault"
+                            class="btn btn-danger m-1 p-0"
+                            (click)="removeCharacter(char)">
+                        <svg-icon name="icon_delete"></svg-icon>
+                    </button>
+                </div>
             </div>
-        </div>
 
+        </div>
     </div>
 </app-resizable>

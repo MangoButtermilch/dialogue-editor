@@ -42,4 +42,8 @@ export class CharacterPanelComponent {
   private updateCharacter(char: Character): void {
     this.characterService.updateCharacter(char);
   }
+
+  public cdkCharacterDropped(event: any): void {
+    this.characterService.moveItemInArray(event.previousIndex, event.currentIndex);
+  }
 }

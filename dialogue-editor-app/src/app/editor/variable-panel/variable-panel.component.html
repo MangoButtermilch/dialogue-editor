@@ -2,7 +2,7 @@
                [width]="300"
                [fitWidth]="true"
                [fitHeight]="true"
-               [left]="5"
+               [left]="0"
                [top]="55">
 
     <div class="panel bg-dark p-2">
@@ -22,11 +22,17 @@
                 <span style="margin-left: 35px;">Value</span>
                 <span style="margin-left: 25px;">Type</span>
             </div>
-            <app-variable class="mb-2"
-                          *ngFor="let variable of variables$ | async"
-                          (onUpdateVariable)="updateVariable($event)"
-                          (onDeleteVariable)="deleteVariable($event)"
-                          [variable]="variable"></app-variable>
+            <div class="list"
+                 cdkDropList
+                 (cdkDropListDropped)="cdkVariableDropped($event)">
+
+                <app-variable cdkDrag
+                              class="mb-2"
+                              *ngFor="let variable of variables$ | async"
+                              (onUpdateVariable)="updateVariable($event)"
+                              (onDeleteVariable)="deleteVariable($event)"
+                              [variable]="variable"></app-variable>
+            </div>
         </div>
     </div>
 </app-resizable>

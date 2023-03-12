@@ -1,3 +1,4 @@
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { Character } from 'src/models/models';
@@ -48,5 +49,10 @@ export class CharacterService {
 
   public getDefaultCharacter(): Character {
     return this.defaultCharacter;
+  }
+
+  public moveItemInArray(previousIndex: number, currentIndex: number): void {
+    moveItemInArray(this.characters, previousIndex, currentIndex);
+    this.characters$.next(this.characters);
   }
 }

@@ -1,3 +1,4 @@
+import { CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { VariableService } from 'src/app/services/data/variable.service';
@@ -28,6 +29,10 @@ export class VariablePanelComponent implements OnInit {
 
   public deleteVariable(variable: Variable): void {
     this.variableService.removeVariable(variable.guid);
+  }
+
+  public cdkVariableDropped(event: any): void {
+    this.variableService.moveItemInArray(event.previousIndex, event.currentIndex);
   }
 
 }
