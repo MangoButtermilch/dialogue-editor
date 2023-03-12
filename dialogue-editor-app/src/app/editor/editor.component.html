@@ -1,14 +1,10 @@
 <app-toolbar (onNewNodeClicked)="generateNewNode()"
              (onBackToOriginClicked)="panToOrigin()"
-             (onCharactersClicked)="showCharacterModal()"
              (onHelpClicked)="showHelpModal()"></app-toolbar>
 
 <app-canvas></app-canvas>
 
-<app-modal *ngIf="characterModalVisible"
-           (onClose)="hideAllModals();">
-    <app-character-modal></app-character-modal>
-</app-modal>
+
 <app-modal *ngIf="helpModalVisible"
            (onClose)="hideAllModals();">
     <app-help-modal></app-help-modal>
@@ -19,6 +15,7 @@
                   (onNewEventNode)="generateNewEventNode($event)"></app-context-menu>
 
 <app-variable-panel></app-variable-panel>
+<app-character-panel></app-character-panel>
 
 <pan-zoom [config]="panZoomConfig"
           (contextmenu)="openContextMenu($event)">

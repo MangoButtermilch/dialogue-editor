@@ -1,14 +1,19 @@
-<app-resizable [height]="500"
+<app-resizable [height]="200"
                [width]="300"
+               [fitWidth]="true"
+               [fitHeight]="true"
                [left]="0"
-               [top]="0">
+               [top]="55">
 
     <div class="panel bg-dark p-2">
-        <h4 class="text-light">Variables</h4>
-        <button class="btn btn-success m-1"
-                (click)="generateVariable()">
-            <svg-icon name="icon_add"></svg-icon>
-        </button>
+        <div class="d-flex align-items-center justify-content-betwen">
+
+            <h4 class="text-light">Variables</h4>
+            <button class="btn btn-success m-1"
+                    (click)="generateVariable()">
+                <svg-icon name="icon_add"></svg-icon>
+            </button>
+        </div>
 
         <div class="p-2">
 

@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CharacterService } from 'src/app/services/data/character.service';
 import { Character } from 'src/models/models';
 
 @Component({
-  selector: 'app-character-modal',
-  templateUrl: './character-modal.component.html',
-  styleUrls: ['./character-modal.component.scss']
+  selector: 'app-character-panel',
+  templateUrl: './character-panel.component.html',
+  styleUrls: ['./character-panel.component.scss']
 })
-export class CharacterModalComponent implements OnInit {
+export class CharacterPanelComponent {
   public characters$: Observable<Character[]> = this.characterService.getCharacters();
 
   constructor(private characterService: CharacterService) { }
@@ -22,7 +22,7 @@ export class CharacterModalComponent implements OnInit {
       { name: "New character", color: "#ffffff" }
     );
   }
-  
+
   public removeCharacter(char: Character): void {
     this.characterService.removeCharacter(char.guid);
   }

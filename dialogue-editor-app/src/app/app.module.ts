@@ -18,13 +18,13 @@ import { CommentComponent } from './dialogue/comment/comment.component';
 import { NodeComponent } from './dialogue/node/node.component';
 import { PortComponent } from './dialogue/port/port.component';
 import { ModalComponent } from './global/modal/modal.component';
-import { CharacterModalComponent } from './editor/character-modal/character-modal.component';
 import { HelpModalComponent } from './editor/help-modal/help-modal.component';
 import { EventComponent } from './dialogue/event/event.component';
 import { VariablePanelComponent } from './editor/variable-panel/variable-panel.component';
 import { VariableComponent } from './editor/variable-panel/variable/variable.component';
 import { ResizableComponent } from './global/resizable/resizable.component';
-
+import { CharacterPanelComponent } from './editor/character-panel/character-panel.component';
+import { ObserversModule } from '@angular/cdk/observers';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,12 +38,12 @@ import { ResizableComponent } from './global/resizable/resizable.component';
     NodeComponent,
     PortComponent,
     ModalComponent,
-    CharacterModalComponent,
     HelpModalComponent,
     EventComponent,
     VariablePanelComponent,
     VariableComponent,
-    ResizableComponent
+    ResizableComponent,
+    CharacterPanelComponent
   ],
   imports: [
     NgxPanZoomModule,
@@ -54,7 +54,8 @@ import { ResizableComponent } from './global/resizable/resizable.component';
     AngularSvgIconPreloaderModule.forRoot({
       configUrl: './assets/icons.json',
     }),
-    HttpClientModule
+    HttpClientModule,
+    ObserversModule
 
   ],
   providers: [],

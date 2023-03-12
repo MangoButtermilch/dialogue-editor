@@ -6,6 +6,25 @@
     width: 100vw;
     height: 100vh;
     margin-top: 51px; //toolbaar
+
+    .content {
+        user-select: none;
+        width: inherit;
+        height: inherit;
+    }
+
+    .drag-handle {
+        position: absolute;
+        z-index: 9;
+        width: 30px;
+        height: 30px;
+        cursor: move;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        right: 0;
+    }
+
     .resizable-draggable {
         display: block;
         width: fit-content;
@@ -15,18 +34,19 @@
         pointer-events: all;
 
         .resizer {
+            user-select: all;
             z-index: 9;
             position: absolute;
             right: 0;
             bottom: 0;
             height: 20px;
             width: 20px;
-            background-color: var(--bs-gray-700);
             border-radius: 5px;
+            filter: invert(1);
+            background: url("/assets/icons/chevron-down-right.svg");
 
             &:hover {
                 cursor: se-resize;
-                background-color: var(--bs-gray);
             }
         }
     }

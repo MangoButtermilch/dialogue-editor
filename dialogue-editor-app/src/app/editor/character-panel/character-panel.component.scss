@@ -1,5 +1,12 @@
-.character-modal {
-    padding: 10px;
+.character-panel {
+    border-radius: 5px;
+    box-shadow: var(--nodeBoxShadow);
+    width: inherit;
+    height: inherit;
+    overflow: auto;
+    &:hover {
+        box-shadow: var(--nodeBoxShadowHover);
+    }
 
     input:nth-of-type(2) {
         margin-left: 15px;

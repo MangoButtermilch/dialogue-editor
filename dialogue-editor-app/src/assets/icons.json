@@ -19,6 +19,14 @@
         {
             "iconName": "icon_help",
             "iconPath": "/assets/icons/help-circle.svg"
+        },
+        {
+            "iconName": "icon_drag_move",
+            "iconPath": "/assets/icons/arrows-move.svg"
+        },
+        {
+            "iconName": "icon_resize",
+            "iconPath": "/assets/icons/chevron-down-right.svg"
         }
     ],
     "customIcons": []

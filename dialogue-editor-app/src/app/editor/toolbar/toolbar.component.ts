@@ -12,7 +12,6 @@ export class ToolbarComponent implements OnDestroy {
 
   @Output() onHelpClicked: EventEmitter<void> = new EventEmitter<void>();
   @Output() onNewNodeClicked: EventEmitter<void> = new EventEmitter<void>();
-  @Output() onCharactersClicked: EventEmitter<void> = new EventEmitter<void>();
   @Output() onBackToOriginClicked: EventEmitter<void> = new EventEmitter<void>();
 
   private destroy$: Subject<boolean> = new Subject<boolean>();

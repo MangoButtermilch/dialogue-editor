@@ -2,6 +2,7 @@
     width: inherit;
     height: inherit;
     position: fixed;
+    overflow: auto;
     z-index: 1;
     border-radius: 5px;
     box-shadow: var(--nodeBoxShadow);

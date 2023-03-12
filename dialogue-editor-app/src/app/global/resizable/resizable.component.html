@@ -1,19 +1,24 @@
 <div class="boundary">
     <div cdkDrag
          cdkDragBoundary=".boundary"
-         [cdkDragDisabled]="dragDisabled"
          class="resizable-draggable"
          [style.width.px]="width"
-         [style.height.px]="height">
+         [style.height.px]="height"
+         [style.top.px]="top"
+         [style.left.px]="left">
 
-        <ng-content></ng-content>
+        <div class="drag-handle"
+             cdkDragHandle>
+            <svg-icon name="icon_drag_move"></svg-icon>
+        </div>
+        <div class="content">
+            <ng-content></ng-content>
+        </div>
 
         <div class="resizer"
              (dragstart)="resizeStart($event)"
              (drag)="resize($event)"
-             (dragend)="resizeEnd($event)"
-             (mouseover)="this.dragDisabled = true"
-             (mouseout)="(this.dragDisabled = false)">
+             (dragend)="resizeEnd($event)">
         </div>
     </div>
 </div>

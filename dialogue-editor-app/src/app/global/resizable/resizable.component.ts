@@ -1,5 +1,5 @@
 import { CdkDrag, CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
-import { AfterViewInit, Component, ElementRef, Input, OnInit } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ElementRef, Input, OnInit } from '@angular/core';
 import { Vector2 } from 'src/models/models';
 
 @Component({
@@ -13,15 +13,17 @@ export class ResizableComponent implements OnInit {
   @Input() height: number;
   @Input() left: number;
   @Input() top: number;
+  @Input() fitHeight: boolean = false;
+  @Input() fitWidth: boolean = false;
 
   private initialWidth: number;
   private initialHeight: number;
 
-  public dragDisabled: boolean = false;
   private resizeStartPos: Vector2 = { x: 0, y: 0 };
   private resizeEndPos: Vector2 = { x: 0, y: 0 };
 
-  constructor() { }
+
+  constructor(private elementRef: ElementRef) { }
 
   ngOnInit(): void {
     this.initialHeight = this.height;
@@ -29,14 +31,12 @@ export class ResizableComponent implements OnInit {
   }
 
   public resizeStart(eventData: DragEvent): void {
-    this.dragDisabled = true;
     this.resizeStartPos = { x: eventData.pageX, y: eventData.pageY };
   }
 
   public resize(eventData: DragEvent): void {
     if (eventData.pageX <= 0 || eventData.pageY <= 0) return;
     this.resizeEndPos = { x: eventData.pageX, y: eventData.pageY };
-    this.dragDisabled = true;
 
     const diff = {
       x: this.resizeEndPos.x - this.resizeStartPos.x,
@@ -49,9 +49,6 @@ export class ResizableComponent implements OnInit {
   }
 
   public resizeEnd(eventData: DragEvent): void {
-
-    this.dragDisabled = false;
-
     this.initialWidth = this.width;
     this.initialHeight = this.height;
   }
