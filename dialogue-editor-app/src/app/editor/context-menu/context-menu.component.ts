@@ -12,6 +12,7 @@ export class ContextMenuComponent implements OnInit, OnDestroy {
 
   @Output() onNewNode: EventEmitter<Vector2> = new EventEmitter<Vector2>();
   @Output() onNewComment: EventEmitter<Vector2> = new EventEmitter<Vector2>();
+  @Output() onNewConditionNode: EventEmitter<Vector2> = new EventEmitter<Vector2>();
   @Output() onNewEventNode: EventEmitter<Vector2> = new EventEmitter<Vector2>();
 
   public visible: boolean = false;
@@ -54,5 +55,9 @@ export class ContextMenuComponent implements OnInit, OnDestroy {
 
   public newComment(eventData: MouseEvent): void {
     this.onNewComment.emit({ x: eventData.pageX, y: eventData.pageY });
+  }
+  
+  public newConditionNode(eventData: MouseEvent): void {
+    this.onNewConditionNode.emit({ x: eventData.pageX, y: eventData.pageY });
   }
 }

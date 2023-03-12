@@ -1,0 +1,57 @@
+<div *ngIf="conditionNode"
+     id="{{conditionNode.guid}}"
+     class="conditionNode {{hasError ? 'warning': ''}}"
+     cdkDrag>
+
+    <div class="warn-message bg-danger text-white text-center">{{errorMessage}}</div>
+
+    <div class="bg-info d-flex justify-content-between p-1">
+        <app-port [port]="conditionNode.inPort"></app-port>
+
+        <h4>Condition</h4>
+        <button (click)="onDelete.emit(conditionNode)"
+                class="btn btn-danger p-0 me-1">
+            <svg-icon name="icon_delete"></svg-icon>
+        </button>
+    </div>
+
+    <div class="content text-white p-1">
+
+        <select class="m-1 bg-dark text-white p-0"
+                id="varA"
+                name="varA"
+                (input)="onInputVarA($event)">
+            <option *ngFor="let variable of variables$ | async; let i = index;"
+                    value="{{variable.guid}}"
+                    [selected]="i === varAIndex">
+                {{variable.name}} ({{variable.value}})
+            </option>
+        </select>
+
+        <select class="m-1 bg-dark text-white p-0"
+                id="type"
+                name="type"
+                (input)="onInputType($event)">
+            <option *ngFor="let enum of conditionTypes | keyvalue"
+                    value="{{enum.key}}"
+                    [selected]="selectedType == enum.key">
+                {{enum.value}}
+            </option>
+        </select>
+
+        <select class="m-1 bg-dark text-white p-0 {{selectedType == 'TRUE' || selectedType=='FALSE' ? 'd-none' :''}}"
+                id="varB"
+                name="varB"
+                (input)="onInputVarB($event)">
+            <option *ngFor="let variable of variables$ | async; let i = index;"
+                    value="{{variable.guid}}"
+                    [selected]="i === varBIndex">
+                {{variable.name}} ({{variable.value}})
+            </option>
+        </select>
+
+        <app-port [port]="conditionNode.outPort"></app-port>
+    </div>
+
+
+</div>

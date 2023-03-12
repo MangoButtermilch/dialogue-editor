@@ -12,7 +12,8 @@
 
 <app-context-menu (onNewNode)="generateNewNode($event)"
                   (onNewComment)="generateNewComment($event)"
-                  (onNewEventNode)="generateNewEventNode($event)"></app-context-menu>
+                  (onNewEventNode)="generateNewEventNode($event)"
+                  (onNewConditionNode)="generateNewConditionNode($event)"></app-context-menu>
 
 <app-variable-panel></app-variable-panel>
 <app-character-panel></app-character-panel>
@@ -35,5 +36,10 @@
                (onUpdate)="updateEventNode($event)"
                (onDelete)="deleteEventNode($event)"
                [eventNode]="event"></app-event>
+
+    <app-condition *ngFor="let condition of dialogue.conditions"
+                   (onUpdate)="updateConditionNode($event)"
+                   (onDelete)="deleteConditionNode($event)"
+                   [conditionNode]="condition"></app-condition>
 
 </pan-zoom>

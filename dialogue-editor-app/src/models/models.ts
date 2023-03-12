@@ -2,7 +2,26 @@
 export enum PortDirection { IN = "in", OUT = "out" };
 export enum PortCapacity { SINGLE = "single", MULTIPLE = "multiple" };
 export enum CanvasType { STATIC, DYNAMIC };
+export enum VariableType { TEXT = "text", NUM = "num", BOOL = "bool" }
+export enum ConditionType {
+    EQUAL = "EQUAL",
+    GREATER = "GREATER",
+    LESS = "LESS",
+    GREATER_EQ = "GREATER_EQ",
+    LESS_EQ = "LESS_EQ",
+    TRUE = "TRUE",
+    FALSE = "FALSE",
+}
 
+export const ConditionVariableMap: Map<ConditionType, VariableType[]> = new Map<ConditionType, VariableType[]>([
+    [ConditionType.EQUAL, [VariableType.BOOL, VariableType.NUM, VariableType.TEXT]],
+    [ConditionType.GREATER, [VariableType.NUM,]],
+    [ConditionType.GREATER_EQ, [VariableType.NUM]],
+    [ConditionType.LESS, [VariableType.NUM]],
+    [ConditionType.LESS_EQ, [VariableType.NUM]],
+    [ConditionType.TRUE, [VariableType.BOOL]],
+    [ConditionType.FALSE, [VariableType.BOOL]],
+]);
 
 export interface Vector2 {
     x: number
@@ -21,15 +40,12 @@ export interface Character {
     isDefault: boolean
 }
 
-export enum VariableType { TEXT = "text", NUM = "number", BOOL = "bool" }
-
 export interface Variable {
     guid: string,
     name: string,
     value: any,
     type: VariableType
 }
-
 
 export abstract class GuiObject {
     constructor(
@@ -133,6 +149,20 @@ export class EventNode extends GuiObject {
     }
 }
 
+export class ConditionNode extends GuiObject {
+    constructor(
+        guid: string,
+        pos: Vector2,
+        public type: ConditionType,
+        public inPort: Port,
+        public outPort: Port,
+        public variableA?: Variable,
+        public variableB?: Variable
+    ) {
+        super(guid, pos);
+    }
+}
+
 export class Dialogue {
     constructor(
         public name: string,
@@ -140,6 +170,7 @@ export class Dialogue {
         public dateTime: string,
         public nodes: DialogueNode[],
         public comments: CommentNode[] = [],
-        public events: EventNode[] = []
+        public events: EventNode[] = [],
+        public conditions: ConditionNode[] = []
     ) { }
 }

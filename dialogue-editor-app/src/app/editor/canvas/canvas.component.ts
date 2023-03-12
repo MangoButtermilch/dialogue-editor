@@ -20,7 +20,7 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private lineWidth: number = 5;
   private lineOffset: number = 26.6;
-  private lineColor: string = "#0d6efd";
+  private lineColor: string = "#00ff2b";
   private canvasWidth: number = 0;
   private canvasHeight: number = 0;
 
@@ -175,8 +175,9 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     if (type === CanvasType.DYNAMIC) this.clear(type);
     this.getCtx(type).beginPath();
     this.getCtx(type).moveTo(from.x, from.y);
-    //this.getCtx(type).lineTo(from.x + (lineOffset * xDir), from.y);
-    this.drawArrow(this.getCtx(type), from.x + (lineOffset * xDir), from.y, to.x - (lineOffset * xDir), to.y)
+    this.getCtx(type).lineTo(from.x + (lineOffset * xDir), from.y);
+    this.getCtx(type).lineTo(to.x - (lineOffset * xDir), to.y);
+    this.getCtx(type).lineTo(to.x, to.y);
     this.getCtx(type).stroke();
   }
 

@@ -1,0 +1,18 @@
+.conditionNode {
+    min-width: 300px;
+    position: absolute;
+    border-radius: 5px;
+
+    &.warning {
+        outline: 5px solid red;
+    }
+
+    .content {
+        background-color: var(--colorDark);
+        display: flex;
+
+        select {
+            width: fit-content;
+        }
+    }
+}

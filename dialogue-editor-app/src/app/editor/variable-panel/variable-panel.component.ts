@@ -10,22 +10,16 @@ import { Variable, VariableType } from 'src/models/models';
 })
 export class VariablePanelComponent implements OnInit {
 
-
   public variables$: Observable<Variable[]> = this.variableService.getVariables();
 
-
-  constructor(private variableService: VariableService) {
-
-  }
+  constructor(private variableService: VariableService) { }
 
   ngOnInit(): void {
 
-
   }
 
-
   public generateVariable(): void {
-    this.variableService.addVariable({ name: "newVariable", value: "0", type: VariableType.TEXT })
+    this.variableService.addVariable({ name: "newVariable", value: "0", type: VariableType.BOOL })
   }
 
   public updateVariable(variable: Variable): void {

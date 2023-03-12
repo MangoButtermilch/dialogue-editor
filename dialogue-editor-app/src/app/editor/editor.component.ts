@@ -1,8 +1,9 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { PanZoomConfig, PanZoomModel } from 'ngx-panzoom';
 import { Subject, Subscription, takeUntil } from 'rxjs';
-import { DialogueNode, Dialogue, Choice, Vector2, CommentNode, EventNode } from 'src/models/models';
+import { DialogueNode, Dialogue, Choice, Vector2, CommentNode, EventNode, ConditionNode } from 'src/models/models';
 import { CommentService } from '../services/dialogue/comment.service';
+import { ConditionService } from '../services/dialogue/condition.service';
 import { DialogueService } from '../services/dialogue/dialogue.service';
 import { EdgeService } from '../services/dialogue/edge.service';
 import { EventNodeService } from '../services/dialogue/event-node.service';
@@ -17,7 +18,6 @@ import { PanZoomService } from '../services/editor/pan-zoom.service';
   styleUrls: ['./editor.component.scss']
 })
 export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
-
   panZoomConfig: PanZoomConfig;
 
   public dialogue: Dialogue = this.dialogueService.generateDialogue();
@@ -29,6 +29,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   public helpModalVisible: boolean = false;
 
   constructor(
+    private conditionService: ConditionService,
     private eventNodeService: EventNodeService,
     private commentService: CommentService,
     private editorStateService: EditorStateService,
@@ -143,10 +144,35 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public deleteEventNode(event: EventNode): void {
+    this.edgeService.removeAllEdgesFor(event.inPort);
+    this.edgeService.removeAllEdgesFor(event.outPort);
+
     const index = this.dialogue.events.findIndex((other: EventNode) => other.guid === event.guid);
     this.dialogue.events.splice(index, 1);
   }
 
+  public generateNewConditionNode(position: Vector2 | null = null): void {
+    const instantiatePos = position
+      ? { x: position.x + this.panPosition.x, y: position.y + this.panPosition.y }
+      : null;
+
+    this.dialogue.conditions.push(
+      this.conditionService.generateConditionNode(instantiatePos)
+    );
+  }
+
+  public updateConditionNode(condition: ConditionNode) {
+    const index = this.dialogue.conditions.findIndex((other: ConditionNode) => other.guid === condition.guid);
+    this.dialogue.conditions[index] = condition;
+  }
+
+  public deleteConditionNode(condition: ConditionNode) {
+    this.edgeService.removeAllEdgesFor(condition.inPort);
+    this.edgeService.removeAllEdgesFor(condition.outPort);
+
+    const index = this.dialogue.conditions.findIndex((other: ConditionNode) => other.guid === condition.guid);
+    this.dialogue.conditions.splice(index, 1);
+  }
 
 }
 

@@ -25,6 +25,7 @@ import { VariableComponent } from './editor/variable-panel/variable/variable.com
 import { ResizableComponent } from './global/resizable/resizable.component';
 import { CharacterPanelComponent } from './editor/character-panel/character-panel.component';
 import { ObserversModule } from '@angular/cdk/observers';
+import { ConditionComponent } from './dialogue/condition/condition.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +44,8 @@ import { ObserversModule } from '@angular/cdk/observers';
     VariablePanelComponent,
     VariableComponent,
     ResizableComponent,
-    CharacterPanelComponent
+    CharacterPanelComponent,
+    ConditionComponent
   ],
   imports: [
     NgxPanZoomModule,

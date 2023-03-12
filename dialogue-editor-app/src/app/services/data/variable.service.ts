@@ -9,15 +9,8 @@ import { GuidService } from '../editor/guid.service';
 export class VariableService {
 
 
-  private readonly defaultVariable: Variable = {
-    guid: this.guidService.getGuid(),
-    name: "test",
-    value: 3,
-    type: VariableType.TEXT
-  };
-
-  private variables$: BehaviorSubject<Variable[]> = new BehaviorSubject<Variable[]>([this.defaultVariable]);
-  private variables: Variable[] = [this.defaultVariable];
+  private variables$: BehaviorSubject<Variable[]> = new BehaviorSubject<Variable[]>([]);
+  private variables: Variable[] = [];
 
   constructor(private guidService: GuidService) { }
 
