@@ -37,8 +37,7 @@
         pointer-events: all;
 
         .resizer {
-            background-color: red;
-            user-select: all;
+            user-select: none;
             z-index: 9;
             position: absolute;
             right: 0;
@@ -46,7 +45,6 @@
             height: 20px;
             width: 20px;
             border-radius: 5px;
-            filter: invert(1);
 
             &:hover {
                 cursor: se-resize;
