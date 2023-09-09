@@ -174,5 +174,14 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dialogue.conditions.splice(index, 1);
   }
 
+  /**
+   * Placeholder
+   */
+  public save(): void {
+    console.log(
+      JSON.stringify(this.dialogue)
+    );
+  }
+
 }
 

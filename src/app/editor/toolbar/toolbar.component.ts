@@ -13,6 +13,7 @@ export class ToolbarComponent implements OnDestroy {
   @Output() onHelpClicked: EventEmitter<void> = new EventEmitter<void>();
   @Output() onNewNodeClicked: EventEmitter<void> = new EventEmitter<void>();
   @Output() onBackToOriginClicked: EventEmitter<void> = new EventEmitter<void>();
+  @Output() onSaveClicked: EventEmitter<void> = new EventEmitter<void>();
 
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -38,9 +39,10 @@ export class ToolbarComponent implements OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  save(): void {
+  public save(): void {
+    this.onSaveClicked.emit();
   }
 
-  load(): void {
+  public load(): void {
   }
 }

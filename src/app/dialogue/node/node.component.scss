@@ -3,6 +3,9 @@
     position: absolute;
     width: 500px;
     height: fit-content;
+    will-change: transform;
+    transform-origin: center;
+    transform: translate3d(0px, 0px, 0px);
     border-radius: 5px;
     box-shadow: var(--nodeBoxShadow);
     &:hover {

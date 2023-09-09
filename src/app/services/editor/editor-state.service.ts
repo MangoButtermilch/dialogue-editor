@@ -42,7 +42,7 @@ export class EditorStateService {
   public connectPort(portA: Port, portB: Port): void {
     this.edgeService.generateEdge(portA, portB);
     portA.connect(portB);
-    portB.connect(portA);
+    //portB.connect(portA);
   }
 
   /**
