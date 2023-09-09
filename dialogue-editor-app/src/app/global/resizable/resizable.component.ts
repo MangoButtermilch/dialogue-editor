@@ -31,7 +31,6 @@ export class ResizableComponent implements OnInit {
   }
 
   public resizeStart(eventData: DragEvent): void {
-    console.log("start")
     this.resizeStartPos = { x: eventData.pageX, y: eventData.pageY };
   }
 
