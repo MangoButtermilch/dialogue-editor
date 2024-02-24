@@ -1,6 +1,5 @@
-<div id="{{comment.guid}}"
+<div *ngIf="comment"
      class="comment p-1 "
-     [style.transform]="getTransformStyle()"
      [style.background-color]="comment.color"
      cdkDrag>
     <div class="head text-white d-flex align-items-center justify-content-between mb-1">

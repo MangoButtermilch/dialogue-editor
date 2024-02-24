@@ -1,4 +1,4 @@
-<div id="{{dialogueNode.guid}}"
+<div *ngIf="dialogueNode"
      class="node bg-dark"
      cdkDrag>
 
@@ -7,7 +7,7 @@
          [style.height]="'25px'"
          [style.background-color]="dialogueNode.character.color">
 
-         <!-- 
+        <!-- 
             
         <div class="drag-handle"
              cdkDragHandle>
