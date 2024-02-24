@@ -180,11 +180,11 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public load(): void {
-//    console.log(JSON.parse(s));
+    //    console.log(JSON.parse(s));
   }
 
   private getInstantiatePosition(mousePosition: Vector2) {
-    return { x: mousePosition.x + this.panPosition.x, y: mousePosition.y + this.panPosition.y }
+    return { x: mousePosition.x - this.panPosition.x, y: mousePosition.y - this.panPosition.y }
   }
 
 }
