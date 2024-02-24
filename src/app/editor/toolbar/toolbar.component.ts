@@ -14,6 +14,7 @@ export class ToolbarComponent implements OnDestroy {
   @Output() onNewNodeClicked: EventEmitter<void> = new EventEmitter<void>();
   @Output() onBackToOriginClicked: EventEmitter<void> = new EventEmitter<void>();
   @Output() onSaveClicked: EventEmitter<void> = new EventEmitter<void>();
+  @Output() onLoadClicked: EventEmitter<void> = new EventEmitter<void>();
 
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -44,5 +45,6 @@ export class ToolbarComponent implements OnDestroy {
   }
 
   public load(): void {
+    this.onLoadClicked.emit();
   }
 }
