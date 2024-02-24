@@ -26,6 +26,7 @@ import { ResizableComponent } from './global/resizable/resizable.component';
 import { CharacterPanelComponent } from './editor/character-panel/character-panel.component';
 import { ObserversModule } from '@angular/cdk/observers';
 import { ConditionComponent } from './dialogue/condition/condition.component';
+import { GuiElementComponent } from './global/gui-element/gui-element.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,7 +46,8 @@ import { ConditionComponent } from './dialogue/condition/condition.component';
     VariableComponent,
     ResizableComponent,
     CharacterPanelComponent,
-    ConditionComponent
+    ConditionComponent,
+    GuiElementComponent
   ],
   imports: [
     NgxPanZoomModule,

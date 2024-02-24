@@ -24,24 +24,39 @@
           (contextmenu)="openContextMenu($event)">
 
     <app-background></app-background>
-    <app-node *ngFor="let node of dialogue.nodes"
-              (onUpdate)="updateNode($event)"
-              (onDelete)="deleteNode($event)"
-              [dialogueNode]="node"></app-node>
 
-    <app-comment *ngFor="let comment of dialogue.comments"
-                 (onUpdate)="updateComment($event)"
-                 (onDelete)="deleteComment($event)"
-                 [comment]="comment"></app-comment>
+    <app-gui-element *ngFor="let node of dialogue.nodes"
+                     [guiElement]="node">
 
-    <app-event *ngFor="let event of dialogue.events"
-               (onUpdate)="updateEventNode($event)"
-               (onDelete)="deleteEventNode($event)"
-               [eventNode]="event"></app-event>
+        <app-node (onUpdate)="updateNode($event)"
+                  (onDelete)="deleteNode($event)"
+                  [dialogueNode]="node"></app-node>
 
-    <app-condition *ngFor="let condition of dialogue.conditions"
-                   (onUpdate)="updateConditionNode($event)"
-                   (onDelete)="deleteConditionNode($event)"
-                   [conditionNode]="condition"></app-condition>
+    </app-gui-element>
+
+    <app-gui-element *ngFor="let comment of dialogue.comments"
+                     [guiElement]="comment">
+
+        <app-comment (onUpdate)="updateComment($event)"
+                     (onDelete)="deleteComment($event)"
+                     [comment]="comment"></app-comment>
+    </app-gui-element>
+
+    <app-gui-element *ngFor="let event of dialogue.events"
+                     [guiElement]="event">
+
+        <app-event (onUpdate)="updateEventNode($event)"
+                   (onDelete)="deleteEventNode($event)"
+                   [eventNode]="event"></app-event>
+
+    </app-gui-element>
+
+    <app-gui-element *ngFor="let condition of dialogue.conditions"
+                     [guiElement]="condition">
+
+        <app-condition (onUpdate)="updateConditionNode($event)"
+                       (onDelete)="deleteConditionNode($event)"
+                       [conditionNode]="condition"></app-condition>
+    </app-gui-element>
 
 </pan-zoom>

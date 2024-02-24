@@ -1,0 +1,8 @@
+<div *ngIf="guiElement"
+     id="{{guiElement.guid}}"
+     class="node bg-dark"
+     [style]="transformStyle"
+     cdkDrag>
+
+    <ng-content></ng-content>
+</div>
