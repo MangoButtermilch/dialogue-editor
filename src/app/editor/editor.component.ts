@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { PanZoomConfig, PanZoomModel } from 'ngx-panzoom';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { DialogueNode, Dialogue, Choice, Vector2, CommentNode, EventNode, ConditionNode } from 'src/models/models';
 import { CommentService } from '../services/dialogue/comment.service';
 import { ConditionService } from '../services/dialogue/condition.service';
@@ -28,6 +28,9 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   public characterModalVisible: boolean = false;
   public helpModalVisible: boolean = false;
 
+  private panZoomChanged$: Observable<PanZoomModel> = this.panZoomService.panZoomConfig.modelChanged
+    .pipe(takeUntil(this.destroy$));
+
   constructor(
     private conditionService: ConditionService,
     private eventNodeService: EventNodeService,
@@ -42,12 +45,10 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.panZoomService.panZoomConfig.modelChanged
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((model: PanZoomModel) => {
-        this.panPosition.x = Math.round(model.pan.x);
-        this.panPosition.y = Math.round(model.pan.y);
-      });
+    this.panZoomChanged$.subscribe((model: PanZoomModel) => {
+      this.panPosition.x = Math.round(model.pan.x);
+      this.panPosition.y = Math.round(model.pan.y);
+    });
   }
 
   ngAfterViewInit(): void {
@@ -72,15 +73,16 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.helpModalVisible = true;
   }
 
-  public generateNewNode(position: Vector2 | null = null): void {
-    const instantiatePos = position
-      ? { x: position.x + this.panPosition.x, y: position.y + this.panPosition.y }
-      : null;
+  public generateNewNode(mousePosition: Vector2 | null = null): void {
+    const instantiatePos = mousePosition !== null ?
+      this.getInstantiatePosition(mousePosition) :
+      null;
 
     this.dialogue.nodes.push(
       this.nodeService.generateNode(false, instantiatePos)
     );
   }
+
   public deleteNode(node: DialogueNode): void {
     if (node.isRoot) return;
 
@@ -108,10 +110,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  public generateNewComment(position: Vector2 | null = null): void {
-    const instantiatePos = position
-      ? { x: position.x + this.panPosition.x, y: position.y + this.panPosition.y }
-      : null;
+  public generateNewComment(mousePosition: Vector2): void {
+    const instantiatePos = this.getInstantiatePosition(mousePosition);
 
     this.dialogue.comments.push(
       this.commentService.generateComment(instantiatePos)
@@ -128,10 +128,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dialogue.comments.splice(index, 1);
   }
 
-  public generateNewEventNode(position: Vector2 | null = null): void {
-    const instantiatePos = position
-      ? { x: position.x + this.panPosition.x, y: position.y + this.panPosition.y }
-      : null;
+  public generateNewEventNode(mousePosition: Vector2): void {
+    const instantiatePos = this.getInstantiatePosition(mousePosition);
 
     this.dialogue.events.push(
       this.eventNodeService.generateNode(instantiatePos)
@@ -151,10 +149,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dialogue.events.splice(index, 1);
   }
 
-  public generateNewConditionNode(position: Vector2 | null = null): void {
-    const instantiatePos = position
-      ? { x: position.x + this.panPosition.x, y: position.y + this.panPosition.y }
-      : null;
+  public generateNewConditionNode(mousePosition: Vector2): void {
+    const instantiatePos = this.getInstantiatePosition(mousePosition);
 
     this.dialogue.conditions.push(
       this.conditionService.generateConditionNode(instantiatePos)
@@ -181,6 +177,14 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log(
       JSON.stringify(this.dialogue)
     );
+  }
+
+  public load(): void {
+//    console.log(JSON.parse(s));
+  }
+
+  private getInstantiatePosition(mousePosition: Vector2) {
+    return { x: mousePosition.x + this.panPosition.x, y: mousePosition.y + this.panPosition.y }
   }
 
 }
