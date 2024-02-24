@@ -2,8 +2,8 @@
     <div cdkDrag
          cdkDragBoundary=".boundary"
          class="resizable-draggable"
-         [style.width.px]="width"
-         [style.height.px]="height"
+         [style.width.px]="clampedWidth"
+         [style.height.px]="clampedHeight"
          [style.top.px]="top"
          [style.left.px]="left">
 

@@ -22,6 +22,9 @@ export class ResizableComponent implements OnInit {
   private resizeStartPos: Vector2 = { x: 0, y: 0 };
   private resizeEndPos: Vector2 = { x: 0, y: 0 };
 
+  private readonly minWidth: number = 80;
+  private readonly minHeight: number = 50;
+
 
   constructor(private elementRef: ElementRef) { }
 
@@ -51,6 +54,20 @@ export class ResizableComponent implements OnInit {
   public resizeEnd(eventData: DragEvent): void {
     this.initialWidth = this.width;
     this.initialHeight = this.height;
+  }
+
+  public get clampedWidth() {
+    return this.clamp(this.width, this.minWidth, window.innerWidth);
+  }
+
+  public get clampedHeight() {
+    return this.clamp(this.height, this.minHeight, window.innerHeight);
+  }
+
+  private clamp(value: number, min: number, max: number): number {
+    if (value < min) return min;
+    if (value > max) return max;
+    return value;
   }
 
 }
