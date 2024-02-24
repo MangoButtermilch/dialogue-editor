@@ -2,6 +2,7 @@
      id="{{guiElement.guid}}"
      class="node bg-dark"
      [style]="transformStyle"
+     (cdkDragEnded)="updatePosition($event)"
      cdkDrag>
 
     <ng-content></ng-content>
