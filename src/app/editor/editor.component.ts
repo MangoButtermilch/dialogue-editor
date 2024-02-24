@@ -11,6 +11,7 @@ import { NodeService } from '../services/dialogue/node.service';
 import { EditorStateService } from '../services/editor/editor-state.service';
 import { GuidService } from '../services/editor/guid.service';
 import { PanZoomService } from '../services/editor/pan-zoom.service';
+import dialogueMockData from '../../assets/mock/dialogue-mock.json';
 
 @Component({
   selector: 'app-editor',
@@ -182,7 +183,9 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public load(): void {
-    //    console.log(JSON.parse(s));
+    console.log(dialogueMockData)
+    this.dialogue = dialogueMockData as Dialogue;
+  
   }
 
   private getInstantiatePosition(mousePosition: Vector2) {
