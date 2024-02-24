@@ -19,7 +19,7 @@ export class CommentService {
 
     return new CommentNode(
       this.guidService.getGuid(),
-      { x: 0, y: 0 },
+      position ?? { x: 0, y: 0 },
       this.defaultColor,
       ""
     )
