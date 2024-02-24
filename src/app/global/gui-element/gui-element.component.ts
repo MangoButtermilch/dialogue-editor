@@ -20,7 +20,7 @@ export class GuiElementComponent {
 
   public updatePosition(eventData: CdkDragEnd): void {
     const styleDiv = this.elementRef.nativeElement.querySelector(".node");
-    const style = styleDiv.style;
+    const style =  window.getComputedStyle(styleDiv);
     const transform = style.transform;
 
     const regex = /translate3d\((-?\d+)px, (-?\d+)px, (-?\d+)px\)/;
