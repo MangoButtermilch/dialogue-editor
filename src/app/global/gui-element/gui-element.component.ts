@@ -13,7 +13,6 @@ export class GuiElementComponent {
 
   constructor(private elementRef: ElementRef) { }
 
-
   public get transformStyle(): string {
     return `transform: translate3d(${this.guiElement.position.x}px, ${this.guiElement.position.y}px, 0px);`
   }
@@ -21,14 +20,11 @@ export class GuiElementComponent {
   public updatePosition(eventData: CdkDragEnd): void {
     const styleDiv = this.elementRef.nativeElement.querySelector(".node");
     const style =  window.getComputedStyle(styleDiv);
-    const transform = style.transform;
+    const transformMatrix = new DOMMatrix(style.transform);
 
-    const regex = /translate3d\((-?\d+)px, (-?\d+)px, (-?\d+)px\)/;
-    const matches = transform.match(regex);
-    if (!matches) return;
-
-    const x = parseInt(matches[1]);
-    const y = parseInt(matches[2]);
+    // Extract translation values from the matrix
+    const x = transformMatrix.m41;
+    const y = transformMatrix.m42;
 
     this.guiElement.position = { x: x, y: y };
   }
