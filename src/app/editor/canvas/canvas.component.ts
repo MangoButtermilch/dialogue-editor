@@ -20,7 +20,8 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private lineWidth: number = 5;
   private lineOffset: number = 26.6;
-  private lineColor: string = "#00ff2b";
+  private lineColor: string = "#1cc145";
+  private lineHoverColor: string = "#6eff92";
   private canvasWidth: number = 0;
   private canvasHeight: number = 0;
 
@@ -29,6 +30,7 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
   private draggingChoice$: Observable<Choice | null> = this.editorStateService.onChoiceDrag();
   private drawEdgesInterval: any = null;
   private drawLineToMouseInterval: any = null;
+  private currentHoverEdge: Edge | null = null;
 
   private currentPort: Port | null = null;
   private renderEdges: Edge[] = [];
@@ -119,10 +121,12 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
         this.clear(CanvasType.STATIC);
         this.renderEdges.forEach((edge: Edge) => {
 
-          this.drawLine(
-            this.getPortPosition(edge.start),
-            this.getPortPosition(edge.end),
-            CanvasType.STATIC);
+          this.evaluateIfEdgeIsHovered(edge);
+
+          this.drawEdge(
+            edge,
+            CanvasType.STATIC
+          );
         })
       }, this.drawDelayMs);
   }
@@ -148,6 +152,7 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         if (this.drawLineToMouseInterval !== null) return;
+
         this.drawLineToMouseInterval =
           setInterval(() => {
 
@@ -156,13 +161,52 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
               this.domEventService.getMousePosition(),
               CanvasType.DYNAMIC
             );
+
+
           }, this.drawDelayMs);
       });
   }
 
-  private drawLine(from: Vector2, to: Vector2, type: CanvasType): void {
+  /**
+   * Use to draw line for an edge. This also considers is line is currently being hovered.
+   * @param edge 
+   * @param type 
+   * @returns 
+   */
+  private drawEdge(edge: Edge, type: CanvasType): void {
     if (!this.getCtx(type) || !this.initialized) return;
 
+    const from = this.getPortPosition(edge.start);
+    const to = this.getPortPosition(edge.end);
+
+    let xDir = type === CanvasType.DYNAMIC && this.domEventService.getMousePosition().x < this.currentPort.position.x ? -1 : 1;
+    xDir = type === CanvasType.STATIC && from.x > to.x ? -1 : 1;
+
+    const maxZoom = this.panZoomSerivce.panZoomConfig.zoomLevels;
+    const currentZoomLevel = Math.ceil(this.panZoomSerivce.getZoomScale() + 1);
+    const zoomratio = currentZoomLevel / maxZoom;
+    const lineOffset = this.lineOffset * zoomratio;
+
+    const isHovered =
+      this.currentHoverEdge !== null &&
+      this.currentHoverEdge.guid === edge.guid;
+
+    this.getCtx(type).strokeStyle = isHovered ? this.lineHoverColor : this.lineColor;
+
+    if (type === CanvasType.DYNAMIC) this.clear(type);
+    this.getCtx(type).beginPath();
+    this.getCtx(type).moveTo(from.x, from.y);
+    this.getCtx(type).lineTo(from.x + (lineOffset * xDir), from.y);
+    this.getCtx(type).lineTo(to.x - (lineOffset * xDir), to.y);
+    this.getCtx(type).lineTo(to.x, to.y);
+    this.getCtx(type).stroke();
+  }
+
+  /**
+   * Use to draw line between 2 positions. Usually port and mouse
+   */
+  private drawLine(from: Vector2, to: Vector2, type: CanvasType): void {
+    if (!this.getCtx(type) || !this.initialized) return;
 
     let xDir = type === CanvasType.DYNAMIC && this.domEventService.getMousePosition().x < this.currentPort.position.x ? -1 : 1;
     xDir = type === CanvasType.STATIC && from.x > to.x ? -1 : 1;
@@ -297,5 +341,62 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private getCtx(type: CanvasType): any {
     return type === CanvasType.STATIC ? this.ctxStatic : this.ctxDynamic;
+  }
+
+  private evaluateIfEdgeIsHovered(edge: Edge): void {
+    const isBeingHovered = this.isMouseOnEdge(edge);
+    const canBeHovered = isBeingHovered && this.currentHoverEdge === null
+    const isNoLongerHovered = !isBeingHovered && edge === this.currentHoverEdge;
+
+    if (canBeHovered) {
+      this.currentHoverEdge = edge;
+      this.editorStateService.selectEdge(edge);
+    } else if (isNoLongerHovered) {
+      this.currentHoverEdge = null;
+      this.editorStateService.deselectEdge();
+    }
+  }
+
+  /**
+   * https://stackoverflow.com/questions/17692922/check-is-a-point-x-y-is-between-two-points-drawn-on-a-straight-line
+   * @returns true is mouse position is on an edge.
+   */
+  private isMouseOnEdge(edge: Edge): boolean {
+
+    const mousePos: Vector2 = this.domEventService.getMousePosition();
+    const edgeStart: Vector2 = this.getPortPosition(edge.start);
+    const edgeEnd: Vector2 = this.getPortPosition(edge.end);
+
+    const mouseToStart: Vector2 = {
+      x: edgeStart.x - mousePos.x,
+      y: edgeStart.y - mousePos.y
+    };
+
+    const mouseToEnd: Vector2 = {
+      x: edgeEnd.x - mousePos.x,
+      y: edgeEnd.y - mousePos.y
+    };
+
+    const startToEnd: Vector2 = {
+      x: edgeEnd.x - edgeStart.x,
+      y: edgeEnd.y - edgeStart.y
+    }
+
+    const lengthMouseToStart = Math.sqrt(mouseToStart.x * mouseToStart.x + mouseToStart.y * mouseToStart.y);
+    const lengthMouseToEnd = Math.sqrt(mouseToEnd.x * mouseToEnd.x + mouseToEnd.y * mouseToEnd.y);
+    const lengthStartToEnd = Math.sqrt(startToEnd.x * startToEnd.x + startToEnd.y * startToEnd.y);
+
+    return (this.isApprox(lengthMouseToStart + lengthMouseToEnd, lengthStartToEnd, .1));
+  }
+
+  /**
+   * 
+   * @param a 
+   * @param b 
+   * @param tolerance 
+   * @returns true if a is approx to b with given tolerance
+   */
+  private isApprox(a: number, b: number, tolerance: number): boolean {
+    return Math.abs(a - b) <= tolerance;
   }
 }

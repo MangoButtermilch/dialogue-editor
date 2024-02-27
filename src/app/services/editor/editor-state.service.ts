@@ -12,11 +12,11 @@ export class EditorStateService {
   private contextMenuOpenState: BehaviorSubject<Vector2 | null> = new BehaviorSubject<Vector2 | null>(null);
   private draggingChoiceState: Subject<Choice | null> = new Subject<Choice | null>();
   private selectedPortState: ReplaySubject<Port | null> = new ReplaySubject<Port | null>();
+  private selectedEdgeState: BehaviorSubject<Edge | null> = new BehaviorSubject<Edge | null>(null);
 
   constructor(
     private edgeService: EdgeService
   ) { }
-
 
   /**
    * @returns Observable of Port or null. Port contains the current Port instance that has been selected.
@@ -92,5 +92,22 @@ export class EditorStateService {
    */
   public onContextMenuStateChange(): Observable<Vector2 | null> {
     return this.contextMenuOpenState.asObservable();
+  }
+
+  /**
+   * Use to get current selected edge. Edge is defined as selected when user hovers with mouse over it.
+   * Handled inside canvas component.
+   * @returns Observable of currently selected edge or null if nothing selected.
+   */
+  public onEdgeSelected(): Observable<Edge | null> {
+    return this.selectedEdgeState.asObservable();
+  }
+
+  public selectEdge(edge: Edge): void {
+    this.selectedEdgeState.next(edge);
+  }
+
+  public deselectEdge(): void {
+    this.selectedEdgeState.next(null);
   }
 }
