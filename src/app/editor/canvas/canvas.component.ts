@@ -20,8 +20,8 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private lineWidth: number = 5;
   private lineOffset: number = 26.6;
-  private lineColor: string = "#1cc145";
-  private lineHoverColor: string = "#6eff92";
+  private lineColor: string = "green";
+  private lineHoverColor: string = "lime";
   private canvasWidth: number = 0;
   private canvasHeight: number = 0;
 

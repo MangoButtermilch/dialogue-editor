@@ -81,6 +81,7 @@ export class DomEventService {
         if (deleteEndConnection) this.edgeService.removeAllEdgesFor(edge.end);
         if (deleteStartConnection) this.edgeService.removeAllEdgesFor(edge.start);
 
+
         this.editorStateService.deleteEdge(edge);
 
       }).unsubscribe();
