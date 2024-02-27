@@ -28,6 +28,7 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$: Subject<boolean> = new Subject<boolean>();
   private portSelected$: Observable<Port | null> = this.editorStateService.onPortSelected();
   private draggingChoice$: Observable<Choice | null> = this.editorStateService.onChoiceDrag();
+  private edgeDeleted$: Observable<Edge | null> = this.editorStateService.onEdgeDeleted();
   private drawEdgesInterval: any = null;
   private drawLineToMouseInterval: any = null;
   private currentHoverEdge: Edge | null = null;
@@ -82,6 +83,13 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((edges: Edge[]) => {
         this.renderEdges = edges;
+      });
+
+    this.edgeDeleted$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((edge: Edge | null) => {
+        if (edge === null) return;
+        this.currentHoverEdge = null;
       });
   }
 

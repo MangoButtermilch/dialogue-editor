@@ -13,6 +13,7 @@ export class EditorStateService {
   private draggingChoiceState: Subject<Choice | null> = new Subject<Choice | null>();
   private selectedPortState: ReplaySubject<Port | null> = new ReplaySubject<Port | null>();
   private selectedEdgeState: BehaviorSubject<Edge | null> = new BehaviorSubject<Edge | null>(null);
+  private deletedEdgeState: BehaviorSubject<Edge | null> = new BehaviorSubject<Edge | null>(null);
 
   constructor(
     private edgeService: EdgeService
@@ -109,5 +110,13 @@ export class EditorStateService {
 
   public deselectEdge(): void {
     this.selectedEdgeState.next(null);
+  }
+
+  public deleteEdge(edge: Edge): void {
+    this.deletedEdgeState.next(edge);
+  }
+
+  public onEdgeDeleted(): Observable<Edge | null> {
+    return this.deletedEdgeState.asObservable();
   }
 }
