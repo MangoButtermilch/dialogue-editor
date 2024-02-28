@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { PanZoomModel } from 'ngx-panzoom';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { PortService } from 'src/app/services/dialogue/port.service';
 import { EditorStateService } from 'src/app/services/editor/editor-state.service';
 import { PanZoomService } from 'src/app/services/editor/pan-zoom.service';
@@ -14,14 +14,15 @@ import { Port, Edge, Vector2, PortCapacity, PortDirection } from 'src/models/mod
 export class PortComponent implements OnInit, OnDestroy {
 
   @Output() onUpdate: EventEmitter<Port> = new EventEmitter<Port>();
-
   @Input() port: Port;
 
+  private destroy$: Subject<boolean> = new Subject<boolean>();
+  private selectedPort$: Observable<Port | null> = this.editorStateService.onPortSelected()
+    .pipe(takeUntil(this.destroy$));
+  public selectedPort: Port | null = null;
   public canBeClicked: boolean = true;
   public isCurrentlySelected: boolean = false;
-  public selectedPort: Port | null = null;
 
-  private destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private editorStateService: EditorStateService) { }
 
@@ -31,15 +32,14 @@ export class PortComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.destroy$.next(true);
-    this.destroy$.unsubscribe();
+    this.destroy$.complete();
   }
 
   private handlePortSelection(): void {
-    this.editorStateService.onPortSelected()
-      .pipe(takeUntil(this.destroy$))
+    this.selectedPort$
       .subscribe((selectedPort: Port | null) => {
 
-        if (!selectedPort) {
+        if (selectedPort === null) {
           this.resetPort();
           return;
         }
@@ -47,18 +47,17 @@ export class PortComponent implements OnInit, OnDestroy {
         this.selectedPort = selectedPort;
         this.isCurrentlySelected = selectedPort.guid === this.port.guid;
 
-        const isAlreadyConnectedToOther: boolean =
+        const isAlreadyConnectedToSelectedPort: boolean =
           this.port.isConnectedTo(this.selectedPort);
 
         this.canBeClicked =
           !this.isCurrentlySelected &&
           this.port.direction !== selectedPort.direction &&
           this.port.parentGuid !== selectedPort.parentGuid &&
-          !isAlreadyConnectedToOther;
+          !isAlreadyConnectedToSelectedPort;
 
         if (this.hasToRemoveConnection()) {
-          const other: Port = this.port.getConnections()[0];
-          this.editorStateService.disconnectPort(this.port, other);
+          this.removeAllConnections();
         }
 
         this.onUpdate.emit(this.port);
@@ -69,7 +68,7 @@ export class PortComponent implements OnInit, OnDestroy {
     if (this.isCurrentlySelected || !this.canBeClicked) return;
 
     if (this.canCreateConnection()) {
-      this.editorStateService.connectPort(this.selectedPort, this.port);
+      this.editorStateService.connectPorts(this.selectedPort, this.port);
       this.editorStateService.deselectPort();
       return;
     }
@@ -83,11 +82,18 @@ export class PortComponent implements OnInit, OnDestroy {
    * So if one already exists it musst be destroyed.
    */
   private hasToRemoveConnection(): boolean {
-    return this.hasConnection() && this.isCurrentlySelected && this.port.capacity === PortCapacity.SINGLE;
+    return this.hasConnections() && this.isCurrentlySelected && this.port.capacity === PortCapacity.SINGLE;
   }
 
-  private hasConnection(): boolean {
+  private hasConnections(): boolean {
     return this.port.getConnections().length > 0;
+  }
+
+  private removeAllConnections(): void {
+    this.port.getConnections()
+      .forEach((other: Port) => {
+        this.editorStateService.disconnectPorts(this.port, other);
+      })
   }
 
   private canCreateConnection(): boolean {
@@ -100,6 +106,11 @@ export class PortComponent implements OnInit, OnDestroy {
     if (!isInSelectMode) return false;
 
     const isCircularConnection: boolean = this.port.parentGuid === this.selectedPort.parentGuid;
+    if (isCircularConnection) return false;
+
+    const isAlreadyConnectedToSelectedPort: boolean =
+      this.port.isConnectedTo(this.selectedPort);
+    if (isAlreadyConnectedToSelectedPort) return false;
 
     const canSingleConnect: boolean =
       this.port.capacity === PortCapacity.SINGLE &&
@@ -108,13 +119,10 @@ export class PortComponent implements OnInit, OnDestroy {
 
     const canMultiConnect: boolean =
       this.port.capacity === PortCapacity.MULTIPLE &&
-      this.selectedPort.capacity === PortCapacity.SINGLE &&
-      this.selectedPort.getConnections().length <= 1;
+      this.selectedPort.getConnections().length <= 1 &&
+      this.selectedPort.capacity === PortCapacity.SINGLE;
 
-    const isAlreadyConnectedToOther: boolean =
-      this.port.isConnectedTo(this.selectedPort);
-
-    return !isAlreadyConnectedToOther && !isCircularConnection && (canSingleConnect || canMultiConnect);
+    return (canSingleConnect || canMultiConnect);
   }
 
   private resetPort(): void {
