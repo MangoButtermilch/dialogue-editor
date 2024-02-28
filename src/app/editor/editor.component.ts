@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { PanZoomConfig, PanZoomModel } from 'ngx-panzoom';
 import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
-import { DialogueNode, Dialogue, Choice, Vector2, CommentNode, EventNode, ConditionNode } from 'src/models/models';
+import { DialogueNode, Dialogue, Choice, Vector2, CommentNode, EventNode, ConditionNode, Edge } from 'src/models/models';
 import { CommentService } from '../services/dialogue/comment.service';
 import { ConditionService } from '../services/dialogue/condition.service';
 import { DialogueService } from '../services/dialogue/dialogue.service';
@@ -21,46 +21,35 @@ import dialogueMockData from '../../assets/mock/dialogue-mock.json';
 export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   panZoomConfig: PanZoomConfig;
 
-  public dialogue: Dialogue = this.dialogueService.generateDialogue();
+  private destroy$: Subject<void> = new Subject<void>();
+  public dialogue$: Observable<Dialogue> = this.dialogueService.getDialoge()
+    .pipe(takeUntil(this.destroy$))
 
-  private destroy$: Subject<boolean> = new Subject<boolean>();
-  private panPosition: Vector2 = { x: 0, y: 0 };
-  private panZoomLevel: number = 2;
 
   public characterModalVisible: boolean = false;
   public helpModalVisible: boolean = false;
 
-  private panZoomChanged$: Observable<PanZoomModel> = this.panZoomService.panZoomConfig.modelChanged
-    .pipe(takeUntil(this.destroy$));
 
   constructor(
-    private conditionService: ConditionService,
-    private eventNodeService: EventNodeService,
-    private commentService: CommentService,
     private editorStateService: EditorStateService,
     private dialogueService: DialogueService,
-    private edgeService: EdgeService,
-    private nodeService: NodeService,
     private panZoomService: PanZoomService) {
     this.panZoomConfig = panZoomService.panZoomConfig;
   }
 
-  ngOnInit(): void {
-
-    this.panZoomChanged$.subscribe((model: PanZoomModel) => {
-      this.panZoomLevel = model.zoomLevel;
-      this.panPosition.x = Math.round(model.pan.x);
-      this.panPosition.y = Math.round(model.pan.y);
-    });
-  }
+  ngOnInit(): void { }
 
   ngAfterViewInit(): void {
     this.panToOrigin();
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  public changeDialogeName(name: string): void {
+    this.dialogueService.changeDialogueName(name);
   }
 
   public hideAllModals(): void {
@@ -77,25 +66,11 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public generateNewNode(mousePosition: Vector2 | null = null): void {
-    const instantiatePos = mousePosition !== null ?
-      this.getInstantiatePosition(mousePosition) :
-      null;
-
-    this.dialogue.nodes.push(
-      this.nodeService.generateNode(false, instantiatePos)
-    );
+    this.dialogueService.addNewDialogueNode(mousePosition);
   }
 
   public deleteNode(node: DialogueNode): void {
-    if (node.isRoot) return;
-
-    this.edgeService.removeAllEdgesFor(node.inPort);
-
-    node.choices.forEach((c: Choice) => {
-      this.edgeService.removeAllEdgesFor(c.outPort)
-    });
-    this.dialogue.nodes = this.dialogue.nodes.filter((other: DialogueNode) => other.guid !== node.guid);
-
+    this.dialogueService.deleteDialogueNode(node);
   }
 
   public panToOrigin(): void {
@@ -103,8 +78,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public updateNode(node: DialogueNode): void {
-    const index = this.dialogue.nodes.findIndex((other: DialogueNode) => other.guid === node.guid);
-    this.dialogue.nodes[index] = node;
+    this.dialogueService.updateDialogueNode(node);
   }
 
   public openContextMenu(eventData: MouseEvent): void {
@@ -114,63 +88,39 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public generateNewComment(mousePosition: Vector2): void {
-    const instantiatePos = this.getInstantiatePosition(mousePosition);
-
-    this.dialogue.comments.push(
-      this.commentService.generateComment(instantiatePos)
-    );
+    this.dialogueService.addNewComment(mousePosition);
   }
 
   public updateComment(comment: CommentNode): void {
-    const index = this.dialogue.comments.findIndex((other: CommentNode) => other.guid === comment.guid);
-    this.dialogue.comments[index] = comment;
+    this.dialogueService.updateComment(comment);
   }
 
   public deleteComment(comment: CommentNode): void {
-    const index = this.dialogue.comments.findIndex((other: CommentNode) => other.guid === comment.guid);
-    this.dialogue.comments.splice(index, 1);
+    this.dialogueService.deleteComment(comment);
   }
 
   public generateNewEventNode(mousePosition: Vector2): void {
-    const instantiatePos = this.getInstantiatePosition(mousePosition);
-
-    this.dialogue.events.push(
-      this.eventNodeService.generateNode(instantiatePos)
-    );
+    this.dialogueService.addNewEventNode(mousePosition);
   }
 
   public updateEventNode(event: EventNode): void {
-    const index = this.dialogue.events.findIndex((other: EventNode) => other.guid === event.guid);
-    this.dialogue.events[index] = event;
+    this.dialogueService.updateEventNode(event);
   }
 
   public deleteEventNode(event: EventNode): void {
-    this.edgeService.removeAllEdgesFor(event.inPort);
-    this.edgeService.removeAllEdgesFor(event.outPort);
-
-    const index = this.dialogue.events.findIndex((other: EventNode) => other.guid === event.guid);
-    this.dialogue.events.splice(index, 1);
+    this.dialogueService.deleteEventNode(event);
   }
 
   public generateNewConditionNode(mousePosition: Vector2): void {
-    const instantiatePos = this.getInstantiatePosition(mousePosition);
-
-    this.dialogue.conditions.push(
-      this.conditionService.generateConditionNode(instantiatePos)
-    );
+    this.dialogueService.addNewConditionNode(mousePosition);
   }
 
   public updateConditionNode(condition: ConditionNode) {
-    const index = this.dialogue.conditions.findIndex((other: ConditionNode) => other.guid === condition.guid);
-    this.dialogue.conditions[index] = condition;
+    this.dialogueService.updateConditionNode(condition);
   }
 
   public deleteConditionNode(condition: ConditionNode) {
-    this.edgeService.removeAllEdgesFor(condition.inPort);
-    this.edgeService.removeAllEdgesFor(condition.outPort);
-
-    const index = this.dialogue.conditions.findIndex((other: ConditionNode) => other.guid === condition.guid);
-    this.dialogue.conditions.splice(index, 1);
+    this.dialogueService.deleteConditionNode(condition);
   }
 
   /**
@@ -178,40 +128,12 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   public save(): void {
     console.log(
-      JSON.stringify(this.dialogue)
     );
   }
 
   public load(): void {
-    console.log(dialogueMockData)
-    this.dialogue = dialogueMockData as Dialogue;
-  
+
   }
-
-  private getInstantiatePosition(mousePosition: Vector2) {
-    const x: number = (mousePosition.x - this.panPosition.x) * this.zoomMultiplier;
-    const y: number = (mousePosition.y - this.panPosition.y) * this.zoomMultiplier;
-
-    return { x: x, y: y }
-  }
-
-  private get zoomMultiplier() {
-    return this.zoomLevelToMultiplierMap.get(this.panZoomLevel);
-  }
-
-  /**
-   * Holds information about how to multiply a position in the editor by a given zoom level.
-   * 3 is most zoom in and 0 is furthest zoom out.
-   */
-  private readonly zoomLevelToMultiplierMap: Map<number, number> = new Map(
-    [
-      [3, 0.5],
-      [2, 1],
-      [1, 2],
-      [0, 4]
-    ]
-  );
-
 
 }
 

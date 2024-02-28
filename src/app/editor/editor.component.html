@@ -2,7 +2,8 @@
              (onBackToOriginClicked)="panToOrigin()"
              (onHelpClicked)="showHelpModal()"
              (onLoadClicked)="load()"
-             (onSaveClicked)="save()"></app-toolbar>
+             (onSaveClicked)="save()"
+             (onDialogeNameChange)="changeDialogeName($event)"></app-toolbar>
 
 <app-canvas></app-canvas>
 
@@ -23,40 +24,42 @@
 <pan-zoom [config]="panZoomConfig"
           (contextmenu)="openContextMenu($event)">
 
-    <app-background></app-background>
+    <span *ngIf="dialogue$ | async as dialogue">
+        <app-background></app-background>
 
-    <app-gui-element *ngFor="let node of dialogue.nodes"
-                     [guiElement]="node">
+        <app-gui-element *ngFor="let node of dialogue.nodes"
+                         [guiElement]="node">
 
-        <app-node (onUpdate)="updateNode($event)"
-                  (onDelete)="deleteNode($event)"
-                  [dialogueNode]="node"></app-node>
+            <app-node (onUpdate)="updateNode($event)"
+                      (onDelete)="deleteNode($event)"
+                      [dialogueNode]="node"></app-node>
 
-    </app-gui-element>
+        </app-gui-element>
 
-    <app-gui-element *ngFor="let comment of dialogue.comments"
-                     [guiElement]="comment">
+        <app-gui-element *ngFor="let comment of dialogue.comments"
+                         [guiElement]="comment">
 
-        <app-comment (onUpdate)="updateComment($event)"
-                     (onDelete)="deleteComment($event)"
-                     [comment]="comment"></app-comment>
-    </app-gui-element>
+            <app-comment (onUpdate)="updateComment($event)"
+                         (onDelete)="deleteComment($event)"
+                         [comment]="comment"></app-comment>
+        </app-gui-element>
 
-    <app-gui-element *ngFor="let event of dialogue.events"
-                     [guiElement]="event">
+        <app-gui-element *ngFor="let event of dialogue.events"
+                         [guiElement]="event">
 
-        <app-event (onUpdate)="updateEventNode($event)"
-                   (onDelete)="deleteEventNode($event)"
-                   [eventNode]="event"></app-event>
+            <app-event (onUpdate)="updateEventNode($event)"
+                       (onDelete)="deleteEventNode($event)"
+                       [eventNode]="event"></app-event>
 
-    </app-gui-element>
+        </app-gui-element>
 
-    <app-gui-element *ngFor="let condition of dialogue.conditions"
-                     [guiElement]="condition">
+        <app-gui-element *ngFor="let condition of dialogue.conditions"
+                         [guiElement]="condition">
 
-        <app-condition (onUpdate)="updateConditionNode($event)"
-                       (onDelete)="deleteConditionNode($event)"
-                       [conditionNode]="condition"></app-condition>
-    </app-gui-element>
+            <app-condition (onUpdate)="updateConditionNode($event)"
+                           (onDelete)="deleteConditionNode($event)"
+                           [conditionNode]="condition"></app-condition>
+        </app-gui-element>
 
+    </span>
 </pan-zoom>
