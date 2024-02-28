@@ -7,12 +7,12 @@ import { PanZoomService } from './pan-zoom.service';
 @Injectable({
   providedIn: 'root'
 })
-export class GuiElementServiceService {
+export class GuiElementService {
 
   private panZoomChanged$: Observable<PanZoomModel> = this.panZoomService.panZoomConfig.modelChanged;
   private panPosition: Vector2 = { x: 0, y: 0 };
   private panZoomLevel: number = 2;
-  
+
   constructor(private panZoomService: PanZoomService) {
     this.panZoomChanged$.subscribe((model: PanZoomModel) => {
       this.panZoomLevel = model.zoomLevel;
@@ -25,7 +25,8 @@ export class GuiElementServiceService {
    * @param mousePosition 
    * @returns Vector2 position for a new GUI element to instantiate at.
    */
-  public getInstantiatePosition(mousePosition: Vector2) {
+  public getInstantiatePosition(mousePosition: Vector2 | null) {
+    if (mousePosition === null) return { x: 0, y: 0 };
     const x: number = (mousePosition.x - this.panPosition.x) * this.zoomMultiplier;
     const y: number = (mousePosition.y - this.panPosition.y) * this.zoomMultiplier;
     return { x: x, y: y }

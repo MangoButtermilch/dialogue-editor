@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GuiElementServiceService } from './gui-element-service.service';
+import { GuiElementService } from './gui-element.service';
 
 describe('GuiElementServiceService', () => {
-  let service: GuiElementServiceService;
+  let service: GuiElementService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GuiElementServiceService);
+    service = TestBed.inject(GuiElementService);
   });
 
   it('should be created', () => {
