@@ -10,7 +10,6 @@ import { NodeService } from './node.service';
 export class DialogueService {
 
   constructor(
-    private eventNodeService: EventNodeService,
     private guidService: GuidService,
     private nodeService: NodeService) { }
 
