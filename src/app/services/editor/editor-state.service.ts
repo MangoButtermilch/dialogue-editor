@@ -9,11 +9,11 @@ import { EdgeService } from '../dialogue/edge.service';
 })
 export class EditorStateService {
 
-  private contextMenuOpenState: BehaviorSubject<Vector2 | null> = new BehaviorSubject<Vector2 | null>(null);
-  private draggingChoiceState: Subject<Choice | null> = new Subject<Choice | null>();
-  private selectedPortState: ReplaySubject<Port | null> = new ReplaySubject<Port | null>();
-  private selectedEdgeState: BehaviorSubject<Edge | null> = new BehaviorSubject<Edge | null>(null);
-  private deletedEdgeState: BehaviorSubject<Edge | null> = new BehaviorSubject<Edge | null>(null);
+  private contextMenuOpenState$: BehaviorSubject<Vector2 | null> = new BehaviorSubject<Vector2 | null>(null);
+  private draggingChoiceState$: Subject<Choice | null> = new Subject<Choice | null>();
+  private selectedPortState$: ReplaySubject<Port | null> = new ReplaySubject<Port | null>();
+  private selectedEdgeState$: BehaviorSubject<Edge | null> = new BehaviorSubject<Edge | null>(null);
+  private deletedEdgeState$: BehaviorSubject<Edge | null> = new BehaviorSubject<Edge | null>(null);
 
   constructor(
     private edgeService: EdgeService
@@ -24,15 +24,15 @@ export class EditorStateService {
    * Null indicates that no Port is selected any more.
    */
   public onPortSelected(): Observable<Port | null> {
-    return this.selectedPortState.asObservable();
+    return this.selectedPortState$.asObservable();
   }
 
   public selectPort(port: Port): void {
-    this.selectedPortState.next(port);
+    this.selectedPortState$.next(port);
   }
 
   public deselectPort(): void {
-    this.selectedPortState.next(null);
+    this.selectedPortState$.next(null);
   }
 
   /**
@@ -62,11 +62,11 @@ export class EditorStateService {
    * Null indicates that no choice is dragged any more.
    */
   public onChoiceDrag(): Observable<Choice | null> {
-    return this.draggingChoiceState.asObservable();
+    return this.draggingChoiceState$.asObservable();
   }
 
   public dragStartChoice(choice: Choice): void {
-    this.draggingChoiceState.next(choice);
+    this.draggingChoiceState$.next(choice);
   }
 
   /**
@@ -74,17 +74,17 @@ export class EditorStateService {
    * @param choice Dragged Choice instance
    */
   public dragEndChoice(choice: Choice): void {
-    this.draggingChoiceState.next(choice);
-    this.draggingChoiceState.next(null);
+    this.draggingChoiceState$.next(choice);
+    this.draggingChoiceState$.next(null);
   }
 
 
   public openContextMenu(position: Vector2): void {
-    this.contextMenuOpenState.next(position);
+    this.contextMenuOpenState$.next(position);
   }
 
   public closeContextMenu(): void {
-    this.contextMenuOpenState.next(null);
+    this.contextMenuOpenState$.next(null);
   }
 
   /**
@@ -92,7 +92,7 @@ export class EditorStateService {
    * null indicates to close the menu
    */
   public onContextMenuStateChange(): Observable<Vector2 | null> {
-    return this.contextMenuOpenState.asObservable();
+    return this.contextMenuOpenState$.asObservable();
   }
 
   /**
@@ -101,22 +101,22 @@ export class EditorStateService {
    * @returns Observable of currently selected edge or null if nothing selected.
    */
   public onEdgeSelected(): Observable<Edge | null> {
-    return this.selectedEdgeState.asObservable();
+    return this.selectedEdgeState$.asObservable();
   }
 
   public selectEdge(edge: Edge): void {
-    this.selectedEdgeState.next(edge);
+    this.selectedEdgeState$.next(edge);
   }
 
   public deselectEdge(): void {
-    this.selectedEdgeState.next(null);
+    this.selectedEdgeState$.next(null);
   }
 
   public deleteEdge(edge: Edge): void {
-    this.deletedEdgeState.next(edge);
+    this.deletedEdgeState$.next(edge);
   }
 
   public onEdgeDeleted(): Observable<Edge | null> {
-    return this.deletedEdgeState.asObservable();
+    return this.deletedEdgeState$.asObservable();
   }
 }
