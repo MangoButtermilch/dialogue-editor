@@ -15,9 +15,7 @@ export class EditorStateService {
   private selectedEdgeState$: BehaviorSubject<Edge | null> = new BehaviorSubject<Edge | null>(null);
   private deletedEdgeState$: BehaviorSubject<Edge | null> = new BehaviorSubject<Edge | null>(null);
 
-  constructor(
-    private edgeService: EdgeService
-  ) { }
+  constructor() { }
 
   /**
    * @returns Observable of Port or null. Port contains the current Port instance that has been selected.
@@ -33,28 +31,6 @@ export class EditorStateService {
 
   public deselectPort(): void {
     this.selectedPortState$.next(null);
-  }
-
-  /**
-   * Automatically connects A from B and B from A
-   * @param portA 
-   * @param portB 
-   */
-  public connectPort(portA: Port, portB: Port): void {
-    this.edgeService.generateEdge(portA, portB);
-    portA.connect(portB);
-    //portB.connect(portA);
-  }
-
-  /**
-   * Automatically disonnects A from B and B from A
-   * @param portA 
-   * @param portB 
-   */
-  public disconnectPort(portA: Port, portB: Port): void {
-    this.edgeService.removeEdgeFor(portA);
-    portA.disconnect(portB);
-    portB.disconnect(portA);
   }
 
   /**
@@ -112,7 +88,11 @@ export class EditorStateService {
     this.selectedEdgeState$.next(null);
   }
 
-  public deleteEdge(edge: Edge): void {
+  /**
+   * Set the state for the edge that has been deleted right now.
+   * @param edge 
+   */
+  public setDeleteEdge(edge: Edge): void {
     this.deletedEdgeState$.next(edge);
   }
 

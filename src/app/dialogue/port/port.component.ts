@@ -24,7 +24,10 @@ export class PortComponent implements OnInit, OnDestroy {
   public isCurrentlySelected: boolean = false;
 
 
-  constructor(private editorStateService: EditorStateService) { }
+  constructor(
+    private editorStateService: EditorStateService,
+    private portService: PortService
+  ) { }
 
   ngOnInit(): void {
     this.handlePortSelection();
@@ -50,8 +53,14 @@ export class PortComponent implements OnInit, OnDestroy {
         const isAlreadyConnectedToSelectedPort: boolean =
           this.port.isConnectedTo(this.selectedPort);
 
+        const hasToManyConnections: boolean =
+          this.port.capacity === PortCapacity.SINGLE &&
+          this.port.connectedPorts.length >= 1;
+
+
         this.canBeClicked =
           !this.isCurrentlySelected &&
+          !hasToManyConnections &&
           this.port.direction !== selectedPort.direction &&
           this.port.parentGuid !== selectedPort.parentGuid &&
           !isAlreadyConnectedToSelectedPort;
@@ -68,7 +77,7 @@ export class PortComponent implements OnInit, OnDestroy {
     if (this.isCurrentlySelected || !this.canBeClicked) return;
 
     if (this.canCreateConnection()) {
-      this.editorStateService.connectPorts(this.selectedPort, this.port);
+      this.portService.connectPorts(this.selectedPort, this.port);
       this.editorStateService.deselectPort();
       return;
     }
@@ -92,37 +101,8 @@ export class PortComponent implements OnInit, OnDestroy {
   private removeAllConnections(): void {
     this.port.getConnections()
       .forEach((other: Port) => {
-        this.editorStateService.disconnectPorts(this.port, other);
+        this.portService.disconnectPorts(this.port, other);
       })
-  }
-
-  private canCreateConnection(): boolean {
-
-    const isInSelectMode: boolean =
-      this.selectedPort !== null &&
-      this.selectedPort.guid !== this.port.guid &&
-      this.selectedPort.direction !== this.port.direction;
-
-    if (!isInSelectMode) return false;
-
-    const isCircularConnection: boolean = this.port.parentGuid === this.selectedPort.parentGuid;
-    if (isCircularConnection) return false;
-
-    const isAlreadyConnectedToSelectedPort: boolean =
-      this.port.isConnectedTo(this.selectedPort);
-    if (isAlreadyConnectedToSelectedPort) return false;
-
-    const canSingleConnect: boolean =
-      this.port.capacity === PortCapacity.SINGLE &&
-      this.port.getConnections().length <= 1 &&
-      this.selectedPort.capacity === PortCapacity.MULTIPLE;
-
-    const canMultiConnect: boolean =
-      this.port.capacity === PortCapacity.MULTIPLE &&
-      this.selectedPort.getConnections().length <= 1 &&
-      this.selectedPort.capacity === PortCapacity.SINGLE;
-
-    return (canSingleConnect || canMultiConnect);
   }
 
   private resetPort(): void {
@@ -131,4 +111,55 @@ export class PortComponent implements OnInit, OnDestroy {
     this.isCurrentlySelected = false;
   }
 
+  private canCreateConnection(): boolean {
+    return (
+      this.isInSelectMode &&
+      !this.isCircularConnection &&
+      !this.isAlreadyConnectedToSelectedPort &&
+      !this.hasToManyConnections &&
+      (this.canSingleConnect || this.canMultiConnect)
+    );
+  }
+
+  private get isInSelectMode(): boolean {
+    return (
+      this.selectedPort !== null &&
+      this.selectedPort.guid !== this.port.guid &&
+      this.selectedPort.direction !== this.port.direction
+    );
+  }
+
+  private get isCircularConnection(): boolean {
+    return this.port.parentGuid === this.selectedPort?.parentGuid;
+  }
+
+  private get isAlreadyConnectedToSelectedPort(): boolean {
+    return (
+      this.port.isConnectedTo(this.selectedPort) ||
+      this.selectedPort.isConnectedTo(this.port)
+    );
+  }
+
+  private get hasToManyConnections(): boolean {
+    return (
+      this.port.capacity === PortCapacity.SINGLE &&
+      this.port.connectedPorts.length >= 1
+    );
+  }
+
+  private get canSingleConnect(): boolean {
+    return (
+      this.port.capacity === PortCapacity.SINGLE &&
+      this.port.getConnections().length <= 1 &&
+      this.selectedPort?.capacity === PortCapacity.MULTIPLE
+    );
+  }
+
+  private get canMultiConnect(): boolean {
+    return (
+      this.port.capacity === PortCapacity.MULTIPLE &&
+      this.selectedPort?.getConnections().length <= 1 &&
+      this.selectedPort?.capacity === PortCapacity.SINGLE
+    );
+  }
 }

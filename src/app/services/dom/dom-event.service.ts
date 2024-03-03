@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Edge, Port, Vector2 } from 'src/models/models';
 import { EdgeService } from '../dialogue/edge.service';
+import { PortService } from '../dialogue/port.service';
 import { EditorStateService } from '../editor/editor-state.service';
 
 @Injectable({
@@ -10,8 +11,8 @@ import { EditorStateService } from '../editor/editor-state.service';
 export class DomEventService {
 
   private domResize$: Subject<void> = new Subject<void>();
+  private domDblClick$: Subject<void> = new Subject<void>();
   private selectedPort$: Observable<Port | null> = this.editorStateService.onPortSelected();
-  private selectedEdge$: Observable<Edge | null> = this.editorStateService.onEdgeSelected();
   private portClickCount: number = 0;
 
   private domDblClickEventRef: any = null;
@@ -22,9 +23,7 @@ export class DomEventService {
   private mousePosition: Vector2 = { x: 0, y: 0 };
 
 
-  constructor(
-    private edgeService: EdgeService,
-    private editorStateService: EditorStateService) {
+  constructor(private editorStateService: EditorStateService) {
     this.addDomEvents();
 
     //Everytime a new port has been selected or deselected, we can reset the click count
@@ -70,21 +69,7 @@ export class DomEventService {
    * Handles dobule click event to remove edges
    */
   private domDblClickEvent(event: any): void {
-    this.selectedEdge$
-      .subscribe((edge: Edge | null) => {
-        if (edge === null) return;
-
-        //only delete ports with single connections since these are typically "out ports"
-        const deleteEndConnection = edge.end.capacity === "single";
-        const deleteStartConnection = edge.start.capacity === "single";
-
-        if (deleteEndConnection) this.edgeService.removeAllEdgesFor(edge.end);
-        if (deleteStartConnection) this.edgeService.removeAllEdgesFor(edge.start);
-
-
-        this.editorStateService.deleteEdge(edge);
-
-      }).unsubscribe();
+    this.domDblClick$.next();
   }
 
   private domResizeEvent(event: any): void {
@@ -93,6 +78,10 @@ export class DomEventService {
 
   public onDomResize(): Observable<void> {
     return this.domResize$.asObservable();
+  }
+
+  public onDomDblClick(): Observable<void> {
+    return this.domDblClick$.asObservable();
   }
 
   public getMousePosition(): Vector2 {
