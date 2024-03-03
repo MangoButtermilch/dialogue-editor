@@ -234,6 +234,11 @@ export class DialogueService {
     this.updateDialogue();
   }
 
+  public updateDialogueName(newName: string): void {
+    this.dialogue.name = newName;
+    this.updateDialogue();
+  }
+
   /**
    * Updates dialogue stream with dialogue object.
    */

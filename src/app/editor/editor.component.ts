@@ -49,7 +49,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public changeDialogeName(name: string): void {
-    this.dialogueService.changeDialogueName(name);
+    this.dialogueService.updateDialogueName(name);
   }
 
   public hideAllModals(): void {

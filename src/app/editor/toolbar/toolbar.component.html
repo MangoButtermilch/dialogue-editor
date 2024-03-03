@@ -1,5 +1,4 @@
-<div class="bg-dark d-flex
-justify-content-between">
+<div class="bg-dark d-flex justify-content-between">
     <div class="actions">
 
         <button class="btn btn-success m-1"
@@ -25,6 +24,11 @@ justify-content-between">
         <button class="btn btn-primary m-1 disabled">
             Settings
         </button>
+
+        <input class="m-1 text-white bg-dark"
+               type="text"
+               value="New Dialogue"
+               (input)="onNameChange($event)" />
     </div>
     <div class="info text-white d-flex flex-column align-items-end justify-content-center">
         <span>Zoom: {{zoom}}</span>

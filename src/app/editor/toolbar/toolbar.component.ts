@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { PanZoomModel } from 'ngx-panzoom';
 import { Subject, takeUntil } from 'rxjs';
+import { DialogueService } from 'src/app/services/dialogue/dialogue.service';
 import { PanZoomService } from 'src/app/services/editor/pan-zoom.service';
 
 @Component({
@@ -15,6 +16,7 @@ export class ToolbarComponent implements OnDestroy {
   @Output() onBackToOriginClicked: EventEmitter<void> = new EventEmitter<void>();
   @Output() onSaveClicked: EventEmitter<void> = new EventEmitter<void>();
   @Output() onLoadClicked: EventEmitter<void> = new EventEmitter<void>();
+  @Output() onDialogeNameChange: EventEmitter<string> = new EventEmitter<string>();
 
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -38,6 +40,10 @@ export class ToolbarComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
+  }
+
+  public onNameChange(event: any): void {
+    this.onDialogeNameChange.emit(event?.target?.value ?? "");
   }
 
   public save(): void {
