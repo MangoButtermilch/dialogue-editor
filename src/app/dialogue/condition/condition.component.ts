@@ -1,133 +1,189 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { combineLatest, Observable, Subject, takeUntil } from 'rxjs';
 import { VariableService } from 'src/app/services/data/variable.service';
-import { ConditionNode, ConditionType, ConditionVariableMap, EventNode, Variable, VariableType } from 'src/models/models';
+import { ConditionNode, ConditionType, Variable, VariableType } from 'src/models/models';
 
 @Component({
   selector: 'app-condition',
   templateUrl: './condition.component.html',
   styleUrls: ['./condition.component.scss']
 })
-export class ConditionComponent implements OnInit {
+export class ConditionComponent implements OnInit, OnDestroy {
 
   @Output() onDelete: EventEmitter<ConditionNode> = new EventEmitter<ConditionNode>();
   @Output() onUpdate: EventEmitter<ConditionNode> = new EventEmitter<ConditionNode>();
 
   @Input() conditionNode: ConditionNode;
 
-  public warnMessage: string = "";
-  public varAIndex: number = 0;
-  public varBIndex: number = 0;
-  public varAtype: string = "";
-  public varBtype: string = "";
-  public variables$: Observable<Variable[]> = this.variableService.getVariables();
-  private variables: Variable[] = [];
+  private destroy$: Subject<void> = new Subject<void>();
 
-  public selectedType: string = "";
+  public readonly guidFieldName: string = "variableGuid";
+  public readonly conditionFieldName: string = "variableCondition";
+  public readonly valueFieldName: string = "variableTargetValue";
+
+  public formGroup: FormGroup = new FormGroup({
+    [this.guidFieldName]: new FormControl(null),
+    [this.conditionFieldName]: new FormControl(null),
+    [this.valueFieldName]: new FormControl(null)
+  });
+  private formValueChanges$: Observable<object> = this.formGroup.valueChanges
+    .pipe(takeUntil(this.destroy$));
+
+  public variables$: Observable<Variable[]> = this.variableService.getVariables()
+    .pipe(takeUntil(this.destroy$));
+
+  private stateChange$: Observable<[object, Variable[]]> =
+    combineLatest([
+      this.formValueChanges$,
+      this.variables$
+    ])
+      .pipe(takeUntil(this.destroy$));
+
   public conditionTypes = ConditionType;
-
-  public hasError: boolean;
-  public errorMessage: string;
-
-  private conditionVarMap = ConditionVariableMap;
+  public errorMessage: string = "";
 
   constructor(private variableService: VariableService) { }
 
   ngOnInit(): void {
+    this.errorMessage = this.getErrorMessage();
 
-    this.variables$
-      .subscribe((variables: Variable[]) => {
-        this.variables = variables;
+    this.stateChange$.subscribe((data: [object, Variable[]]) => {
+      const [formData, variables] = data;
 
-        if (!variables || variables.length === 0) {
-          this.varAIndex = 0;
-          this.varBIndex = 0;
-          this.errorMessage = "No variables defined";
-          this.hasError = true;
-          return;
-        }
 
-        if (!!this.conditionNode.variableA) {
-          this.varAIndex = variables.findIndex((other: Variable) => other.guid === this.conditionNode.variableA.guid);
-        } else {
-          this.varAIndex = 0;
-        }
-        this.varAtype = variables[this.varAIndex].type;
+      this.conditionNode.variable = null;
+      this.conditionNode.variable = variables.find((other: Variable) => other.guid === formData[this.guidFieldName]);
+      this.conditionNode.type = formData[this.conditionFieldName];
+      this.conditionNode.expectedValue = formData[this.valueFieldName];
 
-        if (!!this.conditionNode.variableB) {
-          this.varBIndex = variables.findIndex((other: Variable) => other.guid === this.conditionNode.variableB.guid);
-        } else {
-          this.varBIndex = 0;
-        }
-        this.varBtype = variables[this.varBIndex].type;
+      if (this.isBooleanCondition()) {
+        this.conditionNode.expectedValue = this.conditionNode.type === ConditionType.TRUE ? true : false;
+      }
 
-        this.selectedType = this.conditionNode.type;
-        this.handleWarning();
-      });
+      this.errorMessage = this.getErrorMessage();
+    });
   }
 
-  public handleWarning(): void {
-    this.errorMessage = this.getWarnMessage();
-    this.hasError = this.errorMessage !== "";
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
+  public getErrorMessage(): string {
 
-  public onInputVarA(eventData: any) {
-    const value = eventData.target.value;
-    const index = this.variables.findIndex((other: Variable) => other.guid === value);
-    this.varAIndex = index;
-    this.conditionNode.variableA = this.variables[index];
-    this.handleWarning();
+    if (!this.hasVariable()) {
+      return "No variables defined or selected";
+    }
 
-    this.onUpdate.emit(this.conditionNode);
+    switch (this.conditionNode.type) {
+
+      case ConditionType.FALSE:
+        return this.getBoolErrorMessage();
+      case ConditionType.TRUE:
+        return this.getBoolErrorMessage();
+      case ConditionType.STR_EQUAL:
+        return this.getTextErrorMessage();
+      default:
+        return this.getNumberErrorMessage();
+    }
   }
 
-  public onInputType(eventData: any) {
-    const value = eventData.target.value;
-    this.conditionNode.type = value as ConditionType;
-    this.selectedType = value as ConditionType;
-    this.handleWarning();
-    this.onUpdate.emit(this.conditionNode);
+  private getTextErrorMessage(): string {
+
+    if (!this.hasTextVariable()) {
+      return "Text variable required"
+    }
+
+    if (!this.hasValue()) {
+      return "Input value required";
+    }
+    return "";
   }
 
-  public onInputVarB(eventData: any) {
-    const value = eventData.target.value;
-    const index = this.variables.findIndex((other: Variable) => other.guid === value);
-    this.varBIndex = index;
-    this.conditionNode.variableB = this.variables[index];
-    this.handleWarning();
-    this.onUpdate.emit(this.conditionNode);
+  private getBoolErrorMessage(): string {
+    if (!this.hasBooleanVariable()) {
+      return "Bool variable requried"
+    }
+    return "";
+  }
+
+  private getNumberErrorMessage(): string {
+    if (!this.hasNumericVariable()) {
+      return "Number variable requried"
+    }
+
+    if (!this.isCorrectNumberInput()) {
+      return "Numeric value required";
+    }
+    return "";
+  }
+
+  private isCorrectNumberInput(): boolean {
+    return this.hasNumericVariable() && this.hasValue() && this.isNumeric(this.expectedValue);
+  }
+
+  private hasValue(): boolean {
+    return this.conditionNode.expectedValue !== null && this.conditionNode.expectedValue !== undefined && this.conditionNode.expectedValue !== "";
+  }
+
+  private hasBooleanVariable(): boolean {
+    return this.variableType === VariableType.BOOL;
+  }
+
+  private hasTextVariable(): boolean {
+    return this.variableType === VariableType.TEXT;
+  }
+
+  private hasNumericVariable(): boolean {
+    return this.variableType === VariableType.NUM;
+  }
+
+  private hasVariable(): boolean {
+    return this.conditionNode.variable !== null && this.conditionNode.variable !== undefined;
+  }
+
+  private get expectedValue(): any {
+    return this.conditionNode.expectedValue;
+  }
+
+  private get variableType(): VariableType {
+    return this.conditionNode.variable.type;
+  }
+
+  public isTextCondition(): boolean {
+    return this.isSpecificCondition(
+      [
+        ConditionType.STR_EQUAL
+      ]);
+  }
+
+  public isNumberCondition(): boolean {
+    return this.isSpecificCondition(
+      [
+        ConditionType.EQUAL,
+        ConditionType.GREATER,
+        ConditionType.GREATER_EQ,
+        ConditionType.LESS,
+        ConditionType.LESS_EQ
+      ]
+    );
   }
 
   public isBooleanCondition(): boolean {
-    return this.selectedType.toLowerCase() === 'false' || this.selectedType.toLowerCase() === 'true';
+    return this.isSpecificCondition(
+      [
+        ConditionType.TRUE,
+        ConditionType.FALSE
+      ]);
   }
 
-  public getWarnMessage(): string {
-    if (this.isSameVariable() && !this.isBooleanCondition()) return "Same variables";
-    else if (this.isTypeMissmatch() && !this.isBooleanCondition()) return `Type missmatch (${this.varAtype.toLowerCase()} and ${this.varBtype.toLowerCase()})`;
-    else if (!this.isConditionTypePossible() && !this.isBooleanCondition()) return `Condition type impossible (${this.varAtype.toLowerCase()} and ${this.varBtype.toLowerCase()} on ${this.selectedType.toLowerCase()})`;
-    else if (!this.isConditionTypePossible() && this.isBooleanCondition()) return `Condition type impossible (${this.varAtype.toLowerCase()} on ${this.selectedType.toLowerCase()})`;
-    else return "";
+  private isSpecificCondition(allowedTypes: ConditionType[]): boolean {
+    return allowedTypes.includes(this.conditionNode.type);
   }
 
-  public isConditionTypePossible(): boolean {
-    const allowedTypes: string[] = this.conditionVarMap.get(this.selectedType as ConditionType);
-
-    if (this.isBooleanCondition()) {
-      return allowedTypes.includes(this.varAtype.toLowerCase());
-    }
-
-    return (
-      allowedTypes.includes(this.varAtype.toLowerCase()) &&
-      allowedTypes.includes(this.varBtype.toLowerCase()));
+  private isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
   }
 
-  public isSameVariable(): boolean {
-    return this.varBIndex === this.varAIndex;
-  }
-
-  public isTypeMissmatch(): boolean {
-    return this.varAtype.toLowerCase() !== this.varBtype.toLowerCase();
-  }
 }

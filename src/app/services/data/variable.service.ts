@@ -16,7 +16,7 @@ export class VariableService {
   constructor(private guidService: GuidService) { }
 
   public getVariables(): Observable<Variable[]> {
-    return this.variables$;
+    return this.variables$.asObservable();
   }
 
   public addVariable(args: { name: string, value: any, type: VariableType }): void {

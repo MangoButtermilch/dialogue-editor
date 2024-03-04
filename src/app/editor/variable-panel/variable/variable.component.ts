@@ -18,7 +18,7 @@ export class VariableComponent {
   public readonly variableControlName: string = "variableName";
 
   public formGroup: FormGroup = new FormGroup({
-    [this.variableControlName]: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z_][a-zA-Z0-9_]*$")])
+    [this.variableControlName]: new FormControl("newVariable", [Validators.required, Validators.pattern("^[a-zA-Z_][a-zA-Z0-9_]*$")])
   });
 
   public variableNameValid: boolean = true;

@@ -2,8 +2,9 @@
 export enum PortDirection { IN = "in", OUT = "out" };
 export enum PortCapacity { SINGLE = "single", MULTIPLE = "multiple" };
 export enum CanvasType { STATIC, DYNAMIC };
-export enum VariableType { TEXT = "text", NUM = "num", BOOL = "bool" }
+export enum VariableType { TEXT = "TEXT", NUM = "NUM", BOOL = "BOOL" }
 export enum ConditionType {
+    STR_EQUAL = "STR_EQUAL",
     EQUAL = "EQUAL",
     GREATER = "GREATER",
     LESS = "LESS",
@@ -12,17 +13,6 @@ export enum ConditionType {
     TRUE = "TRUE",
     FALSE = "FALSE",
 }
-
-export const ConditionVariableMap: Map<ConditionType, VariableType[]> = new Map<ConditionType, VariableType[]>([
-    [ConditionType.EQUAL, [VariableType.BOOL, VariableType.NUM, VariableType.TEXT]],
-    [ConditionType.GREATER, [VariableType.NUM,]],
-    [ConditionType.GREATER_EQ, [VariableType.NUM]],
-    [ConditionType.LESS, [VariableType.NUM]],
-    [ConditionType.LESS_EQ, [VariableType.NUM]],
-    [ConditionType.TRUE, [VariableType.BOOL]],
-    [ConditionType.FALSE, [VariableType.BOOL]],
-]);
-
 export interface Vector2 {
     x: number
     y: number
@@ -156,8 +146,8 @@ export class ConditionNode extends GuiObject {
         public type: ConditionType,
         public inPort: Port,
         public outPort: Port,
-        public variableA?: Variable,
-        public variableB?: Variable
+        public variable?: Variable,
+        public expectedValue?: boolean | number | string
     ) {
         super(guid, pos);
     }

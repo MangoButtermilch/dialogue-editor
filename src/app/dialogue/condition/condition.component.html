@@ -1,5 +1,6 @@
 <div *ngIf="conditionNode"
-     class="conditionNode {{hasError ? 'warning': ''}}">
+     [formGroup]="formGroup"
+     class="conditionNode {{errorMessage !== '' ? 'warning': ''}}">
 
     <div class="warn-message bg-danger text-white text-center">{{errorMessage}}</div>
 
@@ -16,38 +17,29 @@
     <div class="content text-white p-1">
 
         <select class="m-1 bg-dark text-white p-0"
-                id="varA"
-                name="varA"
-                (input)="onInputVarA($event)">
+                id="var"
+                name="var"
+                formControlName="{{guidFieldName}}">
             <option *ngFor="let variable of variables$ | async; let i = index;"
                     value="{{variable.guid}}"
-                    [selected]="i === varAIndex">
-                {{variable.name}} ({{variable.value}})
+                    [selected]="false">
+                {{variable.name}}
             </option>
         </select>
 
         <select class="m-1 bg-dark text-white p-0"
                 id="type"
                 name="type"
-                (input)="onInputType($event)">
+                formControlName="{{conditionFieldName}}">
             <option *ngFor="let enum of conditionTypes | keyvalue"
-                    value="{{enum.key}}"
-                    [selected]="selectedType == enum.key">
+                    value="{{enum.key}}">
                 {{enum.value}}
             </option>
         </select>
 
-        <select class="m-1 bg-dark text-white p-0 {{selectedType == 'TRUE' || selectedType=='FALSE' ? 'd-none' :''}}"
-                id="varB"
-                name="varB"
-                (input)="onInputVarB($event)">
-            <option *ngFor="let variable of variables$ | async; let i = index;"
-                    value="{{variable.guid}}"
-                    [selected]="i === varBIndex">
-                {{variable.name}} ({{variable.value}})
-            </option>
-        </select>
-
+        <input type="text"
+               formControlName="{{valueFieldName}}"
+               class="m-1 bg-dark text-white p-0 {{isBooleanCondition() ? 'd-none' :''}}" />
         <app-port [port]="conditionNode.outPort"></app-port>
     </div>
 
