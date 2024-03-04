@@ -1,1 +1,225 @@
-{"name":"New Dialogue","guid":"e72da1e7-f981-0ab3-7af3-cd1781bedb63","dateTime":"Invalid Date","nodes":[{"guid":"8c13b90a-a2f5-8b12-4d1f-6d32e952167b","position":{"x":0,"y":0},"transformStyle":"","character":{"isDefault":true,"guid":"1aa780f7-f8f8-5ea8-890a-ecd17c229ee4","name":"Narrator","color":"#6495ed"},"label":"","content":"","isRoot":true,"inPort":{"guid":"949f9302-cf94-0eda-7963-2965cb1ca859","position":{"x":0,"y":0},"transformStyle":"","parentGuid":"8c13b90a-a2f5-8b12-4d1f-6d32e952167b","direction":"in","capacity":"multiple","connectedPorts":[]},"choices":[{"guid":"3f57bca1-a9b0-ad51-61e9-d3181193b86a","position":{"x":0,"y":0},"transformStyle":"","parentGuid":"8c13b90a-a2f5-8b12-4d1f-6d32e952167b","outPort":{"guid":"9fc1cbb2-076e-261a-331c-0f6b103bef38","position":{"x":0,"y":0},"transformStyle":"","parentGuid":"8c13b90a-a2f5-8b12-4d1f-6d32e952167b","direction":"out","capacity":"single","connectedPorts":[{"guid":"79814a49-6b54-c42f-278d-5014dd001ceb","position":{"x":0,"y":0},"transformStyle":"","parentGuid":"2f51b8e9-0f21-ca6c-3e0a-10242123fa4b","direction":"in","capacity":"multiple","connectedPorts":[]}]},"content":""}]},{"guid":"647994eb-a1d7-35a1-115a-208fbb79cdeb","position":{"x":297,"y":-135},"transformStyle":"","character":{"isDefault":true,"guid":"1aa780f7-f8f8-5ea8-890a-ecd17c229ee4","name":"Narrator","color":"#6495ed"},"label":"","content":"","isRoot":false,"inPort":{"guid":"390d6f3b-eb7a-6864-f6ae-8b03dff81b2a","position":{"x":0,"y":0},"transformStyle":"","parentGuid":"647994eb-a1d7-35a1-115a-208fbb79cdeb","direction":"in","capacity":"multiple","connectedPorts":[]},"choices":[{"guid":"973e5232-8444-ae79-be82-3abe44d97901","position":{"x":0,"y":0},"transformStyle":"","parentGuid":"647994eb-a1d7-35a1-115a-208fbb79cdeb","outPort":{"guid":"a6fde0a4-c833-4e45-a76f-44c36e72a4a8","position":{"x":0,"y":0},"transformStyle":"","parentGuid":"647994eb-a1d7-35a1-115a-208fbb79cdeb","direction":"out","capacity":"single","connectedPorts":[]},"content":""}]}],"comments":[{"guid":"c015b7db-e1cc-d85c-a311-425dbf071541","position":{"x":432,"y":566},"transformStyle":"","color":"#157347","content":""}],"events":[{"guid":"2f51b8e9-0f21-ca6c-3e0a-10242123fa4b","position":{"x":353,"y":301},"transformStyle":"","name":"newEvent","inPort":{"guid":"79814a49-6b54-c42f-278d-5014dd001ceb","position":{"x":0,"y":0},"transformStyle":"","parentGuid":"2f51b8e9-0f21-ca6c-3e0a-10242123fa4b","direction":"in","capacity":"multiple","connectedPorts":[]},"outPort":{"guid":"5d49ea03-ba42-6096-c902-b9e8e29b7702","position":{"x":0,"y":0},"transformStyle":"","parentGuid":"2f51b8e9-0f21-ca6c-3e0a-10242123fa4b","direction":"out","capacity":"single","connectedPorts":[{"guid":"fb4ab74a-c4b4-0b62-10e6-9b697960c17f","position":{"x":0,"y":0},"transformStyle":"","parentGuid":"5da14aaa-40cc-171c-85e6-72caa3ec90c8","direction":"in","capacity":"multiple","connectedPorts":[]}]}}],"conditions":[{"guid":"5da14aaa-40cc-171c-85e6-72caa3ec90c8","position":{"x":643,"y":422},"transformStyle":"","type":"EQUAL","inPort":{"guid":"fb4ab74a-c4b4-0b62-10e6-9b697960c17f","position":{"x":0,"y":0},"transformStyle":"","parentGuid":"5da14aaa-40cc-171c-85e6-72caa3ec90c8","direction":"in","capacity":"multiple","connectedPorts":[]},"outPort":{"guid":"0e10ec61-b9e7-5caf-6f34-bef0799b3b15","position":{"x":0,"y":0},"transformStyle":"","parentGuid":"5da14aaa-40cc-171c-85e6-72caa3ec90c8","direction":"out","capacity":"single","connectedPorts":[{"guid":"390d6f3b-eb7a-6864-f6ae-8b03dff81b2a","position":{"x":0,"y":0},"transformStyle":"","parentGuid":"647994eb-a1d7-35a1-115a-208fbb79cdeb","direction":"in","capacity":"multiple","connectedPorts":[]}]},"variableA":null,"variableB":null}]}
+{
+    "name": "New Dialogue",
+    "guid": "c6d6d736-9b35-0e77-b29d-e27dc9815b94",
+    "dateTime": "Invalid Date",
+    "nodes": [
+        {
+            "guid": "a07548f8-9ec6-8c08-f790-0c764612346d",
+            "position": {
+                "x": -665,
+                "y": -50
+            },
+            "transformStyle": "",
+            "character": {
+                "isDefault": true,
+                "guid": "e99e7bdc-e4b5-a5d8-05ec-f45d73be813c",
+                "name": "Narrator",
+                "color": "#6495ed"
+            },
+            "label": "",
+            "content": "",
+            "isRoot": true,
+            "inPort": {
+                "guid": "127f36f8-d0d8-c110-6224-610e0565d198",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "transformStyle": "",
+                "parentGuid": "a07548f8-9ec6-8c08-f790-0c764612346d",
+                "direction": "in",
+                "capacity": "multiple",
+                "connectedPorts": []
+            },
+            "choices": [
+                {
+                    "guid": "968c3174-27fd-d9a5-31e4-5c597ca0c65d",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "transformStyle": "",
+                    "parentGuid": "a07548f8-9ec6-8c08-f790-0c764612346d",
+                    "outPort": {
+                        "guid": "616ea952-8202-9e96-7c77-0c0a022d5b87",
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "transformStyle": "",
+                        "parentGuid": "a07548f8-9ec6-8c08-f790-0c764612346d",
+                        "direction": "out",
+                        "capacity": "single",
+                        "connectedPorts": [
+                            {
+                                "guid": "0a66ca5f-1b1d-5897-6a4e-1151f9043780",
+                                "position": {
+                                    "x": 0,
+                                    "y": 0
+                                },
+                                "transformStyle": "",
+                                "parentGuid": "50e6c6ce-5a1a-3c5f-baf4-4366de340170",
+                                "direction": "in",
+                                "capacity": "multiple",
+                                "connectedPorts": [
+                                    {
+                                        "guid": "d65993ed-0c2d-bd2b-d454-4905c906f59e",
+                                        "position": {
+                                            "x": 0,
+                                            "y": 0
+                                        },
+                                        "transformStyle": "",
+                                        "parentGuid": "a07548f8-9ec6-8c08-f790-0c764612346d",
+                                        "direction": "out",
+                                        "capacity": "single",
+                                        "connectedPorts": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "content": "3"
+                },
+                {
+                    "guid": "2d8eaf13-aacd-b1cc-b2e9-e98798301a65",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "transformStyle": "",
+                    "parentGuid": "a07548f8-9ec6-8c08-f790-0c764612346d",
+                    "outPort": {
+                        "guid": "caf81cd6-7631-e462-cd35-f1a4362b2156",
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "transformStyle": "",
+                        "parentGuid": "a07548f8-9ec6-8c08-f790-0c764612346d",
+                        "direction": "out",
+                        "capacity": "single",
+                        "connectedPorts": [
+                            {
+                                "guid": "0a66ca5f-1b1d-5897-6a4e-1151f9043780",
+                                "position": {
+                                    "x": 0,
+                                    "y": 0
+                                },
+                                "transformStyle": "",
+                                "parentGuid": "50e6c6ce-5a1a-3c5f-baf4-4366de340170",
+                                "direction": "in",
+                                "capacity": "multiple",
+                                "connectedPorts": [
+                                    {
+                                        "guid": "d65993ed-0c2d-bd2b-d454-4905c906f59e",
+                                        "position": {
+                                            "x": 0,
+                                            "y": 0
+                                        },
+                                        "transformStyle": "",
+                                        "parentGuid": "a07548f8-9ec6-8c08-f790-0c764612346d",
+                                        "direction": "out",
+                                        "capacity": "single",
+                                        "connectedPorts": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "content": "1"
+                },
+                {
+                    "guid": "fcf32e60-9258-bf7c-3a05-0b20a352750e",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "transformStyle": "",
+                    "parentGuid": "a07548f8-9ec6-8c08-f790-0c764612346d",
+                    "outPort": {
+                        "guid": "d65993ed-0c2d-bd2b-d454-4905c906f59e",
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "transformStyle": "",
+                        "parentGuid": "a07548f8-9ec6-8c08-f790-0c764612346d",
+                        "direction": "out",
+                        "capacity": "single",
+                        "connectedPorts": []
+                    },
+                    "content": "2"
+                }
+            ]
+        },
+        {
+            "guid": "50e6c6ce-5a1a-3c5f-baf4-4366de340170",
+            "position": {
+                "x": 506,
+                "y": 21
+            },
+            "transformStyle": "",
+            "character": {
+                "isDefault": true,
+                "guid": "e99e7bdc-e4b5-a5d8-05ec-f45d73be813c",
+                "name": "Narrator",
+                "color": "#6495ed"
+            },
+            "label": "",
+            "content": "",
+            "isRoot": false,
+            "inPort": {
+                "guid": "0a66ca5f-1b1d-5897-6a4e-1151f9043780",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "transformStyle": "",
+                "parentGuid": "50e6c6ce-5a1a-3c5f-baf4-4366de340170",
+                "direction": "in",
+                "capacity": "multiple",
+                "connectedPorts": [
+                    {
+                        "guid": "d65993ed-0c2d-bd2b-d454-4905c906f59e",
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "transformStyle": "",
+                        "parentGuid": "a07548f8-9ec6-8c08-f790-0c764612346d",
+                        "direction": "out",
+                        "capacity": "single",
+                        "connectedPorts": []
+                    }
+                ]
+            },
+            "choices": [
+                {
+                    "guid": "96d93083-99ba-fd2d-9c26-b7a49c09176b",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "transformStyle": "",
+                    "parentGuid": "50e6c6ce-5a1a-3c5f-baf4-4366de340170",
+                    "outPort": {
+                        "guid": "b93923f0-7d28-ee8b-48e6-09c65bdf20d0",
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "transformStyle": "",
+                        "parentGuid": "50e6c6ce-5a1a-3c5f-baf4-4366de340170",
+                        "direction": "out",
+                        "capacity": "single",
+                        "connectedPorts": []
+                    },
+                    "content": ""
+                }
+            ]
+        }
+    ],
+    "comments": [],
+    "events": [],
+    "conditions": []
+}

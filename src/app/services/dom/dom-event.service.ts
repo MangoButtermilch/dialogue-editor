@@ -12,6 +12,7 @@ export class DomEventService {
 
   private domResize$: Subject<void> = new Subject<void>();
   private domDblClick$: Subject<void> = new Subject<void>();
+  private domClick$: Subject<void> = new Subject<void>();
   private selectedPort$: Observable<Port | null> = this.editorStateService.onPortSelected();
   private portClickCount: number = 0;
 
@@ -61,8 +62,8 @@ export class DomEventService {
     if (this.portClickCount % 2 === 0) {
       this.editorStateService.deselectPort();
     }
-
     this.editorStateService.closeContextMenu();
+    this.domClick$.next();
   }
 
   /**
@@ -82,6 +83,10 @@ export class DomEventService {
 
   public onDomDblClick(): Observable<void> {
     return this.domDblClick$.asObservable();
+  }
+
+  public onDomClick(): Observable<void> {
+    return this.domClick$.asObservable();
   }
 
   public getMousePosition(): Vector2 {
