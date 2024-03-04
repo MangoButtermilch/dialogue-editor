@@ -1,16 +1,15 @@
-<div class="d-flex align-items-center justify-content-between">
+<div *ngIf="formGroup"
+     class="d-flex align-items-center justify-content-between">
 
 
+    <span [formGroup]="formGroup">
+        <input type="text"
+               class="w-100 bg-dark me-1 text-white {{ !!variableInputErrors ? 'invalid' : '' }}"
+               value="{{variable.name}}"
+               formControlName="{{variableControlName}}"
+               (input)="updateVariableName($event)" />
 
-    <input type="text"
-           class="w-100 bg-dark me-1 text-white"
-           value="{{variable.name}}"
-           (input)="updateVariableName($event)" />
-
-    <input type="text"
-           class="w-100 bg-dark me-1 text-white"
-           value="{{variable.value}}"
-           (input)="updateVariableValue($event)" />
+    </span>
 
     <select class="bg-dark me-1 text-white"
             (input)="updateVariableType($event)">
