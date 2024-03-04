@@ -27,6 +27,7 @@ import { CharacterPanelComponent } from './editor/character-panel/character-pane
 import { ObserversModule } from '@angular/cdk/observers';
 import { ConditionComponent } from './dialogue/condition/condition.component';
 import { GuiElementComponent } from './global/gui-element/gui-element.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,6 +54,7 @@ import { GuiElementComponent } from './global/gui-element/gui-element.component'
     NgxPanZoomModule,
     DragDropModule,
     BrowserModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     AngularSvgIconModule.forRoot(),
     AngularSvgIconPreloaderModule.forRoot({
