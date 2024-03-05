@@ -33,7 +33,7 @@
                 formControlName="{{conditionFieldName}}">
             <option *ngFor="let enum of conditionTypes | keyvalue"
                     value="{{enum.key}}">
-                {{enum.value}}
+                {{getConditionTypeLabel(enum.value)}}
             </option>
         </select>
 

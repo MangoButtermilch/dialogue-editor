@@ -170,6 +170,20 @@ export class ConditionComponent implements OnInit, OnDestroy {
     );
   }
 
+  public getConditionTypeLabel(type: ConditionType): string {
+    switch (type) {
+      case ConditionType.EQUAL: return "equal (number)";
+      case ConditionType.LESS: return "less than";
+      case ConditionType.LESS_EQ: return "less or equal than";
+      case ConditionType.GREATER: return "greater than";
+      case ConditionType.GREATER_EQ: return "greater or equal than";
+      case ConditionType.TRUE: return "true";
+      case ConditionType.FALSE: return "false";
+      case ConditionType.STR_EQUAL: return "equal (text)";
+      default: return ""; 
+    }
+  }
+
   public isBooleanCondition(): boolean {
     return this.isSpecificCondition(
       [
