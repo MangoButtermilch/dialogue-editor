@@ -42,10 +42,6 @@ export class VariableComponent {
     this.onUpdateVariable.emit(this.variable);
   }
 
-  private isInvalid(): boolean {
-    return !!this.variableInputErrors;
-  }
-
   public get variableInputErrors(): ValidationErrors | null | undefined {
     return this.formGroup?.get(this.variableControlName)?.errors;
   }

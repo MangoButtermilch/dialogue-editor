@@ -16,7 +16,9 @@
 <app-context-menu (onNewNode)="generateNewNode($event)"
                   (onNewComment)="generateNewComment($event)"
                   (onNewEventNode)="generateNewEventNode($event)"
-                  (onNewConditionNode)="generateNewConditionNode($event)"></app-context-menu>
+                  (onNewConditionNode)="generateNewConditionNode($event)"
+                  (onNewRandomNode)="generateNewRandomNode($event)"
+                  (onNewRepeatNode)="generateNewRepeatNode($event)"></app-context-menu>
 
 <app-variable-panel></app-variable-panel>
 <app-character-panel></app-character-panel>
@@ -33,6 +35,24 @@
             <app-node (onUpdate)="updateNode($event)"
                       (onDelete)="deleteNode($event)"
                       [dialogueNode]="node"></app-node>
+
+        </app-gui-element>
+
+        <app-gui-element *ngFor="let randomNode of dialogue.randomNodes"
+                         [guiElement]="randomNode">
+
+            <app-random (onUpdate)="updateRandomNode($event)"
+                        (onDelete)="deleteRandomNode($event)"
+                        [randomNode]="randomNode"></app-random>
+
+        </app-gui-element>
+
+        <app-gui-element *ngFor="let repeatNode of dialogue.repeatNodes"
+                         [guiElement]="repeatNode">
+
+            <app-repeat (onUpdate)="updateRepeatNode($event)"
+                        (onDelete)="deleteRepeatNode($event)"
+                        [repeatNode]="repeatNode"></app-repeat>
 
         </app-gui-element>
 

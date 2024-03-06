@@ -28,6 +28,8 @@ import { ObserversModule } from '@angular/cdk/observers';
 import { ConditionComponent } from './dialogue/condition/condition.component';
 import { GuiElementComponent } from './global/gui-element/gui-element.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RepeatComponent } from './dialogue/repeat/repeat.component';
+import { RandomComponent } from './dialogue/random/random.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,7 +50,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ResizableComponent,
     CharacterPanelComponent,
     ConditionComponent,
-    GuiElementComponent
+    GuiElementComponent,
+    RepeatComponent,
+    RandomComponent,
   ],
   imports: [
     NgxPanZoomModule,

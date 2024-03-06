@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PanZoomModel } from 'ngx-panzoom';
 import { BehaviorSubject, Observable, takeUntil } from 'rxjs';
-import { Choice, CommentNode, ConditionNode, Dialogue, DialogueNode, EventNode, Vector2 } from 'src/models/models';
+import { Choice, CommentNode, ConditionNode, Dialogue, DialogueNode, EventNode, Possibility, RandomNode, RepeatNode, Vector2 } from 'src/models/models';
 import { EditorStateService } from '../editor/editor-state.service';
 import { GuiElementService } from '../editor/gui-element.service';
 import { GuidService } from '../editor/guid.service';
@@ -11,6 +11,8 @@ import { ConditionService } from './condition.service';
 import { EdgeService } from './edge.service';
 import { EventNodeService } from './event-node.service';
 import { NodeService } from './node.service';
+import { RandomNodeService } from './random-node.service';
+import { RepeatService } from './repeat.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +21,6 @@ export class DialogueService {
 
   private dialogue: Dialogue = this.generateDialogue();
   private dialogue$: BehaviorSubject<Dialogue> = new BehaviorSubject<Dialogue>(this.dialogue);
-
 
   private panZoomChanged$: Observable<PanZoomModel> = this.panZoomService.panZoomConfig.modelChanged;
   private panPosition: Vector2 = { x: 0, y: 0 };
@@ -30,6 +31,8 @@ export class DialogueService {
     private conditionService: ConditionService,
     private eventNodeService: EventNodeService,
     private commentService: CommentService,
+    private randomNodeService: RandomNodeService,
+    private repeatService: RepeatService,
     private edgeService: EdgeService,
     private panZoomService: PanZoomService,
     private guidService: GuidService,
@@ -238,6 +241,67 @@ export class DialogueService {
     this.dialogue.name = newName;
     this.updateDialogue();
   }
+
+
+  public addNewRandomNode(mousePosition: Vector2): void {
+    const instantiatePos = this.guiElementService.getInstantiatePosition(mousePosition);
+
+    this.dialogue.randomNodes.push(
+      this.randomNodeService.generateRandomNode(instantiatePos)
+    );
+    this.updateDialogue();
+  }
+
+  public updateRandomNode(node: RandomNode) {
+    const index = this.dialogue.randomNodes
+      .findIndex((other: RandomNode) => other.guid === node.guid);
+    this.dialogue.randomNodes[index] = node;
+    this.updateDialogue();
+  }
+
+  public deleteRandomNode(node: RandomNode) {
+    this.edgeService.removeAllEdgesFor(node.inPort);
+
+    //ports for outgoing connections
+    node.possibilites.forEach((possibility: Possibility) => {
+      this.edgeService.removeAllEdgesFor(possibility.outPort)
+    });
+
+    const index = this.dialogue.randomNodes
+      .findIndex((other: RandomNode) => other.guid === node.guid);
+    this.dialogue.randomNodes.splice(index, 1);
+
+    this.updateDialogue();
+  }
+
+
+  public addNewRepeatNode(mousePosition: Vector2): void {
+    const instantiatePos = this.guiElementService.getInstantiatePosition(mousePosition);
+
+    this.dialogue.repeatNodes.push(
+      this.repeatService.generateRepeatNode(instantiatePos)
+    );
+    this.updateDialogue();
+  }
+
+  public updateRepeatNode(node: RepeatNode) {
+    const index = this.dialogue.repeatNodes
+      .findIndex((other: RepeatNode) => other.guid === node.guid);
+    this.dialogue.repeatNodes[index] = node;
+    this.updateDialogue();
+  }
+
+  public deleteRepeatNode(node: RepeatNode) {
+    this.edgeService.removeAllEdgesFor(node.inPort);
+    this.edgeService.removeAllEdgesFor(node.outPort);
+
+    const index = this.dialogue.repeatNodes
+      .findIndex((other: RepeatNode) => other.guid === node.guid);
+    this.dialogue.repeatNodes.splice(index, 1);
+
+    this.updateDialogue();
+  }
+
 
   /**
    * Updates dialogue stream with dialogue object.

@@ -153,6 +153,40 @@ export class ConditionNode extends GuiObject {
     }
 }
 
+export class Possibility extends GuiObject {
+    constructor(
+        guid: string,
+        pos: Vector2,
+        public parentGuid: string,
+        public outPort: Port,
+    ) {
+        super(guid, pos);
+    }
+}
+
+export class RandomNode extends GuiObject {
+    constructor(
+        guid: string,
+        pos: Vector2,
+        public inPort: Port,
+        public possibilites: Possibility[]
+    ) {
+        super(guid, pos);
+    }
+}
+
+export class RepeatNode extends GuiObject {
+    constructor(
+        guid: string,
+        pos: Vector2,
+        public repetitions: number,
+        public inPort: Port,
+        public outPort: Port,
+    ) {
+        super(guid, pos);
+    }
+}
+
 export class Dialogue {
     constructor(
         public name: string,
@@ -161,6 +195,8 @@ export class Dialogue {
         public nodes: DialogueNode[],
         public comments: CommentNode[] = [],
         public events: EventNode[] = [],
-        public conditions: ConditionNode[] = []
+        public conditions: ConditionNode[] = [],
+        public randomNodes: RandomNode[] = [],
+        public repeatNodes: RepeatNode[] = []
     ) { }
 }

@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { PanZoomConfig, PanZoomModel } from 'ngx-panzoom';
 import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
-import { DialogueNode, Dialogue, Choice, Vector2, CommentNode, EventNode, ConditionNode, Edge } from 'src/models/models';
+import { DialogueNode, Dialogue, Choice, Vector2, CommentNode, EventNode, ConditionNode, Edge, RandomNode, RepeatNode } from 'src/models/models';
 import { CommentService } from '../services/dialogue/comment.service';
 import { ConditionService } from '../services/dialogue/condition.service';
 import { DialogueService } from '../services/dialogue/dialogue.service';
@@ -122,6 +122,31 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   public deleteConditionNode(condition: ConditionNode) {
     this.dialogueService.deleteConditionNode(condition);
   }
+
+  public generateNewRandomNode(mousePosition: Vector2): void {
+    this.dialogueService.addNewRandomNode(mousePosition);
+  }
+
+  public generateNewRepeatNode(mousePosition: Vector2): void {
+    this.dialogueService.addNewRepeatNode(mousePosition);
+  }
+
+  public updateRandomNode(randomNode: RandomNode): void {
+    this.dialogueService.updateRandomNode(randomNode);
+  }
+
+  public deleteRandomNode(randomNode: RandomNode): void {
+    this.dialogueService.deleteRandomNode(randomNode);
+  }
+
+  public updateRepeatNode(repeatNode: RepeatNode): void {
+    this.dialogueService.updateRepeatNode(repeatNode);
+  }
+
+  public deleteRepeatNode(repeatNode: RepeatNode): void {
+    this.dialogueService.deleteRepeatNode(repeatNode);
+  }
+
 
   /**
    * Placeholder
