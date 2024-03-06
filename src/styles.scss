@@ -20,9 +20,7 @@
     --inputBoxShadow: 0px 0px 0px 1px rgb(168, 168, 168);
     --inputBoxShadowError: 0px 0px 0px 1px #dc3545;
 
-    --commentBoxShadow: 0px 0px 1px 2px #246c42;
-    --commentBoxShadowHover: 0px 0px 1px 2px white;
-    --commentBackgroundColor: #50bb42;
+
 }
 ::-webkit-scrollbar {
     width: 10px;
@@ -96,6 +94,11 @@ select {
     border: none;
     border-radius: 5px;
     box-shadow: var(--inputBoxShadow);
+
+    &.invalid {
+        box-shadow: var(--inputBoxShadowError);
+        outline: none;
+    }
 }
 .cdk-drag-placeholder {
     filter: brightness(0.5);
