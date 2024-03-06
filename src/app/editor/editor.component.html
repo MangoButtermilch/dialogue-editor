@@ -26,8 +26,8 @@
 <pan-zoom [config]="panZoomConfig"
           (contextmenu)="openContextMenu($event)">
 
+    <app-background></app-background>
     <span *ngIf="dialogue$ | async as dialogue">
-        <app-background></app-background>
 
         <app-gui-element *ngFor="let node of dialogue.nodes"
                          [guiElement]="node">
