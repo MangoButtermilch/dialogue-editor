@@ -19,9 +19,9 @@
         </button>
     </div>
 
-    <div class="node-header bg-gray d-flex justify-content-between align-items-center p-1">
+    <div class="content bg-gray d-flex justify-content-between align-items-center p-1">
         <div>
-            <h4 class="text-white">Label</h4>
+            <h3 class="text-white">Label</h3>
             <input type="text"
                    class="bg-dark text-white p-0"
                    value="{{dialogueNode.label}}"
@@ -29,7 +29,7 @@
         </div>
 
         <div>
-            <h4 class="text-white">Character</h4>
+            <h3 class="text-white">Character</h3>
 
             <select class="bg-dark text-white p-0"
                     (input)="onCharacterChange($event)">
@@ -44,12 +44,13 @@
         </div>
         <button class="btn btn-success"
                 (click)="addChoice()">
-            <svg-icon name="icon_add"></svg-icon>Choice
+            <svg-icon name="icon_add"></svg-icon>
+            <p>Choice</p>
         </button>
     </div>
-    <div class="node-body bg-gray text-white p-1 d-flex">
+    <div class="content bg-gray text-white p-1 d-flex">
         <div class="col-8">
-            <h4>Content</h4>
+            <h3>Content</h3>
             <textarea class="w-100 bg-dark text-white"
                       cols="15"
                       rows="3"
@@ -58,7 +59,7 @@
         <div cdkDropList
              (cdkDropListDropped)="cdkChoiceDropped($event)"
              class="col-4 ms-1 d-flex flex-column">
-            <h4>Choices</h4>
+            <h3>Choices</h3>
             <app-choice *ngFor="let choice of dialogueNode.choices"
                         cdkDrag
                         cdkDragData="{{choice.outPort.guid}}"

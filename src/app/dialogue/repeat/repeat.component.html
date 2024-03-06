@@ -1,19 +1,19 @@
 <div *ngIf="repeatNode"
-     class="repeatNode "
+     class="repeat-node "
      [formGroup]="formGroup">
 
 
 
     <div class="d-flex justify-content-between p-1">
         <app-port [port]="repeatNode.inPort"></app-port>
-        <h4 class="text-dark">Repeat </h4>
+        <h3 class="text-dark">Repeat </h3>
         <button (click)="onDelete.emit(repeatNode)"
                 class="btn btn-danger p-0 me-1">
             <svg-icon name="icon_delete"></svg-icon>
         </button>
     </div>
 
-    <div class="node-header bg-gray d-flex justify-content-between align-items-center p-1">
+    <div class="content bg-gray d-flex justify-content-between align-items-center p-1">
         <div class="d-flex flex-row justify-content-between align-items-center justify-content-between">
             <span class="text-white m-0">Count:</span>
 

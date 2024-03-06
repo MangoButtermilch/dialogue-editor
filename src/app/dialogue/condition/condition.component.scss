@@ -1,18 +1,13 @@
-.conditionNode {
-    min-width: 300px;
-    position: absolute;
-    border-radius: 5px;
-    box-shadow: var(--nodeBoxShadow);
+.condition-node {
 
     &.warning {
-        outline: 5px solid red;
+        outline: 5px solid var(--colorError);
     }
     &:hover {
         box-shadow: var(--nodeBoxShadowHover);
     }
 
     .content {
-        background-color: var(--colorDark);
         display: flex;
 
         select {

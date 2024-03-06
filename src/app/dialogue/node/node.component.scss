@@ -1,16 +1,6 @@
 .node {
-    z-index: 0;
-    position: absolute;
     width: 500px;
-    height: fit-content;
-    will-change: transform;
-    transform-origin: center;
-    transform: translate3d(0px, 0px, 0px);
-    border-radius: 5px;
-    box-shadow: var(--nodeBoxShadow);
-    &:hover {
-        box-shadow: var(--nodeBoxShadowHover);
-    }
+
     .character-indicator {
         border-radius: 5px;
         border-bottom-left-radius: 0px;
@@ -22,10 +12,5 @@
         height: 25px;
     }
 
-    .drag-handle{
-        filter: drop-shadow(0px 0px 3px black);
-        &:hover{
-            cursor: move;
-        }
-    }
+   
 }

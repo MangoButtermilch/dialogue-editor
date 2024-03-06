@@ -1,13 +1,13 @@
 <div *ngIf="conditionNode"
      [formGroup]="formGroup"
-     class="conditionNode {{errorMessage !== '' ? 'warning': ''}}">
+     class="condition-node {{errorMessage !== '' ? 'warning': ''}}">
 
     <div class="warn-message bg-danger text-white text-center">{{errorMessage}}</div>
 
     <div class="bg-info d-flex justify-content-between p-1">
         <app-port [port]="conditionNode.inPort"></app-port>
 
-        <h4>Condition</h4>
+        <h3>Condition</h3>
         <button (click)="onDelete.emit(conditionNode)"
                 class="btn btn-danger p-0 me-1">
             <svg-icon name="icon_delete"></svg-icon>

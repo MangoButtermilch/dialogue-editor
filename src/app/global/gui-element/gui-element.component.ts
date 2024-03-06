@@ -18,7 +18,7 @@ export class GuiElementComponent {
   }
 
   public updatePosition(eventData: CdkDragEnd): void {
-    const styleDiv = this.elementRef.nativeElement.querySelector(".node");
+    const styleDiv = this.elementRef.nativeElement.querySelector(".cdk-drag");
     const style =  window.getComputedStyle(styleDiv);
     const transformMatrix = new DOMMatrix(style.transform);
 

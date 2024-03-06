@@ -1,7 +1,15 @@
 @import "~bootstrap/dist/css/bootstrap.css";
+@import "./fonts.scss";
 
 :root {
+    --colorWhite: rgb(229 229 229);
     --colorDark: #333;
+    --colorError: #dc3545;
+
+    --fontSizeSM: 16px;
+    --fontSizeMD: 20px;
+    --fontSizeL: 24px;
+    --fontSizeXL: 28px;
 
     --portColor: #0a58ca;
     --portColorHover: #307ae7;
@@ -18,10 +26,9 @@
     --contextMenuOptionHover: #24416c;
 
     --inputBoxShadow: 0px 0px 0px 1px rgb(168, 168, 168);
-    --inputBoxShadowError: 0px 0px 0px 1px #dc3545;
-
-
+    --inputBoxShadowError: 0px 0px 0px 1px var(--colorError);
 }
+
 ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -38,24 +45,50 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
 app-editor,
 app-root,
 body {
     width: 100vw;
     height: 100vh;
     background-size: cover 10%;
-    font-family: "Arial";
-    -webkit-font-smoothing: none;
-    -moz-osx-font-smoothing: grayscale;
+    font-family: "Roboto";
+    font-weight: 400;
+    color: var(--colorWhite);
 }
 
-.bg-gray {
-    background-color: var(--colorDark);
+h1 {
+    font-size: var(--fontSizeXL);
+}
+
+h2 {
+    font-size: var(--fontSizeL);
+}
+
+h3 {
+    font-size: var(--fontSizeMD);
+}
+
+p,
+textarea,
+input,
+select {
+    font-size: var(--fontSizeSM);
+}
+h1,
+h2,
+h3,
+h4,
+p,
+textarea,
+input,
+select {
+    margin: 0;    line-height: var(--bs-body-line-height);
 }
 
 svg-icon {
-    fill: white;
-    color: white;
+    fill: var(--colorWhite);
+    color: var(--colorWhite);
 }
 
 app-toolbar {
@@ -66,6 +99,35 @@ app-toolbar {
     margin: auto;
     width: 100%;
     z-index: 10;
+}
+
+.text-white {
+    color: var(--colorWhite) !important;
+}
+
+.bg-gray {
+    background-color: var(--colorDark);
+}
+ 
+.btn-success {
+    display: inline-flex;
+    align-items: center;
+}
+
+[class*="node"] {
+    min-width: 300px;
+    position: absolute;
+    z-index: 0;
+    border-radius: 5px;
+    .content {
+        background-color: var(--colorDark);
+        border-radius: 5px;
+    }
+
+    box-shadow: var(--nodeBoxShadow);
+    &:hover {
+        box-shadow: var(--nodeBoxShadowHover);
+    }
 }
 
 .btn-port {
@@ -100,6 +162,11 @@ select {
         outline: none;
     }
 }
+
+.cdk-drag {
+    will-change: transform;
+}
+
 .cdk-drag-placeholder {
     filter: brightness(0.5);
 }

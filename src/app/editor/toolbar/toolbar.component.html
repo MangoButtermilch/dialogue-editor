@@ -3,11 +3,12 @@
 
         <button class="btn btn-success m-1"
                 (click)="onNewNodeClicked.emit()">
-            <svg-icon name="icon_add"></svg-icon> Node
+            <svg-icon name="icon_add"></svg-icon>
+            <p>Node</p>
         </button>
         <button class="btn btn-warning m-1"
                 (click)="onBackToOriginClicked.emit()">
-            Origin
+            <p>Origin</p>
         </button>
         <button class="btn btn-dark m-1"
                 (click)="onHelpClicked.emit()">
@@ -15,14 +16,14 @@
         </button>
         <button class="btn btn-primary m-1 "
                 (click)="save()">
-            Save
+            <p>Save</p>
         </button>
         <button class="btn btn-primary m-1"
                 (click)="load()">
-            Load
+            <p>Load</p>
         </button>
         <button class="btn btn-primary m-1 disabled">
-            Settings
+            <p>Settings</p>
         </button>
 
         <input class="m-1 text-white bg-dark"

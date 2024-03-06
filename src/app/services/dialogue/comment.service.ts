@@ -10,7 +10,7 @@ import { PanZoomService } from '../editor/pan-zoom.service';
 })
 export class CommentService {
 
-  private readonly defaultColor = "#157347";
+  private readonly defaultColor = "#198754";
 
   constructor(private guidService: GuidService) {
   }

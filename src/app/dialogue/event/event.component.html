@@ -1,17 +1,17 @@
 <div *ngIf="eventNode"
-     class="eventNode ">
+     class="event-node ">
 
 
     <div class="d-flex justify-content-between p-1">
         <app-port [port]="eventNode.inPort"></app-port>
-        <h4>Event</h4>
+        <h3>Event</h3>
         <button (click)="onDelete.emit(eventNode)"
                 class="btn btn-danger p-0 me-1">
             <svg-icon name="icon_delete"></svg-icon>
         </button>
     </div>
 
-    <div class="node-header bg-gray d-flex justify-content-between align-items-center p-1">
+    <div class="content bg-gray d-flex justify-content-between align-items-center p-1">
         <div>
             <input type="text"
                    class="bg-dark text-white p-0"

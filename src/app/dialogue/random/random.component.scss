@@ -1,11 +1,4 @@
-.randomNode {
-    min-width: 250px;
-    border-radius: 5px;
-    position: absolute;
-    z-index: 0;
+.random-node {
     background-color: #00ff62 !important;
-    box-shadow: var(--nodeBoxShadow);
-    &:hover {
-        box-shadow: var(--nodeBoxShadowHover);
-    }
+   
 }
