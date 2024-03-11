@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Port, PortCapacity, PortDirection } from 'src/models/models';
 import { GuidService } from '../editor/guid.service';
 
@@ -8,6 +8,8 @@ import { GuidService } from '../editor/guid.service';
 })
 export class PortService {
 
+  private ports: Port[] = [];
+  private ports$: BehaviorSubject<Port[]> = new BehaviorSubject<Port[]>([]);
   private portsConnectedState$: Subject<Port[]> = new Subject<Port[]>();
   private portsDisconnectedState$: Subject<Port[]> = new Subject<Port[]>();
 
@@ -15,24 +17,35 @@ export class PortService {
 
   public generateInputPort(parentGuid: string): Port {
     const guid: string = this.guidService.getGuid();
-    return new Port(
+    const port = new Port(
       guid,
       { x: 0, y: 0 },
       parentGuid,
       PortDirection.IN,
       PortCapacity.MULTIPLE
     );
+    this.ports.push(port);
+    this.updatePorts();
+    return port;
   }
 
   public generateOutputPort(parentGuid: string): Port {
     const guid: string = this.guidService.getGuid();
-    return new Port(
+    const port = new Port(
       guid,
       { x: 0, y: 0 },
       parentGuid,
       PortDirection.OUT,
       PortCapacity.SINGLE
     );
+    this.ports.push(port);
+    this.updatePorts();
+    return port;
+  }
+
+  private updatePorts(): void {
+    console.log(this.ports)
+    this.ports$.next(this.ports);
   }
 
   /**
@@ -58,6 +71,17 @@ export class PortService {
   }
 
   /**
+   * Automatically disonnects A from B and B from A
+   * @param portA 
+   * @param portB 
+   */
+  public disconnectPortsByGuid(portA: Port, guidB: string): void {
+    portA.disconnectByGuid(guidB);
+    this.findPortByGuid(guidB).disconnectByGuid(portA.guid);
+    this.portsDisconnectedState$.next([portA]);
+  }
+
+  /**
    * @returns Observable array of 2 ports that have been connected
    */
   public onPortsConnected(): Observable<Port[]> {
@@ -69,5 +93,9 @@ export class PortService {
    */
   public onPortsDisconnected(): Observable<Port[]> {
     return this.portsDisconnectedState$;
+  }
+
+  private findPortByGuid(guid: string): Port {
+    return this.ports.find((other: Port) => other.guid === guid);
   }
 }
