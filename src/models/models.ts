@@ -51,29 +51,33 @@ export class Port extends GuiObject {
         public parentGuid: string,
         public direction: PortDirection,
         public capacity: PortCapacity,
-        public connectedPorts: Port[] = [],
+        public connectedPortGuids: string[] = [],
     ) {
         super(guid, pos);
     }
 
     public isConnectedTo(other: Port): boolean {
-        return this.connectedPorts.findIndex((ports: Port) => ports.guid === other.guid) > -1;
+        return this.connectedPortGuids.findIndex((guid: string) => guid === other.guid) > -1;
     }
 
     public connect(other: Port): void {
-        this.connectedPorts.push(other);
+        this.connectedPortGuids.push(other.guid);
     }
 
     public disconnect(other: Port): void {
-        this.connectedPorts = this.connectedPorts.filter((port: Port) => port.guid !== other.guid);
+        this.connectedPortGuids = this.connectedPortGuids.filter((guid: string) => guid !== other.guid);
+    }
+
+    public disconnectByGuid(otherGuid: string): void {
+        this.connectedPortGuids = this.connectedPortGuids.filter((guid: string) => guid !== otherGuid);
     }
 
     public disconnectAll(): void {
-        this.connectedPorts = [];
+        this.connectedPortGuids = [];
     }
 
-    public getConnections(): Port[] {
-        return this.connectedPorts;
+    public getConnections(): string[] {
+        return this.connectedPortGuids;
     }
 }
 
@@ -145,7 +149,8 @@ export class ConditionNode extends GuiObject {
         pos: Vector2,
         public type: ConditionType,
         public inPort: Port,
-        public outPort: Port,
+        public outPortMatches: Port,
+        public outPortFails: Port,
         public variable?: Variable,
         public expectedValue?: boolean | number | string
     ) {
@@ -197,6 +202,8 @@ export class Dialogue {
         public events: EventNode[] = [],
         public conditions: ConditionNode[] = [],
         public randomNodes: RandomNode[] = [],
-        public repeatNodes: RepeatNode[] = []
+        public repeatNodes: RepeatNode[] = [],
+        public variables: Variable[] = [],
+        public characters: Character[] = []
     ) { }
 }
