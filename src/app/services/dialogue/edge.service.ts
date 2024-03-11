@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { combineLatest, Observable, of, ReplaySubject, withLatestFrom, zip } from 'rxjs';
-import { Edge, Port, PortCapacity } from 'src/models/models';
+import { Choice, ConditionNode, DialogueNode, Edge, EventNode, Port, PortCapacity, Possibility, RandomNode, RepeatNode } from 'src/models/models';
 import { DomEventService } from '../dom/dom-event.service';
 import { EditorStateService } from '../editor/editor-state.service';
 import { GuidService } from '../editor/guid.service';
@@ -101,5 +101,57 @@ export class EdgeService {
 
   public getEdges(): Observable<Edge[]> {
     return this.edges$.asObservable();
+  }
+
+  /**
+   * Removes all edges for in-port and all out-ports from choices
+   * @param node 
+   */
+  public removeEdgesForNode(node: DialogueNode) {
+    this.removeAllEdgesFor(node.inPort);
+
+    node.choices.forEach((choice: Choice) => {
+      this.removeAllEdgesFor(choice.outPort)
+    });
+
+  }
+
+  /**
+   * Removes all edges for in-port and out-port of EventNode
+   * @param event 
+   */
+  public removeEdgesForEvent(event: EventNode) {
+    this.removeAllEdgesFor(event.inPort);
+    this.removeAllEdgesFor(event.outPort);
+  }
+
+  /**
+   * Removes all edges for in-port and all out-ports from possibilities 
+   * @param randomNode 
+   */
+  public removeEdgesForRandomNode(randomNode: RandomNode) {
+    this.removeAllEdgesFor(randomNode.inPort);
+    randomNode.possibilites.forEach((possibility: Possibility) => {
+      this.removeAllEdgesFor(possibility.outPort)
+    });
+  }
+
+  /**
+   * Removes all edges for in-port and out-port of RepeatNode
+   * @param node 
+   */
+  public removeEdgesForRepeatNode(node: RepeatNode) {
+    this.removeAllEdgesFor(node.inPort);
+    this.removeAllEdgesFor(node.outPort);
+  }
+
+  /**
+   * Removes all edges for in-port and out-port for failure and out-port for success
+   * @param condition 
+   */
+  public removeEdgesForCondition(condition: ConditionNode) {
+    this.removeAllEdgesFor(condition.inPort);
+    this.removeAllEdgesFor(condition.outPortFails);
+    this.removeAllEdgesFor(condition.outPortMatches);
   }
 }

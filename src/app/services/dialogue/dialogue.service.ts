@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { PanZoomModel } from 'ngx-panzoom';
-import { BehaviorSubject, Observable, takeUntil } from 'rxjs';
-import { Character, Choice, CommentNode, ConditionNode, Dialogue, DialogueNode, EventNode, Possibility, RandomNode, RepeatNode, Variable, Vector2 } from 'src/models/models';
-import { EditorStateService } from '../editor/editor-state.service';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Character, CommentNode, ConditionNode, Dialogue, DialogueNode, EventNode, RandomNode, RepeatNode, Variable, Vector2 } from 'src/models/models';
 import { GuiElementService } from '../editor/gui-element.service';
 import { GuidService } from '../editor/guid.service';
 import { PanZoomService } from '../editor/pan-zoom.service';
@@ -14,9 +12,8 @@ import { NodeService } from './node.service';
 import { RandomNodeService } from './random-node.service';
 import { RepeatService } from './repeat.service';
 
-import mockDialouge from 'src/assets/mock/dialogue-mock.json';
-import { VariableService } from '../data/variable.service';
 import { CharacterService } from '../data/character.service';
+import { VariableService } from '../data/variable.service';
 import { PortService } from './port.service';
 
 @Injectable({
@@ -24,13 +21,8 @@ import { PortService } from './port.service';
 })
 export class DialogueService {
 
-
   private dialogue: Dialogue = this.generateDialogue();
   private dialogue$: BehaviorSubject<Dialogue> = new BehaviorSubject<Dialogue>(this.dialogue);
-
-  private panZoomChanged$: Observable<PanZoomModel> = this.panZoomService.panZoomConfig.modelChanged;
-  private panPosition: Vector2 = { x: 0, y: 0 };
-  private panZoomLevel: number = 2;
 
   constructor(
     private guiElementService: GuiElementService,
@@ -40,42 +32,13 @@ export class DialogueService {
     private randomNodeService: RandomNodeService,
     private repeatService: RepeatService,
     private edgeService: EdgeService,
-    private panZoomService: PanZoomService,
     private guidService: GuidService,
     private variableService: VariableService,
     private characterService: CharacterService,
     private portService: PortService,
     private nodeService: NodeService) {
-    this.handlePanZoomChange();
     this.handleVarialesChange();
     this.handleCharactersChange();
-  }
-
-  private handleVarialesChange(): void {
-
-    this.variableService.onVariablesUpdate()
-      .subscribe((vars: Variable[]) => {
-        this.dialogue.variables = vars;
-        this.updateDialogue();
-      })
-  }
-
-  private handleCharactersChange(): void {
-
-    this.characterService.onCharactersUpdate()
-      .subscribe((chars: Character[]) => {
-        this.dialogue.characters = chars;
-        this.updateDialogue();
-      });
-  }
-
-  private handlePanZoomChange(): void {
-    this.panZoomChanged$
-      .subscribe((model: PanZoomModel) => {
-        this.panZoomLevel = model.zoomLevel;
-        this.panPosition.x = Math.round(model.pan.x);
-        this.panPosition.y = Math.round(model.pan.y);
-      });
   }
 
   public generateDialogue(): Dialogue {
@@ -95,13 +58,37 @@ export class DialogueService {
     return this.dialogue$.asObservable();
   }
 
-  /**
-   * Use to change dialogue name. Will update dialogue stream.
-   * @param name new name for our Dialogue
-   */
-  public changeDialogueName(name: string): void {
-    this.dialogue.name = name;
+  public updateDialogueName(newName: string): void {
+    this.dialogue.name = newName;
     this.updateDialogue();
+  }
+
+  /**
+   * Updates dialogue observable with current dialogue object.
+   * Call after every change to dialogue object.
+   */
+  private updateDialogue() {
+    this.dialogue$.next(this.dialogue);
+  }
+
+  /**
+   * Subscribes to variable-service to keep variables for dialogue object updated.
+   */
+  private handleVarialesChange(): void {
+    this.variableService.onVariablesUpdate().subscribe((vars: Variable[]) => {
+      this.dialogue.variables = vars;
+      this.updateDialogue();
+    })
+  }
+
+  /**
+   * Subscribes to character-service to keep characters for dialogue object updated.
+   */
+  private handleCharactersChange(): void {
+    this.characterService.onCharactersUpdate().subscribe((chars: Character[]) => {
+      this.dialogue.characters = chars;
+      this.updateDialogue();
+    });
   }
 
   /**
@@ -109,7 +96,7 @@ export class DialogueService {
    * @param mousePosition 
    */
   public addNewDialogueNode(mousePosition: Vector2 | null = null): void {
-    this.dialogue.nodes.push(
+    this.dialogue.addDialogueNode(
       this.nodeService.generateNode(false, this.guiElementService.getInstantiatePosition(mousePosition))
     );
     this.updateDialogue();
@@ -120,10 +107,7 @@ export class DialogueService {
    * @param dialogueNode updated dialoge node.
    */
   public updateDialogueNode(dialogueNode: DialogueNode): void {
-    const index = this.dialogue.nodes
-      .findIndex((other: DialogueNode) => other.guid === dialogueNode.guid);
-    this.dialogue.nodes[index] = dialogueNode;
-
+    this.dialogue.updateDialogueNode(dialogueNode);
     this.updateDialogue();
   }
 
@@ -133,21 +117,9 @@ export class DialogueService {
    */
   public deleteDialogueNode(dialogueNode: DialogueNode): void {
     if (dialogueNode.isRoot) return;
-
-    //port for incoming connections
-    this.edgeService.removeAllEdgesFor(dialogueNode.inPort);
-    this.portService.removePort(dialogueNode.inPort);
-
-    //ports for outgoing connections
-    dialogueNode.choices.forEach((choice: Choice) => {
-      this.edgeService.removeAllEdgesFor(choice.outPort)
-      this.portService.removePort(choice.outPort);
-    });
-
-    //remove by filter
-    this.dialogue.nodes = this.dialogue.nodes
-      .filter((other: DialogueNode) => other.guid !== dialogueNode.guid);
-
+    this.edgeService.removeEdgesForNode(dialogueNode);
+    this.portService.removePortsForNode(dialogueNode);
+    this.dialogue.removeDialogueNode(dialogueNode);
     this.updateDialogue();
   }
 
@@ -157,11 +129,9 @@ export class DialogueService {
    */
   public addNewComment(mousePosition: Vector2) {
     const instantiatePos = this.guiElementService.getInstantiatePosition(mousePosition);
-
-    this.dialogue.comments.push(
+    this.dialogue.addCommentNode(
       this.commentService.generateComment(instantiatePos)
     );
-
     this.updateDialogue();
   }
 
@@ -170,11 +140,7 @@ export class DialogueService {
    * @param comment 
    */
   public updateComment(comment: CommentNode): void {
-    const index = this.dialogue.comments
-      .findIndex((other: CommentNode) => other.guid === comment.guid);
-
-    this.dialogue.comments[index] = comment;
-
+    this.dialogue.updateCommentNode(comment);
     this.updateDialogue();
   }
 
@@ -183,11 +149,7 @@ export class DialogueService {
    * @param comment 
    */
   public deleteComment(comment: CommentNode): void {
-    const index = this.dialogue.comments
-      .findIndex((other: CommentNode) => other.guid === comment.guid);
-
-    this.dialogue.comments.splice(index, 1);
-
+    this.dialogue.removeCommentNode(comment);
     this.updateDialogue();
   }
 
@@ -196,13 +158,10 @@ export class DialogueService {
    * @param mousePosition 
    */
   public addNewEventNode(mousePosition: Vector2): void {
-    const instantiatePos = this.guiElementService
-      .getInstantiatePosition(mousePosition);
-
-    this.dialogue.events.push(
+    const instantiatePos = this.guiElementService.getInstantiatePosition(mousePosition);
+    this.dialogue.addEventNode(
       this.eventNodeService.generateNode(instantiatePos)
     );
-
     this.updateDialogue();
   }
 
@@ -211,9 +170,7 @@ export class DialogueService {
    * @param event 
    */
   public updateEventNode(event: EventNode): void {
-    const index = this.dialogue.events
-      .findIndex((other: EventNode) => other.guid === event.guid);
-    this.dialogue.events[index] = event;
+    this.dialogue.updateEventNode(event);
     this.updateDialogue();
   }
 
@@ -222,14 +179,9 @@ export class DialogueService {
    * @param event 
    */
   public deleteEventNode(event: EventNode): void {
-    this.edgeService.removeAllEdgesFor(event.inPort);
-    this.edgeService.removeAllEdgesFor(event.outPort);
-
-    this.portService.removePort(event.inPort);
-    this.portService.removePort(event.outPort);
-
-    const index = this.dialogue.events.findIndex((other: EventNode) => other.guid === event.guid);
-    this.dialogue.events.splice(index, 1);
+    this.edgeService.removeEdgesForEvent(event);
+    this.portService.removePortsForEvent(event);
+    this.dialogue.removeEventNode(event);
     this.updateDialogue();
   }
 
@@ -239,8 +191,7 @@ export class DialogueService {
    */
   public addNewConditionNode(mousePosition: Vector2): void {
     const instantiatePos = this.guiElementService.getInstantiatePosition(mousePosition);
-
-    this.dialogue.conditions.push(
+    this.dialogue.addConditionNode(
       this.conditionService.generateConditionNode(instantiatePos)
     );
     this.updateDialogue();
@@ -251,9 +202,7 @@ export class DialogueService {
    * @param condition 
    */
   public updateConditionNode(condition: ConditionNode) {
-    const index = this.dialogue.conditions
-      .findIndex((other: ConditionNode) => other.guid === condition.guid);
-    this.dialogue.conditions[index] = condition;
+    this.dialogue.updateConditionNode(condition);
     this.updateDialogue();
   }
 
@@ -262,97 +211,51 @@ export class DialogueService {
    * @param condition 
    */
   public deleteConditionNode(condition: ConditionNode) {
-    this.edgeService.removeAllEdgesFor(condition.inPort);
-    this.edgeService.removeAllEdgesFor(condition.outPortFails);
-    this.edgeService.removeAllEdgesFor(condition.outPortMatches);
-
-    this.portService.removePort(condition.inPort);
-    this.portService.removePort(condition.outPortFails);
-    this.portService.removePort(condition.outPortMatches);
-
-    const index = this.dialogue.conditions
-      .findIndex((other: ConditionNode) => other.guid === condition.guid);
-    this.dialogue.conditions.splice(index, 1);
-    this.updateDialogue();
-  }
-
-  public updateDialogueName(newName: string): void {
-    this.dialogue.name = newName;
+    this.edgeService.removeEdgesForCondition(condition);
+    this.portService.removePortsForCondition(condition);
+    this.dialogue.removeConditionNode(condition);
     this.updateDialogue();
   }
 
 
   public addNewRandomNode(mousePosition: Vector2): void {
     const instantiatePos = this.guiElementService.getInstantiatePosition(mousePosition);
-
-    this.dialogue.randomNodes.push(
+    this.dialogue.addRandomNode(
       this.randomNodeService.generateRandomNode(instantiatePos)
     );
     this.updateDialogue();
   }
 
   public updateRandomNode(node: RandomNode) {
-    const index = this.dialogue.randomNodes
-      .findIndex((other: RandomNode) => other.guid === node.guid);
-    this.dialogue.randomNodes[index] = node;
+    this.dialogue.updateRandomNode(node);
     this.updateDialogue();
   }
 
   public deleteRandomNode(node: RandomNode) {
-    this.edgeService.removeAllEdgesFor(node.inPort);
-
-    this.portService.removePort(node.inPort);
-
-    //ports for outgoing connections
-    node.possibilites.forEach((possibility: Possibility) => {
-      this.edgeService.removeAllEdgesFor(possibility.outPort)
-      this.portService.removePort(possibility.outPort);
-    });
-
-    const index = this.dialogue.randomNodes
-      .findIndex((other: RandomNode) => other.guid === node.guid);
-    this.dialogue.randomNodes.splice(index, 1);
-
+    this.edgeService.removeEdgesForRandomNode(node);
+    this.portService.removePortsForRandomNode(node);
+    this.dialogue.removeRandomNode(node);
     this.updateDialogue();
   }
 
 
   public addNewRepeatNode(mousePosition: Vector2): void {
     const instantiatePos = this.guiElementService.getInstantiatePosition(mousePosition);
-
-    this.dialogue.repeatNodes.push(
+    this.dialogue.addRepeatNode(
       this.repeatService.generateRepeatNode(instantiatePos)
     );
     this.updateDialogue();
   }
 
   public updateRepeatNode(node: RepeatNode) {
-    const index = this.dialogue.repeatNodes
-      .findIndex((other: RepeatNode) => other.guid === node.guid);
-    this.dialogue.repeatNodes[index] = node;
+    this.dialogue.updateRepeatNode(node);
     this.updateDialogue();
   }
 
   public deleteRepeatNode(node: RepeatNode) {
-    this.edgeService.removeAllEdgesFor(node.inPort);
-    this.edgeService.removeAllEdgesFor(node.outPort);
-
-    this.portService.removePort(node.inPort);
-    this.portService.removePort(node.outPort);
-
-    const index = this.dialogue.repeatNodes
-      .findIndex((other: RepeatNode) => other.guid === node.guid);
-    this.dialogue.repeatNodes.splice(index, 1);
-
+    this.edgeService.removeEdgesForRepeatNode(node);
+    this.portService.removePortsForRepeatNode(node);
+    this.dialogue.removeRepeatNode(node);
     this.updateDialogue();
   }
-
-
-  /**
-   * Updates dialogue stream with dialogue object.
-   */
-  private updateDialogue() {
-    this.dialogue$.next(this.dialogue);
-  }
-
 }

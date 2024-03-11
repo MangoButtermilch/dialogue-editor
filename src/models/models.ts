@@ -206,4 +206,107 @@ export class Dialogue {
         public variables: Variable[] = [],
         public characters: Character[] = []
     ) { }
+    
+    
+    public findCommentNodeIndex(node: CommentNode): number {
+        return this.comments.findIndex((other: CommentNode) => other.guid === node.guid);
+    }
+
+    public addCommentNode(node: CommentNode): void {
+        this.comments.push(node);
+    }
+
+    public updateCommentNode(node: CommentNode): void {
+        this.comments[this.findCommentNodeIndex(node)] = node;
+    }
+
+    public removeCommentNode(node: CommentNode): void {
+        this.comments.splice(this.findCommentNodeIndex(node), 1);
+    }
+
+
+    
+    public findRandomNodeIndex(node: RandomNode): number {
+        return this.randomNodes.findIndex((other: RandomNode) => other.guid === node.guid);
+    }
+
+    public addRandomNode(node: RandomNode): void {
+        this.randomNodes.push(node);
+    }
+
+    public updateRandomNode(node: RandomNode): void {
+        this.randomNodes[this.findRandomNodeIndex(node)] = node;
+    }
+
+    public removeRandomNode(node: RandomNode): void {
+        this.randomNodes.splice(this.findRandomNodeIndex(node), 1);
+    }
+
+    
+    public findConditionNodeIndex(node: ConditionNode): number {
+        return this.conditions.findIndex((other: ConditionNode) => other.guid === node.guid);
+    }
+
+    public addConditionNode(node: ConditionNode): void {
+        this.conditions.push(node);
+    }
+
+    public updateConditionNode(node: ConditionNode): void {
+        this.conditions[this.findConditionNodeIndex(node)] = node;
+    }
+
+    public removeConditionNode(node: ConditionNode): void {
+        this.conditions.splice(this.findConditionNodeIndex(node), 1);
+    }
+    
+
+    public findEventNodeIndex(node: EventNode): number {
+        return this.events.findIndex((other: EventNode) => other.guid === node.guid);
+    }
+
+    public addEventNode(node: EventNode): void {
+        this.events.push(node);
+    }
+
+    public updateEventNode(node: EventNode): void {
+        this.events[this.findEventNodeIndex(node)] = node;
+    }
+
+    public removeEventNode(node: EventNode): void {
+        this.events.splice(this.findEventNodeIndex(node), 1);
+    }
+    
+
+    public findDialogueNodeIndex(node: DialogueNode): number {
+        return this.nodes.findIndex((other: DialogueNode) => other.guid === node.guid);
+    }
+
+    public addDialogueNode(node: DialogueNode): void {
+        this.nodes.push(node);
+    }
+
+    public updateDialogueNode(node: DialogueNode): void {
+        this.nodes[this.findDialogueNodeIndex(node)] = node;
+    }
+
+    public removeDialogueNode(node: DialogueNode): void {
+        this.nodes.splice(this.findDialogueNodeIndex(node), 1);
+    }
+
+
+    public findRepeatNodeIndex(node: RepeatNode): number {
+        return this.repeatNodes.findIndex((other: RepeatNode) => other.guid === node.guid);
+    }
+
+    public addRepeatNode(node: RepeatNode): void {
+        this.repeatNodes.push(node);
+    }
+
+    public updateRepeatNode(node: RepeatNode): void {
+        this.repeatNodes[this.findRepeatNodeIndex(node)] = node;
+    }
+
+    public removeRepeatNode(node: RepeatNode): void {
+        this.repeatNodes.splice(this.findRepeatNodeIndex(node), 1);
+    }
 }
