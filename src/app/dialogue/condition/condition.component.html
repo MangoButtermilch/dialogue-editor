@@ -40,7 +40,13 @@
         <input type="text"
                formControlName="{{valueFieldName}}"
                class="m-1 bg-dark text-white p-0 {{isBooleanCondition() ? 'd-none' :''}}" />
-        <app-port [port]="conditionNode.outPort"></app-port>
+        <div class="d-flex flex-column">
+
+            <app-port [port]="conditionNode.outPortMatches"
+                      [labelOverride]="'True'"></app-port>
+            <app-port [port]="conditionNode.outPortFails"
+                      [labelOverride]="'False'"></app-port>
+        </div>
     </div>
 
 
