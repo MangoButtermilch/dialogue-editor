@@ -44,7 +44,6 @@ export class PortService {
   }
 
   private updatePorts(): void {
-    console.log(this.ports)
     this.ports$.next(this.ports);
   }
 
@@ -93,6 +92,16 @@ export class PortService {
    */
   public onPortsDisconnected(): Observable<Port[]> {
     return this.portsDisconnectedState$;
+  }
+
+  public removePort(port: Port): void {
+    this.ports = this.ports.filter((other: Port) => other.guid !== port.guid);
+    this.updatePorts();
+  }
+
+  public removePortByGuid(guid: string): void {
+    this.ports = this.ports.filter((other: Port) => other.guid !== guid);
+    this.updatePorts();
   }
 
   private findPortByGuid(guid: string): Port {

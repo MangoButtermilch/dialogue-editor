@@ -6,6 +6,7 @@ import { CharacterService } from 'src/app/services/data/character.service';
 import { ChoiceService } from 'src/app/services/dialogue/choice.service';
 import { EdgeService } from 'src/app/services/dialogue/edge.service';
 import { NodeService } from 'src/app/services/dialogue/node.service';
+import { PortService } from 'src/app/services/dialogue/port.service';
 import { EditorStateService } from 'src/app/services/editor/editor-state.service';
 import { DialogueNode, Choice, Character } from 'src/models/models';
 import { ChoiceComponent } from '../choice/choice.component';
@@ -31,7 +32,8 @@ export class NodeComponent implements OnDestroy {
     private edgeService: EdgeService,
     private editorStateService: EditorStateService,
     private choiceService: ChoiceService,
-    private characterService: CharacterService
+    private characterService: CharacterService,
+    private portService: PortService
   ) { }
 
   ngOnChanges(): void {
@@ -85,6 +87,7 @@ export class NodeComponent implements OnDestroy {
   public deleteChoice(choice: Choice): void {
     this.edgeService.removeAllEdgesFor(choice.outPort);
     this.dialogueNode.choices = this.dialogueNode.choices.filter((other: Choice) => other.guid !== choice.guid);
+    this.portService.removePort(choice.outPort);
 
     this.onUpdate.emit(this.dialogueNode);
   }

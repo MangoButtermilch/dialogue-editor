@@ -17,6 +17,7 @@ import { RepeatService } from './repeat.service';
 import mockDialouge from 'src/assets/mock/dialogue-mock.json';
 import { VariableService } from '../data/variable.service';
 import { CharacterService } from '../data/character.service';
+import { PortService } from './port.service';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +44,7 @@ export class DialogueService {
     private guidService: GuidService,
     private variableService: VariableService,
     private characterService: CharacterService,
+    private portService: PortService,
     private nodeService: NodeService) {
     this.handlePanZoomChange();
     this.handleVarialesChange();
@@ -134,10 +136,12 @@ export class DialogueService {
 
     //port for incoming connections
     this.edgeService.removeAllEdgesFor(dialogueNode.inPort);
+    this.portService.removePort(dialogueNode.inPort);
 
     //ports for outgoing connections
     dialogueNode.choices.forEach((choice: Choice) => {
       this.edgeService.removeAllEdgesFor(choice.outPort)
+      this.portService.removePort(choice.outPort);
     });
 
     //remove by filter
@@ -221,6 +225,9 @@ export class DialogueService {
     this.edgeService.removeAllEdgesFor(event.inPort);
     this.edgeService.removeAllEdgesFor(event.outPort);
 
+    this.portService.removePort(event.inPort);
+    this.portService.removePort(event.outPort);
+
     const index = this.dialogue.events.findIndex((other: EventNode) => other.guid === event.guid);
     this.dialogue.events.splice(index, 1);
     this.updateDialogue();
@@ -259,6 +266,10 @@ export class DialogueService {
     this.edgeService.removeAllEdgesFor(condition.outPortFails);
     this.edgeService.removeAllEdgesFor(condition.outPortMatches);
 
+    this.portService.removePort(condition.inPort);
+    this.portService.removePort(condition.outPortFails);
+    this.portService.removePort(condition.outPortMatches);
+
     const index = this.dialogue.conditions
       .findIndex((other: ConditionNode) => other.guid === condition.guid);
     this.dialogue.conditions.splice(index, 1);
@@ -290,9 +301,12 @@ export class DialogueService {
   public deleteRandomNode(node: RandomNode) {
     this.edgeService.removeAllEdgesFor(node.inPort);
 
+    this.portService.removePort(node.inPort);
+
     //ports for outgoing connections
     node.possibilites.forEach((possibility: Possibility) => {
       this.edgeService.removeAllEdgesFor(possibility.outPort)
+      this.portService.removePort(possibility.outPort);
     });
 
     const index = this.dialogue.randomNodes
@@ -322,6 +336,9 @@ export class DialogueService {
   public deleteRepeatNode(node: RepeatNode) {
     this.edgeService.removeAllEdgesFor(node.inPort);
     this.edgeService.removeAllEdgesFor(node.outPort);
+
+    this.portService.removePort(node.inPort);
+    this.portService.removePort(node.outPort);
 
     const index = this.dialogue.repeatNodes
       .findIndex((other: RepeatNode) => other.guid === node.guid);
