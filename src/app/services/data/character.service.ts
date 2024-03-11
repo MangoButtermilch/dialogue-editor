@@ -55,4 +55,8 @@ export class CharacterService {
     moveItemInArray(this.characters, previousIndex, currentIndex);
     this.characters$.next(this.characters);
   }
+
+  public onCharactersUpdate(): Observable<Character[]> {
+    return this.characters$.asObservable();
+  }
 }

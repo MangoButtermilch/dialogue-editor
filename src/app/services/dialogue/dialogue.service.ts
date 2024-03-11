@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PanZoomModel } from 'ngx-panzoom';
 import { BehaviorSubject, Observable, takeUntil } from 'rxjs';
-import { Choice, CommentNode, ConditionNode, Dialogue, DialogueNode, EventNode, Possibility, RandomNode, RepeatNode, Vector2 } from 'src/models/models';
+import { Character, Choice, CommentNode, ConditionNode, Dialogue, DialogueNode, EventNode, Possibility, RandomNode, RepeatNode, Variable, Vector2 } from 'src/models/models';
 import { EditorStateService } from '../editor/editor-state.service';
 import { GuiElementService } from '../editor/gui-element.service';
 import { GuidService } from '../editor/guid.service';
@@ -14,10 +14,15 @@ import { NodeService } from './node.service';
 import { RandomNodeService } from './random-node.service';
 import { RepeatService } from './repeat.service';
 
+import mockDialouge from 'src/assets/mock/dialogue-mock.json';
+import { VariableService } from '../data/variable.service';
+import { CharacterService } from '../data/character.service';
+
 @Injectable({
   providedIn: 'root'
 })
 export class DialogueService {
+
 
   private dialogue: Dialogue = this.generateDialogue();
   private dialogue$: BehaviorSubject<Dialogue> = new BehaviorSubject<Dialogue>(this.dialogue);
@@ -36,8 +41,30 @@ export class DialogueService {
     private edgeService: EdgeService,
     private panZoomService: PanZoomService,
     private guidService: GuidService,
+    private variableService: VariableService,
+    private characterService: CharacterService,
     private nodeService: NodeService) {
     this.handlePanZoomChange();
+    this.handleVarialesChange();
+    this.handleCharactersChange();
+  }
+
+  private handleVarialesChange(): void {
+
+    this.variableService.onVariablesUpdate()
+      .subscribe((vars: Variable[]) => {
+        this.dialogue.variables = vars;
+        this.updateDialogue();
+      })
+  }
+
+  private handleCharactersChange(): void {
+
+    this.characterService.onCharactersUpdate()
+      .subscribe((chars: Character[]) => {
+        this.dialogue.characters = chars;
+        this.updateDialogue();
+      });
   }
 
   private handlePanZoomChange(): void {
@@ -54,7 +81,7 @@ export class DialogueService {
     return new Dialogue(
       "New Dialogue",
       guid,
-      new Date("now").toUTCString(),
+      new Date().toUTCString(),
       [this.nodeService.generateNode(true)],
     );
   }
@@ -229,7 +256,8 @@ export class DialogueService {
    */
   public deleteConditionNode(condition: ConditionNode) {
     this.edgeService.removeAllEdgesFor(condition.inPort);
-    this.edgeService.removeAllEdgesFor(condition.outPort);
+    this.edgeService.removeAllEdgesFor(condition.outPortFails);
+    this.edgeService.removeAllEdgesFor(condition.outPortMatches);
 
     const index = this.dialogue.conditions
       .findIndex((other: ConditionNode) => other.guid === condition.guid);

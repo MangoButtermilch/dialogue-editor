@@ -46,4 +46,7 @@ export class VariableService {
     this.variables$.next(this.variables);
   }
 
+  public onVariablesUpdate(): Observable<Variable[]> {
+    return this.variables$.asObservable();
+  }
 }
