@@ -15,6 +15,7 @@ export class PortComponent implements OnInit, OnDestroy {
 
   @Output() onUpdate: EventEmitter<Port> = new EventEmitter<Port>();
   @Input() port: Port;
+  @Input() labelOverride: string = null;
 
   private destroy$: Subject<boolean> = new Subject<boolean>();
   private selectedPort$: Observable<Port | null> = this.editorStateService.onPortSelected()
@@ -38,6 +39,11 @@ export class PortComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  public get label(): string {
+    return this.labelOverride ??
+      (this.port.direction === "out" ? "Out" : "In");
+  }
+
   private handlePortSelection(): void {
     this.selectedPort$
       .subscribe((selectedPort: Port | null) => {
@@ -55,7 +61,7 @@ export class PortComponent implements OnInit, OnDestroy {
 
         const hasToManyConnections: boolean =
           this.port.capacity === PortCapacity.SINGLE &&
-          this.port.connectedPorts.length >= 1;
+          this.port.connectedPortGuids.length >= 1;
 
 
         this.canBeClicked =
@@ -100,8 +106,8 @@ export class PortComponent implements OnInit, OnDestroy {
 
   private removeAllConnections(): void {
     this.port.getConnections()
-      .forEach((other: Port) => {
-        this.portService.disconnectPorts(this.port, other);
+      .forEach((guid: string) => {
+        this.portService.disconnectPortsByGuid(this.port, guid);
       })
   }
 
@@ -143,7 +149,7 @@ export class PortComponent implements OnInit, OnDestroy {
   private get hasToManyConnections(): boolean {
     return (
       this.port.capacity === PortCapacity.SINGLE &&
-      this.port.connectedPorts.length >= 1
+      this.port.connectedPortGuids.length >= 1
     );
   }
 
