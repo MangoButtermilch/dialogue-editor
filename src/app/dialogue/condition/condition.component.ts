@@ -22,23 +22,11 @@ export class ConditionComponent implements OnInit, OnDestroy {
   public readonly conditionFieldName: string = "variableCondition";
   public readonly valueFieldName: string = "variableTargetValue";
 
-  public formGroup: FormGroup = new FormGroup({
-    [this.guidFieldName]: new FormControl(null),
-    [this.conditionFieldName]: new FormControl(null),
-    [this.valueFieldName]: new FormControl(null)
-  });
-  private formValueChanges$: Observable<object> = this.formGroup.valueChanges
-    .pipe(takeUntil(this.destroy$));
+  public formGroup: FormGroup | null = null;
 
-  public variables$: Observable<Variable[]> = this.variableService.getVariables()
-    .pipe(takeUntil(this.destroy$));
-
-  private stateChange$: Observable<[object, Variable[]]> =
-    combineLatest([
-      this.formValueChanges$,
-      this.variables$
-    ])
-      .pipe(takeUntil(this.destroy$));
+  private formValueChanges$: Observable<object> | null = null;
+  public variables$: Observable<Variable[]> | null = null
+  private stateChange$: Observable<[object, Variable[]]> | null = null;
 
   public conditionTypes = ConditionType;
   public errorMessage: string = "";
@@ -46,11 +34,16 @@ export class ConditionComponent implements OnInit, OnDestroy {
   constructor(private variableService: VariableService) { }
 
   ngOnInit(): void {
+    this.initFormAndObservables();
     this.errorMessage = this.getErrorMessage();
+
+    //manually triggering for stateChange$ to fire
+    this.variables$.subscribe((vars: Variable[]) => {
+      this.formGroup.updateValueAndValidity({ emitEvent: true });
+    })
 
     this.stateChange$.subscribe((data: [object, Variable[]]) => {
       const [formData, variables] = data;
-
 
       this.conditionNode.variable = null;
       this.conditionNode.variable = variables.find((other: Variable) => other.guid === formData[this.guidFieldName]);
@@ -61,6 +54,7 @@ export class ConditionComponent implements OnInit, OnDestroy {
         this.conditionNode.expectedValue = this.conditionNode.type === ConditionType.TRUE ? true : false;
       }
 
+      this.onUpdate.emit(this.conditionNode);
       this.errorMessage = this.getErrorMessage();
     });
   }
@@ -69,6 +63,27 @@ export class ConditionComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
+  private initFormAndObservables(): void {
+
+    const guid = this.conditionNode.variable?.guid ?? null;
+    const condition = this.conditionNode.type ?? null;
+    const value = this.conditionNode.expectedValue ?? null;
+
+    this.formGroup = new FormGroup({
+      [this.guidFieldName]: new FormControl(guid),
+      [this.conditionFieldName]: new FormControl(condition),
+      [this.valueFieldName]: new FormControl(value)
+    });
+    this.formValueChanges$ = this.formGroup.valueChanges.pipe(takeUntil(this.destroy$));
+    this.variables$ = this.variableService.getVariables().pipe(takeUntil(this.destroy$));
+    this.stateChange$ = combineLatest([
+      this.formValueChanges$,
+      this.variables$
+    ]).pipe(takeUntil(this.destroy$));
+
+  }
+
 
   public getErrorMessage(): string {
 
@@ -180,7 +195,7 @@ export class ConditionComponent implements OnInit, OnDestroy {
       case ConditionType.TRUE: return "true";
       case ConditionType.FALSE: return "false";
       case ConditionType.STR_EQUAL: return "equal (text)";
-      default: return ""; 
+      default: return "";
     }
   }
 

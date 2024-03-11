@@ -1,16 +1,12 @@
-import { CdkDragMove, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { CharacterService } from 'src/app/services/data/character.service';
 import { ChoiceService } from 'src/app/services/dialogue/choice.service';
 import { EdgeService } from 'src/app/services/dialogue/edge.service';
-import { NodeService } from 'src/app/services/dialogue/node.service';
 import { PortService } from 'src/app/services/dialogue/port.service';
 import { EditorStateService } from 'src/app/services/editor/editor-state.service';
-import { DialogueNode, Choice, Character } from 'src/models/models';
-import { ChoiceComponent } from '../choice/choice.component';
-import { PortComponent } from '../port/port.component';
+import { Character, Choice, DialogueNode } from 'src/models/models';
 
 @Component({
   selector: 'app-node',
@@ -23,10 +19,11 @@ export class NodeComponent implements OnDestroy {
   @Output() onDelete: EventEmitter<DialogueNode> = new EventEmitter<DialogueNode>();
   @Input() dialogueNode: DialogueNode;
 
-  public characterOptions$: Observable<Character[]> = this.characterService.getCharacters();
+  private destroy$: Subject<void> = new Subject<void>();
+  public characterOptions$: Observable<Character[]> = this.characterService.getCharacters()
+    .pipe(takeUntil(this.destroy$));
   private characters: Character[] = [];
   public selectedCharacterIndex: number = 1;
-  private destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private edgeService: EdgeService,
@@ -36,32 +33,35 @@ export class NodeComponent implements OnDestroy {
     private portService: PortService
   ) { }
 
-  ngOnChanges(): void {
-    if (!this.dialogueNode) return;
+  ngOnInit(): void {
 
-    this.characterOptions$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((characters: Character[]) => {
-        this.characters = characters;
+    this.characterOptions$.subscribe((characters: Character[]) => {
+      this.characters = characters;
 
-        this.selectedCharacterIndex = characters.findIndex((chars: Character) =>
-          chars.guid === this.dialogueNode.character.guid
-        );
+      if (characters.length === 0) {
+        this.selectedCharacterIndex = -1;
+        this.characters = [];
+        return;
+      }
 
-        if (this.selectedCharacterIndex < 0) {
-          this.selectedCharacterIndex = 0;
-        }
+      this.selectedCharacterIndex = characters.findIndex((chars: Character) =>
+        chars.guid === this.dialogueNode.character.guid
+      );
 
-        if (this.dialogueNode.character.guid !== this.characters[this.selectedCharacterIndex].guid) {
-          this.dialogueNode.character = this.characters[this.selectedCharacterIndex];
-          this.onUpdate.emit(this.dialogueNode);
-        }
-      });
+      if (this.selectedCharacterIndex < 0) {
+        this.selectedCharacterIndex = 0;
+      }
+
+      //  if (this.dialogueNode.character.guid !== this.characters[this.selectedCharacterIndex].guid) {
+      this.dialogueNode.character = this.characters[this.selectedCharacterIndex];
+      this.onUpdate.emit(this.dialogueNode);
+      //}
+    });
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   public cdkChoiceDragStarted(eventData: any, choice: Choice): void {

@@ -12,16 +12,14 @@ export class CommentService {
 
   private readonly defaultColor = "#198754";
 
-  constructor(private guidService: GuidService) {
-  }
+  constructor(private guidService: GuidService) { }
 
   public generateComment(position: Vector2 | null = null): CommentNode {
-
     return new CommentNode(
       this.guidService.getGuid(),
       position ?? { x: 0, y: 0 },
       this.defaultColor,
       ""
-    )
+    );
   }
 }

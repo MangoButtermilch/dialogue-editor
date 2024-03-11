@@ -21,9 +21,23 @@ export class CharacterService {
 
   constructor(private guidService: GuidService) { }
 
+  private updateCharacters(): void {
+    this.characters$.next(this.characters);
+  }
+
   public getCharacters(): Observable<Character[]> {
     return this.characters$;
   }
+
+  public injectCharactersFromImport(characters: Character[]) {
+    this.characters = [];
+    this.updateCharacters();
+
+    this.characters = characters;
+    this.updateCharacters();
+  }
+
+
 
   public addCharacter(args: { name: string, color: string }): void {
     this.characters.push({
@@ -32,19 +46,19 @@ export class CharacterService {
       name: args.name,
       color: args.color
     });
-    this.characters$.next(this.characters);
+    this.updateCharacters();
   }
 
   public updateCharacter(character: Character): void {
     const index: number = this.characters.findIndex((other: Character) => other.guid == character.guid);
     this.characters[index] = character;
-    this.characters$.next(this.characters);
+    this.updateCharacters();
   }
 
   public removeCharacter(guid: string): void {
     const index = this.characters.findIndex((char: Character) => char.guid === guid);
     this.characters.splice(index, 1);
-    this.characters$.next(this.characters);
+    this.updateCharacters();
   }
 
   public getDefaultCharacter(): Character {
@@ -53,7 +67,7 @@ export class CharacterService {
 
   public moveItemInArray(previousIndex: number, currentIndex: number): void {
     moveItemInArray(this.characters, previousIndex, currentIndex);
-    this.characters$.next(this.characters);
+    this.updateCharacters();
   }
 
   public onCharactersUpdate(): Observable<Character[]> {

@@ -9,6 +9,7 @@ import { Character } from 'src/models/models';
   styleUrls: ['./character-panel.component.scss']
 })
 export class CharacterPanelComponent {
+  
   public characters$: Observable<Character[]> = this.characterService.getCharacters();
 
   constructor(private characterService: CharacterService) { }

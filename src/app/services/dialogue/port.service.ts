@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { Choice, ConditionNode, DialogueNode, EventNode, Port, PortCapacity, PortDirection, Possibility, RandomNode, RepeatNode } from 'src/models/models';
+import { Choice, ConditionNode, Dialogue, DialogueNode, EventNode, Port, PortCapacity, PortDirection, Possibility, RandomNode, RepeatNode } from 'src/models/models';
 import { GuidService } from '../editor/guid.service';
 
 @Injectable({
@@ -14,6 +14,14 @@ export class PortService {
   private portsDisconnectedState$: Subject<Port[]> = new Subject<Port[]>();
 
   constructor(private guidService: GuidService) { }
+
+  public reassignPortsAfterImport(dialoge: Dialogue): void {
+    this.ports = [];
+    this.updatePorts();
+
+
+  }
+
 
   public generateInputPort(parentGuid: string): Port {
     const guid: string = this.guidService.getGuid();
@@ -114,7 +122,7 @@ export class PortService {
    */
   public removePortsForNode(node: DialogueNode) {
     this.removePort(node.inPort);
-    
+
     node.choices.forEach((choice: Choice) => {
       this.removePort(choice.outPort);
     })
@@ -135,7 +143,7 @@ export class PortService {
    */
   public removePortsForRandomNode(randomNode: RandomNode) {
     this.removePort(randomNode.inPort);
-    
+
     randomNode.possibilites.forEach((possibility: Possibility) => {
       this.removePort(possibility.outPort);
     });

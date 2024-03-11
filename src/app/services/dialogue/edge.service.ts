@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { combineLatest, Observable, of, ReplaySubject, withLatestFrom, zip } from 'rxjs';
-import { Choice, ConditionNode, DialogueNode, Edge, EventNode, Port, PortCapacity, Possibility, RandomNode, RepeatNode } from 'src/models/models';
+import { Choice, ConditionNode, Dialogue, DialogueNode, Edge, EventNode, Port, PortCapacity, Possibility, RandomNode, RepeatNode } from 'src/models/models';
 import { DomEventService } from '../dom/dom-event.service';
 import { EditorStateService } from '../editor/editor-state.service';
 import { GuidService } from '../editor/guid.service';
@@ -30,6 +30,18 @@ export class EdgeService {
     this.handlePortsConnected();
     this.handlePortsDisconnected();
     this.handleDeleteEdge();
+  }
+
+  public generateEdgesAfterImport(dialoge: Dialogue): void {
+    this.edges = [];
+    this.updateEdges();
+  }
+
+  /**
+   * Updates edges observable with current edges array.
+   */
+  private updateEdges(): void {
+    this.edges$.next(this.edges);
   }
 
   private handleDeleteEdge(): void {
@@ -86,7 +98,7 @@ export class EdgeService {
         portB
       )
     );
-    this.edges$.next(this.edges);
+    this.updateEdges();
   }
 
   public removeAllEdgesFor(port: Port): void {
@@ -96,7 +108,7 @@ export class EdgeService {
         other.end.guid !== port.guid
     );
 
-    this.edges$.next(this.edges);
+    this.updateEdges();
   }
 
   public getEdges(): Observable<Edge[]> {

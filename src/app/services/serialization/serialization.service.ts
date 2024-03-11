@@ -14,24 +14,15 @@ export class SerializationService {
   constructor(private dialogueService: DialogueService) { }
 
   public saveToJson(): void {
-
     this.dialogue$.subscribe((dialoge: Dialogue) => {
-
-
       this.downloadJSON(dialoge, dialoge.name);
-
     }).unsubscribe();
   }
 
   public loadFromJson(): void {
-
-
-    this.importJSON((data: Dialogue) => {
-
-      console.log(data);
-    })
-
-
+    this.importJSON((dialouge: Dialogue) => {
+      this.dialogueService.loadDialougeFromImport(dialouge);
+    });
   }
 
   /**
@@ -62,6 +53,7 @@ export class SerializationService {
       reader.readAsText(file);
     };
     input.click();
+    input.remove();
   }
 
   /**

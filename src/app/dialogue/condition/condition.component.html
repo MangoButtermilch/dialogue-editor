@@ -1,4 +1,4 @@
-<div *ngIf="conditionNode"
+<div *ngIf="conditionNode && formGroup" 
      [formGroup]="formGroup"
      class="condition-node {{errorMessage !== '' ? 'warning': ''}}">
 
@@ -32,6 +32,7 @@
                 name="type"
                 formControlName="{{conditionFieldName}}">
             <option *ngFor="let enum of conditionTypes | keyvalue"
+                    [selected]="enum.key == conditionNode.type"
                     value="{{enum.key}}">
                 {{getConditionTypeLabel(enum.value)}}
             </option>

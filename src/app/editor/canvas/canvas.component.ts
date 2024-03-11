@@ -26,15 +26,25 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
   private canvasHeight: number = 0;
 
   private destroy$: Subject<boolean> = new Subject<boolean>();
-  private portSelected$: Observable<Port | null> = this.editorStateService.onPortSelected();
-  private draggingChoice$: Observable<Choice | null> = this.editorStateService.onChoiceDrag();
-  private edgeDeleted$: Observable<Edge | null> = this.editorStateService.onEdgeDeleted();
   private drawEdgesInterval: any = null;
   private drawLineToMouseInterval: any = null;
   private currentHoverEdge: Edge | null = null;
 
   private currentPort: Port | null = null;
   private renderEdges: Edge[] = [];
+
+  private renderEdges$: Observable<Edge[]> = this.edgeService.getEdges()
+    .pipe(takeUntil(this.destroy$));
+  private portSelected$: Observable<Port | null> = this.editorStateService.onPortSelected()
+    .pipe(takeUntil(this.destroy$));
+  private draggingChoice$: Observable<Choice | null> = this.editorStateService.onChoiceDrag()
+    .pipe(takeUntil(this.destroy$));
+  private edgeDeleted$: Observable<Edge | null> = this.editorStateService.onEdgeDeleted()
+    .pipe(takeUntil(this.destroy$));
+  private domResize$: Observable<void> = this.domEventService.onDomResize()
+    .pipe(takeUntil(this.destroy$));
+  private panZoomChange$: Observable<PanZoomModel> = this.panZoomSerivce.panZoomConfig.modelChanged
+    .pipe(takeUntil(this.destroy$));
 
   /**
    * HTML elements will first be fetched by guid in id attribute, then cached inside this Map.
@@ -72,25 +82,21 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     this.resetDrawEdgesInterval();
     this.resetDrawLineToMouseInterval();
     this.destroy$.next(true);
-    this.destroy$.unsubscribe();
+    this.destroy$.complete();
   }
 
   /**
    * Fetches edges from service to update the array of edges to render
    */
   private handleEdges(): void {
-    this.edgeService.getEdges()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((edges: Edge[]) => {
-        this.renderEdges = edges;
-      });
+    this.renderEdges$.subscribe((edges: Edge[]) => {
+      this.renderEdges = edges;
+    });
 
-    this.edgeDeleted$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((edge: Edge | null) => {
-        if (edge === null) return;
-        this.currentHoverEdge = null;
-      });
+    this.edgeDeleted$.subscribe((edge: Edge | null) => {
+      if (edge === null) return;
+      this.currentHoverEdge = null;
+    });
   }
 
   /**
@@ -100,22 +106,20 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private handleDraggingChoices(): void {
 
-    this.draggingChoice$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((choice: Choice | null) => {
-        if (!choice) return;
+    this.draggingChoice$.subscribe((choice: Choice | null) => {
+      if (!choice) return;
 
-        const isRenderingPortEdge: boolean = this.renderEdges.some(
-          (edge: Edge) => edge.start.guid === choice.outPort.guid || edge.end.guid === choice.outPort.guid
-        );
-        if (!isRenderingPortEdge) {
-          this.elementIdCache.set(choice.outPort.guid, document.getElementById(choice.outPort.guid));
-          return;
-        }
+      const isRenderingPortEdge: boolean = this.renderEdges.some(
+        (edge: Edge) => edge.start.guid === choice.outPort.guid || edge.end.guid === choice.outPort.guid
+      );
+      if (!isRenderingPortEdge) {
+        this.elementIdCache.set(choice.outPort.guid, document.getElementById(choice.outPort.guid));
+        return;
+      }
 
-        const newInstance = document.querySelector("app-choice.cdk-drag-preview app-port");
-        this.elementIdCache.set(choice.outPort.guid, newInstance as HTMLElement);
-      });
+      const newInstance = document.querySelector("app-choice.cdk-drag-preview app-port");
+      this.elementIdCache.set(choice.outPort.guid, newInstance as HTMLElement);
+    });
   }
 
   /**
@@ -144,35 +148,33 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
    * Draws on dynamic canvas.
    */
   private setupDrawLineToMouseInterval(): void {
-    this.portSelected$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((port: Port | null) => {
-        this.currentPort = port;
-        if (!port) {
-          this.clear(CanvasType.DYNAMIC);
-          this.resetDrawLineToMouseInterval();
-          return;
-        }
+    this.portSelected$.subscribe((port: Port | null) => {
+      this.currentPort = port;
+      if (!port) {
+        this.clear(CanvasType.DYNAMIC);
+        this.resetDrawLineToMouseInterval();
+        return;
+      }
 
-        //if clicked new port
-        if (this.currentPort.guid !== port.guid) {
-          this.resetDrawLineToMouseInterval();
-        }
+      //if clicked new port
+      if (this.currentPort.guid !== port.guid) {
+        this.resetDrawLineToMouseInterval();
+      }
 
-        if (this.drawLineToMouseInterval !== null) return;
+      if (this.drawLineToMouseInterval !== null) return;
 
-        this.drawLineToMouseInterval =
-          setInterval(() => {
+      this.drawLineToMouseInterval =
+        setInterval(() => {
 
-            this.drawLine(
-              this.getPortPosition(port),
-              this.domEventService.getMousePosition(),
-              CanvasType.DYNAMIC
-            );
+          this.drawLine(
+            this.getPortPosition(port),
+            this.domEventService.getMousePosition(),
+            CanvasType.DYNAMIC
+          );
 
 
-          }, this.drawDelayMs);
-      });
+        }, this.drawDelayMs);
+    });
   }
 
   /**
@@ -234,24 +236,20 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private handleWindowResize(): void {
-    this.domEventService.onDomResize()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.initialized = false;
-        this.canvasSetup();
-      });
+    this.domResize$.subscribe(() => {
+      this.initialized = false;
+      this.canvasSetup();
+    });
   }
 
   private handlePanZoomChange(): void {
-    this.panZoomSerivce.panZoomConfig.modelChanged
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((model: PanZoomModel) => {
-        const maxZoomLevel = this.panZoomSerivce.panZoomConfig.zoomLevels;
-        const zoomRatio = (model.zoomLevel + 1) / maxZoomLevel
-        const lineWidth = this.lineWidth * zoomRatio;
-        this.ctxStatic.lineWidth = lineWidth;
-        this.ctxDynamic.lineWidth = lineWidth;
-      });
+    this.panZoomChange$.subscribe((model: PanZoomModel) => {
+      const maxZoomLevel = this.panZoomSerivce.panZoomConfig.zoomLevels;
+      const zoomRatio = (model.zoomLevel + 1) / maxZoomLevel
+      const lineWidth = this.lineWidth * zoomRatio;
+      this.ctxStatic.lineWidth = lineWidth;
+      this.ctxDynamic.lineWidth = lineWidth;
+    });
   }
 
   /**

@@ -13,7 +13,8 @@
 
     <select class="bg-dark me-1 text-white"
             (input)="updateVariableType($event)">
-        <option *ngFor="let enum of variableTypes | keyvalue">
+        <option *ngFor="let enum of variableTypes | keyvalue"
+                [selected]="enum.key == variable.type">
             {{enum.key}}
         </option>
     </select>

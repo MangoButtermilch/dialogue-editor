@@ -41,6 +41,29 @@ export class DialogueService {
     this.handleCharactersChange();
   }
 
+  public loadDialougeFromImport(importedDialouge: Dialogue): void {
+    this.destroyDialouge();
+    this.dialogue = importedDialouge;
+
+    this.variableService.injectVariablesFromImport(importedDialouge.variables);
+    this.characterService.injectCharactersFromImport(importedDialouge.characters);
+
+
+   // this.edgeService.generateEdgesAfterImport(importedDialouge);
+   // this.portService.reassignPortsAfterImport(importedDialouge);
+
+   this.updateDialogue();
+    console.log(importedDialouge)
+  }
+
+  /**
+   * Sets dialouge object to null and updates stream.
+   */
+  private destroyDialouge(): void {
+    this.dialogue = null;
+    this.updateDialogue();
+  }
+
   public generateDialogue(): Dialogue {
     const guid: string = this.guidService.getGuid();
     return new Dialogue(

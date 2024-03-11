@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Variable, VariableType } from 'src/models/models';
 
@@ -7,22 +7,30 @@ import { Variable, VariableType } from 'src/models/models';
   templateUrl: './variable.component.html',
   styleUrls: ['./variable.component.scss']
 })
-export class VariableComponent {
+export class VariableComponent implements OnInit {
 
   @Output() onUpdateVariable: EventEmitter<Variable> = new EventEmitter<Variable>();
   @Output() onDeleteVariable: EventEmitter<Variable> = new EventEmitter<Variable>();
 
   @Input() variable: Variable;
 
-
   public readonly variableControlName: string = "variableName";
-
-  public formGroup: FormGroup = new FormGroup({
-    [this.variableControlName]: new FormControl("newVariable", [Validators.required, Validators.pattern("^[a-zA-Z_][a-zA-Z0-9_]*$")])
-  });
-
   public variableNameValid: boolean = true;
   public variableTypes = VariableType;
+  public formGroup: FormGroup | null = null;
+
+  ngOnInit(): void {
+    this.generateFormGroup();
+  }
+
+  private generateFormGroup(): void {
+    const name = this.variable.name || "newVariable";
+
+    this.formGroup = new FormGroup({
+      [this.variableControlName]:
+        new FormControl(name, [Validators.required, Validators.pattern("^[a-zA-Z_][a-zA-Z0-9_]*$")])
+    });
+  }
 
   public updateVariableName(eventData: any): void {
     const value = eventData.target.value;
