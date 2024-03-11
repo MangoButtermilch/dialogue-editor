@@ -206,8 +206,28 @@ export class Dialogue {
         public variables: Variable[] = [],
         public characters: Character[] = []
     ) { }
-    
-    
+
+    /**
+     * Used for loading JSON files.
+     * Called directly after generateDialouge()
+     * @param jsonStr 
+     * @throws Error If JSON object is not of type Dialogue
+     * @returns Dialouge object from JSON.
+     */
+    public overrideWithJsonData(jsonStr: string): Dialogue {
+        let jsonObj = JSON.parse(jsonStr);
+        for (let prop in jsonObj) {
+
+            if (this[prop] === undefined) {
+                throw new Error("Invalid JSON");
+            }
+
+            this[prop] = jsonObj[prop];
+        }
+        return this;
+    }
+
+
     public findCommentNodeIndex(node: CommentNode): number {
         return this.comments.findIndex((other: CommentNode) => other.guid === node.guid);
     }
@@ -225,7 +245,7 @@ export class Dialogue {
     }
 
 
-    
+
     public findRandomNodeIndex(node: RandomNode): number {
         return this.randomNodes.findIndex((other: RandomNode) => other.guid === node.guid);
     }
@@ -242,7 +262,7 @@ export class Dialogue {
         this.randomNodes.splice(this.findRandomNodeIndex(node), 1);
     }
 
-    
+
     public findConditionNodeIndex(node: ConditionNode): number {
         return this.conditions.findIndex((other: ConditionNode) => other.guid === node.guid);
     }
@@ -258,7 +278,7 @@ export class Dialogue {
     public removeConditionNode(node: ConditionNode): void {
         this.conditions.splice(this.findConditionNodeIndex(node), 1);
     }
-    
+
 
     public findEventNodeIndex(node: EventNode): number {
         return this.events.findIndex((other: EventNode) => other.guid === node.guid);
@@ -275,7 +295,7 @@ export class Dialogue {
     public removeEventNode(node: EventNode): void {
         this.events.splice(this.findEventNodeIndex(node), 1);
     }
-    
+
 
     public findDialogueNodeIndex(node: DialogueNode): number {
         return this.nodes.findIndex((other: DialogueNode) => other.guid === node.guid);

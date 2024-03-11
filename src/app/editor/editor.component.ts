@@ -12,6 +12,7 @@ import { EditorStateService } from '../services/editor/editor-state.service';
 import { GuidService } from '../services/editor/guid.service';
 import { PanZoomService } from '../services/editor/pan-zoom.service';
 import dialogueMockData from '../../assets/mock/dialogue-mock.json';
+import { SerializationService } from '../services/serialization/serialization.service';
 
 @Component({
   selector: 'app-editor',
@@ -31,6 +32,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   constructor(
+    private serializationService: SerializationService,
     private editorStateService: EditorStateService,
     private dialogueService: DialogueService,
     private panZoomService: PanZoomService) {
@@ -147,17 +149,12 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dialogueService.deleteRepeatNode(repeatNode);
   }
 
-
-  /**
-   * Placeholder
-   */
   public save(): void {
-    console.log(
-    );
+    this.serializationService.saveToJson();
   }
 
   public load(): void {
-
+    this.serializationService.loadFromJson();
   }
 
 }
