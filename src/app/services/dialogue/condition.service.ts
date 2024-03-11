@@ -22,6 +22,7 @@ export class ConditionService {
       ConditionType.EQUAL,
       this.portService.generateInputPort(guid),
       this.portService.generateOutputPort(guid),
+      this.portService.generateOutputPort(guid),
       null,
       null
     );
