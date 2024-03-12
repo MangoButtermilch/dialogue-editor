@@ -20,8 +20,8 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private lineWidth: number = 5;
   private lineOffset: number = 26.6;
-  private lineColor: string = "green";
-  private lineHoverColor: string = "lime";
+  private lineColor: string = "#0d6efd";
+  private lineHoverColor: string = "#40dfff";
   private canvasWidth: number = 0;
   private canvasHeight: number = 0;
 
@@ -91,7 +91,7 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
   private handleEdges(): void {
     this.renderEdges$.subscribe((edges: Edge[]) => {
       this.renderEdges = edges;
-      this.elementIdCache.clear();
+      this.clear(CanvasType.STATIC);
     });
 
     this.edgeDeleted$.subscribe((edge: Edge | null) => {
@@ -132,15 +132,12 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     this.drawEdgesInterval =
       setInterval(() => {
         this.clear(CanvasType.STATIC);
-        this.renderEdges.forEach((edge: Edge) => {
 
+        for (let edge of this.renderEdges) {
           this.evaluateIfEdgeIsHovered(edge);
-
-          this.drawEdge(
-            edge,
-            CanvasType.STATIC
-          );
-        })
+          this.drawEdge(edge, CanvasType.STATIC);
+        }
+        
       }, this.drawDelayMs);
   }
 
@@ -173,7 +170,6 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
             CanvasType.DYNAMIC
           );
 
-
         }, this.drawDelayMs);
     });
   }
@@ -198,9 +194,7 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     const zoomratio = currentZoomLevel / maxZoom;
     const lineOffset = this.lineOffset * zoomratio;
 
-    const isHovered =
-      this.currentHoverEdge !== null &&
-      this.currentHoverEdge.guid === edge.guid;
+    const isHovered = this.currentHoverEdge?.guid === edge.guid;
 
     this.getCtx(type).strokeStyle = isHovered ? this.lineHoverColor : this.lineColor;
 
@@ -251,19 +245,6 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
       this.ctxStatic.lineWidth = lineWidth;
       this.ctxDynamic.lineWidth = lineWidth;
     });
-  }
-
-  /**
-   * @returns HTML Element center as Vector2 
-   */
-  private getPortPosition(port: Port): Vector2 {
-    let el = this.elementIdCache.get(port.guid);
-    if (!el) {
-      el = document.getElementById(port.guid);
-      this.elementIdCache.set(port.guid, el);
-    }
-    const rect = el.getBoundingClientRect();
-    return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
   }
 
   private resetDrawEdgesInterval(): void {
@@ -393,8 +374,23 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     const lengthMouseToEnd = Math.sqrt(mouseToEnd.x * mouseToEnd.x + mouseToEnd.y * mouseToEnd.y);
     const lengthStartToEnd = Math.sqrt(startToEnd.x * startToEnd.x + startToEnd.y * startToEnd.y);
 
-    return (this.isApprox(lengthMouseToStart + lengthMouseToEnd, lengthStartToEnd, .1));
+    return (this.isApprox(lengthMouseToStart + lengthMouseToEnd, lengthStartToEnd, .2));
   }
+
+  /**
+   * @returns HTML Element center as Vector2 
+   */
+  private getPortPosition(port: Port): Vector2 {
+    let el = this.elementIdCache.get(port.guid);
+
+    if (!el) {
+      el = document.getElementById(port.guid);
+      this.elementIdCache.set(port.guid, el);
+    }
+    const rect = el.getBoundingClientRect();
+    return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+  }
+
 
   /**
    * 
