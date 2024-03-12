@@ -1,5 +1,9 @@
 .condition-node {
 
+    .color-indicator {
+        background-color: var(--colorConditionNode);
+    }
+
     &.warning {
         outline: 5px solid var(--colorError);
     }

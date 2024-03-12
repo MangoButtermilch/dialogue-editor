@@ -6,6 +6,11 @@
     --colorDark: #333;
     --colorError: #dc3545;
 
+    --colorRepeatNode: #bfa730;
+    --colorRandomNode: #3cb96c;
+    --colorConditionNode: #49b9b4;
+    --colorEventNode: #d55223;
+
     --fontSizeSM: 16px;
     --fontSizeMD: 20px;
     --fontSizeL: 24px;
@@ -83,7 +88,8 @@ p,
 textarea,
 input,
 select {
-    margin: 0;    line-height: var(--bs-body-line-height);
+    margin: 0;
+    line-height: var(--bs-body-line-height);
 }
 
 svg-icon {
@@ -108,7 +114,7 @@ app-toolbar {
 .bg-gray {
     background-color: var(--colorDark);
 }
- 
+
 .btn-success {
     display: inline-flex;
     align-items: center;
