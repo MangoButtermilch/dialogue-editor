@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { RepeatNode } from 'src/models/models';
 
@@ -7,15 +7,19 @@ import { RepeatNode } from 'src/models/models';
   templateUrl: './repeat.component.html',
   styleUrls: ['./repeat.component.scss']
 })
-export class RepeatComponent {
+export class RepeatComponent implements OnInit {
 
   @Output() onUpdate: EventEmitter<RepeatNode> = new EventEmitter<RepeatNode>();
   @Output() onDelete: EventEmitter<RepeatNode> = new EventEmitter<RepeatNode>();
   @Input() repeatNode: RepeatNode;
 
-  public formGroup: FormGroup = new FormGroup({
-    count: new FormControl(1, [Validators.required, Validators.min(1)])
-  });
+  public formGroup: FormGroup | null = null;
+
+  ngOnInit(): void {
+    this.formGroup = new FormGroup({
+      count: new FormControl(this.repeatNode.repetitions ?? 1, [Validators.required, Validators.min(1)])
+    });
+  }
 
   public onAmountInput(eventData: any): void {
     const val = eventData.target.value;
