@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { combineLatest, Observable, of, ReplaySubject, withLatestFrom, zip } from 'rxjs';
-import { Choice, ConditionNode, Dialogue, DialogueNode, Edge, EventNode, Port, PortCapacity, Possibility, RandomNode, RepeatNode } from 'src/models/models';
+import { Observable, ReplaySubject, withLatestFrom } from 'rxjs';
+import { Choice, ConditionNode, DialogueNode, Edge, EventNode, Port, PortCapacity, Possibility, RandomNode, RepeatNode } from 'src/models/models';
 import { DomEventService } from '../dom/dom-event.service';
 import { EditorStateService } from '../editor/editor-state.service';
 import { GuidService } from '../editor/guid.service';
@@ -32,9 +32,28 @@ export class EdgeService {
     this.handleDeleteEdge();
   }
 
-  public generateEdgesAfterImport(dialoge: Dialogue): void {
+  public generateEdgesAfterImport(): void {
     this.edges = [];
     this.updateEdges();
+
+    this.portService.getPorts().subscribe((ports: Port[]) => {
+      ports.forEach((port: Port) => {
+
+        //Only need one-way connections to avoid overdraw
+        if (
+          port.connectedPortGuids.length == 0 ||
+          port.capacity === PortCapacity.MULTIPLE
+        ) return;
+
+        for (let guid of port.connectedPortGuids) {
+
+          const otherPort: Port = ports.find((other: Port) => other.guid === guid);
+          this.generateEdge(port, otherPort);
+        }
+
+      });
+
+    }).unsubscribe();
   }
 
   /**

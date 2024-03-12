@@ -1,17 +1,10 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { PanZoomConfig, PanZoomModel } from 'ngx-panzoom';
-import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
-import { DialogueNode, Dialogue, Choice, Vector2, CommentNode, EventNode, ConditionNode, Edge, RandomNode, RepeatNode } from 'src/models/models';
-import { CommentService } from '../services/dialogue/comment.service';
-import { ConditionService } from '../services/dialogue/condition.service';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { PanZoomConfig } from 'ngx-panzoom';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { CommentNode, ConditionNode, Dialogue, DialogueNode, EventNode, RandomNode, RepeatNode, Vector2 } from 'src/models/models';
 import { DialogueService } from '../services/dialogue/dialogue.service';
-import { EdgeService } from '../services/dialogue/edge.service';
-import { EventNodeService } from '../services/dialogue/event-node.service';
-import { NodeService } from '../services/dialogue/node.service';
 import { EditorStateService } from '../services/editor/editor-state.service';
-import { GuidService } from '../services/editor/guid.service';
 import { PanZoomService } from '../services/editor/pan-zoom.service';
-import dialogueMockData from '../../assets/mock/dialogue-mock.json';
 import { SerializationService } from '../services/serialization/serialization.service';
 
 @Component({

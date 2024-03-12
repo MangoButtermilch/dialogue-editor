@@ -15,13 +15,43 @@ export class PortService {
 
   constructor(private guidService: GuidService) { }
 
-  public reassignPortsAfterImport(dialoge: Dialogue): void {
-    this.ports = [];
+  public loadImportedPorts(dialoge: Dialogue): void {
+    this.destroyPorts();
+    this.findPortsRecursivley(dialoge);
     this.updatePorts();
-
-
   }
 
+  /**
+   * @param iteratable Initial value should be Dialouge object after an import
+   */
+  private findPortsRecursivley(iteratable: any) {
+
+    for (const key in iteratable) {
+      const value = iteratable[key];
+      const isIteratable = (value instanceof Array || value instanceof Object);
+
+      if (!isIteratable) continue;
+
+      this.findPortsRecursivley(value);
+
+      const isPort = value instanceof Port;
+      if (!isPort) continue;
+
+      this.ports.push(value);
+    }
+  }
+
+  /**
+   * Sets ports to empty array and updates stream.
+   */
+  private destroyPorts(): void {
+    this.ports = [];
+    this.updatePorts();
+  }
+
+  public getPorts(): Observable<Port[]> {
+    return this.ports$.asObservable();
+  }
 
   public generateInputPort(parentGuid: string): Port {
     const guid: string = this.guidService.getGuid();
@@ -84,7 +114,7 @@ export class PortService {
    */
   public disconnectPortsByGuid(portA: Port, guidB: string): void {
     portA.disconnectByGuid(guidB);
-    this.findPortByGuid(guidB).disconnectByGuid(portA.guid);
+    this.findPortByGuid(guidB)?.disconnectByGuid(portA.guid);
     this.portsDisconnectedState$.next([portA]);
   }
 

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { DialogueNode, Choice, Port } from 'src/models/models';
+import { Choice } from 'src/models/models';
 import { GuidService } from '../editor/guid.service';
-import { NodeService } from './node.service';
 import { PortService } from './port.service';
 
 @Injectable({

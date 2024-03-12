@@ -40,8 +40,7 @@ export interface Variable {
 export abstract class GuiObject {
     constructor(
         public guid: string,
-        public position: Vector2,
-        public transformStyle: string = "") { }
+        public position: Vector2) { }
 }
 
 export class Port extends GuiObject {
@@ -91,6 +90,16 @@ export class Choice extends GuiObject {
     ) {
         super(guid, pos);
     }
+
+    public static fromImportedData(importedData: any): Choice {
+        return new Choice(
+            importedData.guid,
+            importedData.position ?? { x: 0, y: 0 },
+            importedData.parentGuid,
+            importedData.outPort,
+            importedData.content
+        );
+    }
 }
 
 export class Edge extends GuiObject {
@@ -118,6 +127,19 @@ export class DialogueNode extends GuiObject {
     ) {
         super(guid, pos);
     }
+
+    public static fromImportedData(importedData: any): DialogueNode {
+        return new DialogueNode(
+            importedData.guid,
+            importedData.position ?? { x: 0, y: 0 },
+            importedData.character,
+            importedData.label,
+            importedData.content,
+            importedData.isRoot,
+            importedData.inPort,
+            importedData.choices
+        );
+    }
 }
 
 export class CommentNode extends GuiObject {
@@ -128,6 +150,15 @@ export class CommentNode extends GuiObject {
         public content: string
     ) {
         super(guid, pos);
+    }
+
+    public static fromImportedData(importedData: any): CommentNode {
+        return new CommentNode(
+            importedData.guid,
+            importedData.position ?? { x: 0, y: 0 },
+            importedData.color,
+            importedData.condition
+        );
     }
 }
 
@@ -140,6 +171,16 @@ export class EventNode extends GuiObject {
         public outPort: Port
     ) {
         super(guid, pos);
+    }
+
+    public static fromImportedData(importedData: any): EventNode {
+        return new EventNode(
+            importedData.guid,
+            importedData.position ?? { x: 0, y: 0 },
+            importedData.name,
+            importedData.inPort,
+            importedData.outPort
+        );
     }
 }
 
@@ -156,6 +197,19 @@ export class ConditionNode extends GuiObject {
     ) {
         super(guid, pos);
     }
+
+    public static fromImportedData(importedData: any): ConditionNode {
+        return new ConditionNode(
+            importedData.guid,
+            importedData.position ?? { x: 0, y: 0 },
+            importedData.type,
+            importedData.inPort,
+            importedData.outPortMatches,
+            importedData.outPortFails,
+            importedData.variable,
+            importedData.expectedValue
+        );
+    }
 }
 
 export class Possibility extends GuiObject {
@@ -167,6 +221,15 @@ export class Possibility extends GuiObject {
     ) {
         super(guid, pos);
     }
+
+    public static fromImportedData(importedData: any): Possibility {
+        return new Possibility(
+            importedData.guid,
+            importedData.position ?? { x: 0, y: 0 },
+            importedData.parentGuid,
+            importedData.outPort,
+        );
+    }
 }
 
 export class RandomNode extends GuiObject {
@@ -177,6 +240,15 @@ export class RandomNode extends GuiObject {
         public possibilites: Possibility[]
     ) {
         super(guid, pos);
+    }
+
+    public static fromImportedData(importedData: any): RandomNode {
+        return new RandomNode(
+            importedData.guid,
+            importedData.position ?? { x: 0, y: 0 },
+            importedData.inPort,
+            importedData.possibilites,
+        );
     }
 }
 
@@ -190,7 +262,29 @@ export class RepeatNode extends GuiObject {
     ) {
         super(guid, pos);
     }
+
+    public static fromImportedData(importedData: any): RepeatNode {
+        return new RepeatNode(
+            importedData.guid,
+            importedData.position ?? { x: 0, y: 0 },
+            importedData.repetitions,
+            importedData.inPort,
+            importedData.outPort,
+        );
+    }
 }
+
+/**
+ * Does not include variables and characters since they are defined by an interface
+ */
+export enum DialogeIteratableProperty {
+    NODES = "NODES",
+    COMMENTS = "COMMENTS",
+    EVENTS = "EVENTS",
+    CONDITIONS = "CONDITIONS",
+    RANDOMNODES = "RANDOMNODES",
+    REPEATNODES = "REPEATNODES",
+};
 
 export class Dialogue {
     constructor(

@@ -29,15 +29,19 @@ export class CharacterService {
     return this.characters$;
   }
 
-  public injectCharactersFromImport(characters: Character[]) {
-    this.characters = [];
-    this.updateCharacters();
-
+  public loadImportedCharacters(characters: Character[]) {
+    this.destroyCharacters();
     this.characters = characters;
     this.updateCharacters();
   }
 
-
+  /**
+   * Sets characters to empty array and updates stream.
+   */
+  private destroyCharacters(): void {
+    this.characters = [];
+    this.updateCharacters();
+  }
 
   public addCharacter(args: { name: string, color: string }): void {
     this.characters.push({

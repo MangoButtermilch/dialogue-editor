@@ -3,7 +3,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Character, CommentNode, ConditionNode, Dialogue, DialogueNode, EventNode, RandomNode, RepeatNode, Variable, Vector2 } from 'src/models/models';
 import { GuiElementService } from '../editor/gui-element.service';
 import { GuidService } from '../editor/guid.service';
-import { PanZoomService } from '../editor/pan-zoom.service';
 import { CommentService } from './comment.service';
 import { ConditionService } from './condition.service';
 import { EdgeService } from './edge.service';
@@ -41,26 +40,19 @@ export class DialogueService {
     this.handleCharactersChange();
   }
 
-  public loadDialougeFromImport(importedDialouge: Dialogue): void {
+  /**
+   * generateEdgesAfterImport() does not update the dialogue stream so we don't need to wait for it.
+   * @param importedDialouge Object passed by serialization service
+   */
+  public loadImportedDialogue(importedDialouge: Dialogue): void {
     this.destroyDialouge();
     this.dialogue = importedDialouge;
 
-    this.variableService.injectVariablesFromImport(importedDialouge.variables);
-    this.characterService.injectCharactersFromImport(importedDialouge.characters);
+    this.variableService.loadImportedVariables(importedDialouge.variables);
+    this.characterService.loadImportedCharacters(importedDialouge.characters);
+    this.portService.loadImportedPorts(importedDialouge);
+    this.edgeService.generateEdgesAfterImport();
 
-
-   // this.edgeService.generateEdgesAfterImport(importedDialouge);
-   // this.portService.reassignPortsAfterImport(importedDialouge);
-
-   this.updateDialogue();
-    console.log(importedDialouge)
-  }
-
-  /**
-   * Sets dialouge object to null and updates stream.
-   */
-  private destroyDialouge(): void {
-    this.dialogue = null;
     this.updateDialogue();
   }
 
@@ -79,6 +71,14 @@ export class DialogueService {
    */
   public getDialoge(): Observable<Dialogue> {
     return this.dialogue$.asObservable();
+  }
+
+  /**
+   * Sets dialouge object to null and updates stream.
+   */
+  private destroyDialouge(): void {
+    this.dialogue = null;
+    this.updateDialogue();
   }
 
   public updateDialogueName(newName: string): void {

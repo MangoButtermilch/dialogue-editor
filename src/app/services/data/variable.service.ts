@@ -14,11 +14,17 @@ export class VariableService {
 
   constructor(private guidService: GuidService) { }
 
-  public injectVariablesFromImport(variables: Variable[]) {
-    this.variables = [];
-    this.updateVariables();
-
+  public loadImportedVariables(variables: Variable[]) {
+    this.destroyVariables();
     this.variables = variables;
+    this.updateVariables();
+  }
+
+  /**
+   * Sets variables to empty array and updates stream.
+   */
+  private destroyVariables(): void {
+    this.variables = [];
     this.updateVariables();
   }
 

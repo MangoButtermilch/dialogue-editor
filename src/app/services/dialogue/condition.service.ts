@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Vector2, DialogueNode, ConditionNode, ConditionType, Variable } from 'src/models/models';
+import { ConditionNode, ConditionType, Vector2 } from 'src/models/models';
 import { GuidService } from '../editor/guid.service';
 import { PortService } from './port.service';
 
