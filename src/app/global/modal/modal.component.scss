@@ -19,14 +19,14 @@
     .content {
         background-color: var(--colorDark);
         margin: 0px;
-        color: white;
+        color: var(--colorWhite);
         padding: 10px;
         position: absolute;
         inset: 0;
         margin: auto;
         width: fit-content;
         height: fit-content;
-        border: 1px solid white;
+        border: 1px solid var(--colorWhite);
         z-index: 100;
     }
 }
