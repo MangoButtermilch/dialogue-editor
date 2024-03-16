@@ -1,0 +1,9 @@
+<div class="notification p-1 bg-{{notification.type.toLowerCase()}} d-flex align-items-center justify-content-between">
+    <h3>{{notification.message}}</h3>
+
+    <button class="btn btn-danger p-0 me-1"
+            (click)="onDeleteClicked.emit(notification);">
+        <svg-icon name="icon_delete"></svg-icon>
+    </button>
+
+</div>

@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Dialogue, DialogeIteratableProperty, DialogueNode, Choice, CommentNode, EventNode, ConditionNode, RandomNode, Possibility, RepeatNode, Port } from 'src/models/models';
 import { DialogueService } from '../dialogue/dialogue.service';
+import { NotificationService } from '../editor/notification.service';
+import { NotificationType, Notification } from 'src/models/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImportService {
 
-  constructor(private dialogueService: DialogueService) { }
+  constructor(
+    private notificationService: NotificationService,
+    private dialogueService: DialogueService) { }
 
   /**
    * This function gets triggered by button in toolbar component and inits the import of a dialouge.
@@ -16,6 +20,7 @@ export class ImportService {
     this.importJSON((dialogue: Dialogue) => {
       this.reconstructDialougeAfterImport(dialogue);
       this.dialogueService.loadImportedDialogue(dialogue);
+      this.notificationService.add("Import done", NotificationType.SUCCESS);
     });
   }
 
@@ -155,6 +160,7 @@ export class ImportService {
           const dialogue: Dialogue = Dialogue.fromJsonData(content);
           callback(dialogue);
         } catch (error) {
+          this.notificationService.add("Invalid JSON format", NotificationType.ERROR);
           console.warn(error);
         }
       };

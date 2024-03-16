@@ -25,6 +25,20 @@ export enum DialogeIteratableProperty {
     REPEATNODES = "REPEATNODES",
 }
 
+export enum NotificationType {
+    ERROR = "ERROR",
+    WARNING = "WARNING",
+    SUCCESS = "SUCCESS"
+}
+
+export class Notification {
+    constructor(
+        public message: string,
+        public type: NotificationType,
+        public guid: string
+    ) { }
+}
+
 export interface Vector2 {
     x: number
     y: number

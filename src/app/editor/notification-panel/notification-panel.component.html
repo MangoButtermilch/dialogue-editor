@@ -1,0 +1,8 @@
+<div class="notification-panel">
+
+    <app-notification *ngFor="let notification of notifications$ | async"
+                      class="m-1"
+                      [notification]="notification"
+                      (onDeleteClicked)="deleteNotification(notification)"></app-notification>
+
+</div>
