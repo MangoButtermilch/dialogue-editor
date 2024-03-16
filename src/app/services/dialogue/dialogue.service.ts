@@ -38,17 +38,24 @@ export class DialogueService {
 
   /**
    * generateEdgesAfterImport() does not update the dialogue stream so we don't need to wait for it.
-   * @param importedDialouge Object passed by serialization service
+   * @param dialogue Object passed by import service
    */
-  public loadImportedDialogue(importedDialouge: Dialogue): void {
+  public loadImportedDialogue(dialogue: Dialogue): void {
     this.destroyDialouge();
 
-    this.dialogue = importedDialouge;
+    this.dialogue = dialogue;
 
-    this.variableService.loadImportedVariables(importedDialouge.variables);
-    this.characterService.loadImportedCharacters(importedDialouge.characters);
-    this.portService.loadImportedPorts(importedDialouge);
-    this.edgeService.generateEdgesAfterImport();
+    /**
+     * TODO: Without setTimeout() dialogue.nodes has an element with index -1
+     * that should not exist. This is bad for the port-service since to many ports are created and
+     * the edgeservice will then create duplicate edges.
+     */
+    setTimeout(() => {
+      this.variableService.loadImportedVariables(dialogue.variables);
+      this.characterService.loadImportedCharacters(dialogue.characters);
+      this.portService.loadImportedPorts(dialogue);
+      this.edgeService.generateEdgesAfterImport();
+    }, 1);
 
     this.updateDialogue();
   }
