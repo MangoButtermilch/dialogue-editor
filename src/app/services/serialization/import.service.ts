@@ -13,17 +13,17 @@ export class ImportService {
    * This function gets triggered by button in toolbar component and inits the import of a dialouge.
    */
   public loadFromJson(): void {
-    this.importJSON((dialouge: Dialogue) => {
-      this.reconstructDialougeAfterImport(dialouge);
-      this.dialogueService.loadImportedDialogue(dialouge);
+    this.importJSON((dialogue: Dialogue) => {
+      this.reconstructDialougeAfterImport(dialogue);
+      this.dialogueService.loadImportedDialogue(dialogue);
     });
   }
 
-  private reconstructDialougeAfterImport(dialoge: Dialogue) {
+  private reconstructDialougeAfterImport(dialogue: Dialogue) {
     for (const prop of Object.keys(DialogeIteratableProperty)) {
-      this.reconstructDialougeProperty(dialoge, prop as DialogeIteratableProperty);
+      this.reconstructDialougeProperty(dialogue, prop as DialogeIteratableProperty);
     }
-    this.reconstructDialougePortsRecursivley(dialoge, [], dialoge);
+    this.reconstructDialougePortsRecursivley(dialogue, [], dialogue);
   }
 
   /**
@@ -52,7 +52,6 @@ export class ImportService {
         switch (dialougeProperty) {
           case DialogeIteratableProperty.NODES:
             importedDialouge[property][index] = DialogueNode.fromImportedData(objetToReplace);
-
 
             //Dialogue nodes contain choices
             const choices = objetToReplace.choices;
@@ -149,15 +148,14 @@ export class ImportService {
       const reader = new FileReader();
 
       reader.onload = (readerEvent) => {
+        reader.onload = null;
 
         try {
           const content = readerEvent.target.result as string;
-          const dialoge: Dialogue = Dialogue.fromJsonData(content);
-          reader.onload = null;
-          callback(dialoge);
+          const dialogue: Dialogue = Dialogue.fromJsonData(content);
+          callback(dialogue);
         } catch (error) {
           console.warn(error);
-          reader.onload = null;
         }
       };
       reader.readAsText(file);
