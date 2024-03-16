@@ -26,7 +26,6 @@ namespace Acetix.Dialogue {
         private void ReadDialogue() {
             DialogueNode currentNode = _dialogue.root;
 
-            // Hier können Sie entsprechend des aktuellen Knotens die Aktionen im Spiel ausführen
             print("Character: " + _dialogue.FindCharacter(currentNode.characterGuid).name);
             print("Content: " + currentNode.content);
         }
