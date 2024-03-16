@@ -18,7 +18,7 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
   private ctxStatic: any;
   private ctxDynamic: any;
 
-  private lineWidth: number = 5;
+  private lineWidth: number = 4;
   private lineOffset: number = 26.6;
   private lineColor: string = "#0d6efd";
   private lineHoverColor: string = "#40dfff";
