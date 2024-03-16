@@ -32,6 +32,8 @@
 
     --inputBoxShadow: 0px 0px 0px 1px rgb(168, 168, 168);
     --inputBoxShadowError: 0px 0px 0px 1px var(--colorError);
+
+    --textShadow: 0px 1px 4px var(--colorDark);
 }
 
 ::-webkit-scrollbar {
@@ -72,6 +74,14 @@ h2 {
 
 h3 {
     font-size: var(--fontSizeMD);
+}
+
+h1,
+h2,
+h3,
+app-port p {
+    font-weight: bold;
+    text-shadow: var(--textShadow);
 }
 
 p,

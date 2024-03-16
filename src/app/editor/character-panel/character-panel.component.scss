@@ -8,7 +8,13 @@
         box-shadow: var(--nodeBoxShadowHover);
     }
 
-    input:nth-of-type(2) {
+    input[type="text"] {
+        max-width: 170px;
+    }
+    
+    input[type="color"] {
+        width: 37px;
+        min-width: 37px;
         margin-left: 15px;
     }
 
