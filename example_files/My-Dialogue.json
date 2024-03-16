@@ -1,1 +1,699 @@
-{"name":"My-Dialogue","guid":"79ef952d-0598-e816-a623-24ee1749c2f6","dateTime":"Sat, 16 Mar 2024 15:47:38 GMT","nodes":[{"guid":"ebbb1f6f-0955-900e-853a-630f482b37d4","position":{"x":-852,"y":26},"character":{"isDefault":true,"guid":"85fdee29-5ea6-2ec3-471b-02e8e2d75edd","name":"Dave","color":"#63b14e"},"label":"I'm hungry","content":"What are we eating tonight?","isRoot":true,"inPort":{"guid":"0ca10480-4ee8-703f-f5a6-9e0814dceef8","position":{"x":0,"y":0},"parentGuid":"ebbb1f6f-0955-900e-853a-630f482b37d4","direction":"in","capacity":"multiple","connectedPortGuids":[]},"choices":[{"guid":"738ed69e-e9db-8124-fecf-0d8a349363dc","position":{"x":0,"y":0},"parentGuid":"ebbb1f6f-0955-900e-853a-630f482b37d4","outPort":{"guid":"67c96076-0c4d-0612-b223-f34d65b1b18e","position":{"x":0,"y":0},"parentGuid":"ebbb1f6f-0955-900e-853a-630f482b37d4","direction":"out","capacity":"single","connectedPortGuids":["dec81786-dd69-e83a-e6ee-df5957ebc4f5"]},"content":"Pizza"},{"guid":"0a64741e-37fd-7acc-23ee-79d1061d79a0","position":{"x":0,"y":0},"parentGuid":"ebbb1f6f-0955-900e-853a-630f482b37d4","outPort":{"guid":"303f72b4-71fb-6fee-cdca-de6b1bde9754","position":{"x":0,"y":0},"parentGuid":"ebbb1f6f-0955-900e-853a-630f482b37d4","direction":"out","capacity":"single","connectedPortGuids":["20a837f3-aa80-3d40-303b-8de4dd23a745"]},"content":"Burgers"}]},{"guid":"8df0ff70-a447-beca-4d16-5f762342a70a","position":{"x":-262,"y":-117},"character":{"isDefault":false,"guid":"8183025d-21ca-15ed-6494-b702fdcd3a5d","name":"Fred","color":"#d66b6b"},"label":"","content":"I'm in for some pizza. But do we have enough money?","isRoot":false,"inPort":{"guid":"dec81786-dd69-e83a-e6ee-df5957ebc4f5","position":{"x":0,"y":0},"parentGuid":"8df0ff70-a447-beca-4d16-5f762342a70a","direction":"in","capacity":"multiple","connectedPortGuids":["67c96076-0c4d-0612-b223-f34d65b1b18e"]},"choices":[{"guid":"607913cd-be1f-cc9e-3a75-0fa38b4dac9a","position":{"x":0,"y":0},"parentGuid":"8df0ff70-a447-beca-4d16-5f762342a70a","outPort":{"guid":"c5474487-5d52-8d3b-dbc6-4db444abfe51","position":{"x":0,"y":0},"parentGuid":"8df0ff70-a447-beca-4d16-5f762342a70a","direction":"out","capacity":"single","connectedPortGuids":["576819eb-ffa5-9b39-11f3-1c781a710543"]},"content":"yes"},{"guid":"664466cd-ceb2-05e9-06fc-c1699687659c","position":{"x":0,"y":0},"parentGuid":"8df0ff70-a447-beca-4d16-5f762342a70a","outPort":{"guid":"93a347cd-584f-9606-086a-26a34d295980","position":{"x":0,"y":0},"parentGuid":"8df0ff70-a447-beca-4d16-5f762342a70a","direction":"out","capacity":"single","connectedPortGuids":["f774fb8b-c697-f020-38f1-593b1c7fbb3a"]},"content":"no"}]},{"guid":"91088b80-9c6e-7e73-3075-6338d6e2e746","position":{"x":-265,"y":232},"character":{"isDefault":false,"guid":"8183025d-21ca-15ed-6494-b702fdcd3a5d","name":"Fred","color":"#d66b6b"},"label":"","content":"Let's just order some burgers. Do you have enough money?","isRoot":false,"inPort":{"guid":"20a837f3-aa80-3d40-303b-8de4dd23a745","position":{"x":0,"y":0},"parentGuid":"91088b80-9c6e-7e73-3075-6338d6e2e746","direction":"in","capacity":"multiple","connectedPortGuids":["303f72b4-71fb-6fee-cdca-de6b1bde9754"]},"choices":[{"guid":"c8e645f2-b832-a7b2-40e5-e39ae6299165","position":{"x":0,"y":0},"parentGuid":"91088b80-9c6e-7e73-3075-6338d6e2e746","outPort":{"guid":"607e5fb7-cdbc-72dc-618b-e78a00a89480","position":{"x":0,"y":0},"parentGuid":"91088b80-9c6e-7e73-3075-6338d6e2e746","direction":"out","capacity":"single","connectedPortGuids":["fb4cab32-dc5f-49cb-8c32-78d04beb11f7"]},"content":"yes"},{"guid":"8b67d342-6d63-9717-eea9-49643efd021a","position":{"x":0,"y":0},"parentGuid":"91088b80-9c6e-7e73-3075-6338d6e2e746","outPort":{"guid":"9863ebc5-3697-6f47-2c44-c64d3cc1936c","position":{"x":0,"y":0},"parentGuid":"91088b80-9c6e-7e73-3075-6338d6e2e746","direction":"out","capacity":"single","connectedPortGuids":["f774fb8b-c697-f020-38f1-593b1c7fbb3a"]},"content":"no"}]},{"guid":"f9f0b155-078e-d32b-e43f-05cf7e8976e1","position":{"x":990,"y":189},"character":{"isDefault":true,"guid":"85fdee29-5ea6-2ec3-471b-02e8e2d75edd","name":"Dave","color":"#63b14e"},"label":"","content":"Then go home and get some. I don't have any more.","isRoot":false,"inPort":{"guid":"f774fb8b-c697-f020-38f1-593b1c7fbb3a","position":{"x":0,"y":0},"parentGuid":"f9f0b155-078e-d32b-e43f-05cf7e8976e1","direction":"in","capacity":"multiple","connectedPortGuids":["93a347cd-584f-9606-086a-26a34d295980","652b4915-5e7d-7a79-c249-94654faa997d","e2365ea9-ed76-3430-521b-010afd3a7d2d","9863ebc5-3697-6f47-2c44-c64d3cc1936c"]},"choices":[{"guid":"b2ad93e1-228a-fd3a-4745-660adb4e728f","position":{"x":0,"y":0},"parentGuid":"f9f0b155-078e-d32b-e43f-05cf7e8976e1","outPort":{"guid":"a3308648-ccef-a069-ade0-e73d04bc376d","position":{"x":0,"y":0},"parentGuid":"f9f0b155-078e-d32b-e43f-05cf7e8976e1","direction":"out","capacity":"single","connectedPortGuids":["81598f71-abb4-b70a-30d0-321de9d6c058"]},"content":""}]},{"guid":"84da1d9b-b260-8324-ce86-3206323a8382","position":{"x":2031,"y":413},"character":{"isDefault":false,"guid":"8183025d-21ca-15ed-6494-b702fdcd3a5d","name":"Fred","color":"#d66b6b"},"label":"","content":"Damn I don't have any either! I guess we'll have to eat the leftovers from yesterday.","isRoot":false,"inPort":{"guid":"11c64a0b-fc2e-d2ce-1540-1b81631657f6","position":{"x":0,"y":0},"parentGuid":"84da1d9b-b260-8324-ce86-3206323a8382","direction":"in","capacity":"multiple","connectedPortGuids":["46ec9c2a-92ab-e98d-f960-b4359c1783c6"]},"choices":[{"guid":"497604ff-200d-99eb-4d89-31bc7196f4cd","position":{"x":0,"y":0},"parentGuid":"84da1d9b-b260-8324-ce86-3206323a8382","outPort":{"guid":"2650800a-26ff-c721-54d4-7fe750552613","position":{"x":0,"y":0},"parentGuid":"84da1d9b-b260-8324-ce86-3206323a8382","direction":"out","capacity":"single","connectedPortGuids":["58a29037-902d-5d53-b677-0a5f44266320"]},"content":""}]},{"guid":"6b5834c5-551f-c390-ab51-237be2502a0e","position":{"x":1986,"y":-321},"character":{"isDefault":true,"guid":"85fdee29-5ea6-2ec3-471b-02e8e2d75edd","name":"Dave","color":"#63b14e"},"label":"","content":"I'm so full! That was delicious!","isRoot":false,"inPort":{"guid":"86c5e6d9-da3f-6af2-a74f-7d9b9776687f","position":{"x":0,"y":0},"parentGuid":"6b5834c5-551f-c390-ab51-237be2502a0e","direction":"in","capacity":"multiple","connectedPortGuids":["2f7703fc-21fc-f249-dbe7-4f5859000ce0","cf2e6583-e58c-b3e5-3076-fee69137db67"]},"choices":[{"guid":"d58b0f37-a43b-dcd0-1063-968988a80e1f","position":{"x":0,"y":0},"parentGuid":"6b5834c5-551f-c390-ab51-237be2502a0e","outPort":{"guid":"efc48e00-3b13-2ed4-87d6-4052e75c4da8","position":{"x":0,"y":0},"parentGuid":"6b5834c5-551f-c390-ab51-237be2502a0e","direction":"out","capacity":"single","connectedPortGuids":[]},"content":""}]}],"comments":[],"events":[{"guid":"ac35a5cc-672a-953f-bd5e-0393f0c5213c","position":{"x":1561,"y":332},"name":"goHomeEvent","inPort":{"guid":"81598f71-abb4-b70a-30d0-321de9d6c058","position":{"x":0,"y":0},"parentGuid":"ac35a5cc-672a-953f-bd5e-0393f0c5213c","direction":"in","capacity":"multiple","connectedPortGuids":["a3308648-ccef-a069-ade0-e73d04bc376d"]},"outPort":{"guid":"46ec9c2a-92ab-e98d-f960-b4359c1783c6","position":{"x":0,"y":0},"parentGuid":"ac35a5cc-672a-953f-bd5e-0393f0c5213c","direction":"out","capacity":"single","connectedPortGuids":["11c64a0b-fc2e-d2ce-1540-1b81631657f6"]}},{"guid":"71952eaa-667e-7b57-84b7-323abad6cb11","position":{"x":1469,"y":-178},"name":"orderPizzaEvent","inPort":{"guid":"e6345d8a-5900-97a9-fc6c-3d0fe15a02fe","position":{"x":0,"y":0},"parentGuid":"71952eaa-667e-7b57-84b7-323abad6cb11","direction":"in","capacity":"multiple","connectedPortGuids":["810f2b44-a7e6-f7b7-6137-8a08ba74aaeb"]},"outPort":{"guid":"2f7703fc-21fc-f249-dbe7-4f5859000ce0","position":{"x":0,"y":0},"parentGuid":"71952eaa-667e-7b57-84b7-323abad6cb11","direction":"out","capacity":"single","connectedPortGuids":["86c5e6d9-da3f-6af2-a74f-7d9b9776687f"]}},{"guid":"7e466c04-463c-6119-a41c-47644d1bb096","position":{"x":1482,"y":-62},"name":"orderBurgerEvent","inPort":{"guid":"a6518fa9-e87f-0732-5e56-db8355881263","position":{"x":0,"y":0},"parentGuid":"7e466c04-463c-6119-a41c-47644d1bb096","direction":"in","capacity":"multiple","connectedPortGuids":["7784c890-fd69-69b4-9a14-668ce720d547"]},"outPort":{"guid":"cf2e6583-e58c-b3e5-3076-fee69137db67","position":{"x":0,"y":0},"parentGuid":"7e466c04-463c-6119-a41c-47644d1bb096","direction":"out","capacity":"single","connectedPortGuids":["86c5e6d9-da3f-6af2-a74f-7d9b9776687f"]}}],"conditions":[{"guid":"4a038b1b-6916-c95b-9652-cf6f6a4501fa","position":{"x":341,"y":-172},"type":"GREATER","inPort":{"guid":"576819eb-ffa5-9b39-11f3-1c781a710543","position":{"x":0,"y":0},"parentGuid":"4a038b1b-6916-c95b-9652-cf6f6a4501fa","direction":"in","capacity":"multiple","connectedPortGuids":["c5474487-5d52-8d3b-dbc6-4db444abfe51"]},"outPortMatches":{"guid":"d5410713-b0a9-e217-8031-2e3ebb7e9c50","position":{"x":0,"y":0},"parentGuid":"4a038b1b-6916-c95b-9652-cf6f6a4501fa","direction":"out","capacity":"single","connectedPortGuids":["148f2810-623e-12ac-037e-72e335fa8626"]},"outPortFails":{"guid":"652b4915-5e7d-7a79-c249-94654faa997d","position":{"x":0,"y":0},"parentGuid":"4a038b1b-6916-c95b-9652-cf6f6a4501fa","direction":"out","capacity":"single","connectedPortGuids":["f774fb8b-c697-f020-38f1-593b1c7fbb3a"]},"variable":{"guid":"f5719c71-87a0-0d37-737d-28ad6af4acec","name":"money","value":"0","type":"NUM"},"expectedValue":"30"},{"guid":"9b36de7c-1e76-c2b4-b3bf-58ea2b2c4837","position":{"x":337,"y":-32},"type":"GREATER","inPort":{"guid":"fb4cab32-dc5f-49cb-8c32-78d04beb11f7","position":{"x":0,"y":0},"parentGuid":"9b36de7c-1e76-c2b4-b3bf-58ea2b2c4837","direction":"in","capacity":"multiple","connectedPortGuids":["607e5fb7-cdbc-72dc-618b-e78a00a89480"]},"outPortMatches":{"guid":"19224e8a-d1be-fae5-c49e-0f2525dd5e13","position":{"x":0,"y":0},"parentGuid":"9b36de7c-1e76-c2b4-b3bf-58ea2b2c4837","direction":"out","capacity":"single","connectedPortGuids":["f5a5f44b-e10b-d19c-e19e-d860683fce39"]},"outPortFails":{"guid":"e2365ea9-ed76-3430-521b-010afd3a7d2d","position":{"x":0,"y":0},"parentGuid":"9b36de7c-1e76-c2b4-b3bf-58ea2b2c4837","direction":"out","capacity":"single","connectedPortGuids":["f774fb8b-c697-f020-38f1-593b1c7fbb3a"]},"variable":{"guid":"f5719c71-87a0-0d37-737d-28ad6af4acec","name":"money","value":"0","type":"NUM"},"expectedValue":"20"}],"randomNodes":[],"repeatNodes":[{"guid":"b01fbe3b-e635-e611-038f-5277ae0b0764","position":{"x":1046,"y":-187},"repetitions":2,"inPort":{"guid":"148f2810-623e-12ac-037e-72e335fa8626","position":{"x":0,"y":0},"parentGuid":"b01fbe3b-e635-e611-038f-5277ae0b0764","direction":"in","capacity":"multiple","connectedPortGuids":["d5410713-b0a9-e217-8031-2e3ebb7e9c50"]},"outPort":{"guid":"810f2b44-a7e6-f7b7-6137-8a08ba74aaeb","position":{"x":0,"y":0},"parentGuid":"b01fbe3b-e635-e611-038f-5277ae0b0764","direction":"out","capacity":"single","connectedPortGuids":["e6345d8a-5900-97a9-fc6c-3d0fe15a02fe"]}},{"guid":"96bd217b-1959-b020-2873-3b86ffadace7","position":{"x":1053,"y":-64},"repetitions":2,"inPort":{"guid":"f5a5f44b-e10b-d19c-e19e-d860683fce39","position":{"x":0,"y":0},"parentGuid":"96bd217b-1959-b020-2873-3b86ffadace7","direction":"in","capacity":"multiple","connectedPortGuids":["19224e8a-d1be-fae5-c49e-0f2525dd5e13"]},"outPort":{"guid":"7784c890-fd69-69b4-9a14-668ce720d547","position":{"x":0,"y":0},"parentGuid":"96bd217b-1959-b020-2873-3b86ffadace7","direction":"out","capacity":"single","connectedPortGuids":["a6518fa9-e87f-0732-5e56-db8355881263"]}}],"variables":[{"guid":"f5719c71-87a0-0d37-737d-28ad6af4acec","name":"money","value":"0","type":"NUM"}],"characters":[{"isDefault":true,"guid":"85fdee29-5ea6-2ec3-471b-02e8e2d75edd","name":"Dave","color":"#63b14e"},{"isDefault":false,"guid":"8183025d-21ca-15ed-6494-b702fdcd3a5d","name":"Fred","color":"#d66b6b"}]}
+{
+    "name": "My-Dialogue",
+    "guid": "79ef952d-0598-e816-a623-24ee1749c2f6",
+    "dateTime": "Sat, 16 Mar 2024 15:47:38 GMT",
+    "nodes": [
+        {
+            "guid": "ebbb1f6f-0955-900e-853a-630f482b37d4",
+            "position": {
+                "x": -852,
+                "y": 26
+            },
+            "character": {
+                "isDefault": true,
+                "guid": "85fdee29-5ea6-2ec3-471b-02e8e2d75edd",
+                "name": "Dave",
+                "color": "#63b14e"
+            },
+            "label": "I'm hungry",
+            "content": "What are we eating tonight?",
+            "isRoot": true,
+            "inPort": {
+                "guid": "0ca10480-4ee8-703f-f5a6-9e0814dceef8",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "ebbb1f6f-0955-900e-853a-630f482b37d4",
+                "direction": "in",
+                "capacity": "multiple",
+                "connectedPortGuids": []
+            },
+            "choices": [
+                {
+                    "guid": "738ed69e-e9db-8124-fecf-0d8a349363dc",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "parentGuid": "ebbb1f6f-0955-900e-853a-630f482b37d4",
+                    "outPort": {
+                        "guid": "67c96076-0c4d-0612-b223-f34d65b1b18e",
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "parentGuid": "ebbb1f6f-0955-900e-853a-630f482b37d4",
+                        "direction": "out",
+                        "capacity": "single",
+                        "connectedPortGuids": [
+                            "dec81786-dd69-e83a-e6ee-df5957ebc4f5"
+                        ]
+                    },
+                    "content": "Pizza"
+                },
+                {
+                    "guid": "0a64741e-37fd-7acc-23ee-79d1061d79a0",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "parentGuid": "ebbb1f6f-0955-900e-853a-630f482b37d4",
+                    "outPort": {
+                        "guid": "303f72b4-71fb-6fee-cdca-de6b1bde9754",
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "parentGuid": "ebbb1f6f-0955-900e-853a-630f482b37d4",
+                        "direction": "out",
+                        "capacity": "single",
+                        "connectedPortGuids": [
+                            "20a837f3-aa80-3d40-303b-8de4dd23a745"
+                        ]
+                    },
+                    "content": "Burgers"
+                }
+            ]
+        },
+        {
+            "guid": "8df0ff70-a447-beca-4d16-5f762342a70a",
+            "position": {
+                "x": -262,
+                "y": -117
+            },
+            "character": {
+                "isDefault": false,
+                "guid": "8183025d-21ca-15ed-6494-b702fdcd3a5d",
+                "name": "Fred",
+                "color": "#d66b6b"
+            },
+            "label": "",
+            "content": "I'm in for some pizza. But do we have enough money?",
+            "isRoot": false,
+            "inPort": {
+                "guid": "dec81786-dd69-e83a-e6ee-df5957ebc4f5",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "8df0ff70-a447-beca-4d16-5f762342a70a",
+                "direction": "in",
+                "capacity": "multiple",
+                "connectedPortGuids": [
+                    "67c96076-0c4d-0612-b223-f34d65b1b18e"
+                ]
+            },
+            "choices": [
+                {
+                    "guid": "607913cd-be1f-cc9e-3a75-0fa38b4dac9a",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "parentGuid": "8df0ff70-a447-beca-4d16-5f762342a70a",
+                    "outPort": {
+                        "guid": "c5474487-5d52-8d3b-dbc6-4db444abfe51",
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "parentGuid": "8df0ff70-a447-beca-4d16-5f762342a70a",
+                        "direction": "out",
+                        "capacity": "single",
+                        "connectedPortGuids": [
+                            "576819eb-ffa5-9b39-11f3-1c781a710543"
+                        ]
+                    },
+                    "content": "yes"
+                },
+                {
+                    "guid": "664466cd-ceb2-05e9-06fc-c1699687659c",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "parentGuid": "8df0ff70-a447-beca-4d16-5f762342a70a",
+                    "outPort": {
+                        "guid": "93a347cd-584f-9606-086a-26a34d295980",
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "parentGuid": "8df0ff70-a447-beca-4d16-5f762342a70a",
+                        "direction": "out",
+                        "capacity": "single",
+                        "connectedPortGuids": [
+                            "f774fb8b-c697-f020-38f1-593b1c7fbb3a"
+                        ]
+                    },
+                    "content": "no"
+                }
+            ]
+        },
+        {
+            "guid": "91088b80-9c6e-7e73-3075-6338d6e2e746",
+            "position": {
+                "x": -265,
+                "y": 232
+            },
+            "character": {
+                "isDefault": false,
+                "guid": "8183025d-21ca-15ed-6494-b702fdcd3a5d",
+                "name": "Fred",
+                "color": "#d66b6b"
+            },
+            "label": "",
+            "content": "Let's just order some burgers. Do you have enough money?",
+            "isRoot": false,
+            "inPort": {
+                "guid": "20a837f3-aa80-3d40-303b-8de4dd23a745",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "91088b80-9c6e-7e73-3075-6338d6e2e746",
+                "direction": "in",
+                "capacity": "multiple",
+                "connectedPortGuids": [
+                    "303f72b4-71fb-6fee-cdca-de6b1bde9754"
+                ]
+            },
+            "choices": [
+                {
+                    "guid": "c8e645f2-b832-a7b2-40e5-e39ae6299165",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "parentGuid": "91088b80-9c6e-7e73-3075-6338d6e2e746",
+                    "outPort": {
+                        "guid": "607e5fb7-cdbc-72dc-618b-e78a00a89480",
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "parentGuid": "91088b80-9c6e-7e73-3075-6338d6e2e746",
+                        "direction": "out",
+                        "capacity": "single",
+                        "connectedPortGuids": [
+                            "fb4cab32-dc5f-49cb-8c32-78d04beb11f7"
+                        ]
+                    },
+                    "content": "yes"
+                },
+                {
+                    "guid": "8b67d342-6d63-9717-eea9-49643efd021a",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "parentGuid": "91088b80-9c6e-7e73-3075-6338d6e2e746",
+                    "outPort": {
+                        "guid": "9863ebc5-3697-6f47-2c44-c64d3cc1936c",
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "parentGuid": "91088b80-9c6e-7e73-3075-6338d6e2e746",
+                        "direction": "out",
+                        "capacity": "single",
+                        "connectedPortGuids": [
+                            "f774fb8b-c697-f020-38f1-593b1c7fbb3a"
+                        ]
+                    },
+                    "content": "no"
+                }
+            ]
+        },
+        {
+            "guid": "f9f0b155-078e-d32b-e43f-05cf7e8976e1",
+            "position": {
+                "x": 990,
+                "y": 189
+            },
+            "character": {
+                "isDefault": true,
+                "guid": "85fdee29-5ea6-2ec3-471b-02e8e2d75edd",
+                "name": "Dave",
+                "color": "#63b14e"
+            },
+            "label": "",
+            "content": "Then go home and get some. I don't have any more.",
+            "isRoot": false,
+            "inPort": {
+                "guid": "f774fb8b-c697-f020-38f1-593b1c7fbb3a",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "f9f0b155-078e-d32b-e43f-05cf7e8976e1",
+                "direction": "in",
+                "capacity": "multiple",
+                "connectedPortGuids": [
+                    "93a347cd-584f-9606-086a-26a34d295980",
+                    "652b4915-5e7d-7a79-c249-94654faa997d",
+                    "e2365ea9-ed76-3430-521b-010afd3a7d2d",
+                    "9863ebc5-3697-6f47-2c44-c64d3cc1936c"
+                ]
+            },
+            "choices": [
+                {
+                    "guid": "b2ad93e1-228a-fd3a-4745-660adb4e728f",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "parentGuid": "f9f0b155-078e-d32b-e43f-05cf7e8976e1",
+                    "outPort": {
+                        "guid": "a3308648-ccef-a069-ade0-e73d04bc376d",
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "parentGuid": "f9f0b155-078e-d32b-e43f-05cf7e8976e1",
+                        "direction": "out",
+                        "capacity": "single",
+                        "connectedPortGuids": [
+                            "81598f71-abb4-b70a-30d0-321de9d6c058"
+                        ]
+                    },
+                    "content": ""
+                }
+            ]
+        },
+        {
+            "guid": "84da1d9b-b260-8324-ce86-3206323a8382",
+            "position": {
+                "x": 2031,
+                "y": 413
+            },
+            "character": {
+                "isDefault": false,
+                "guid": "8183025d-21ca-15ed-6494-b702fdcd3a5d",
+                "name": "Fred",
+                "color": "#d66b6b"
+            },
+            "label": "",
+            "content": "Damn I don't have any either! I guess we'll have to eat the leftovers from yesterday.",
+            "isRoot": false,
+            "inPort": {
+                "guid": "11c64a0b-fc2e-d2ce-1540-1b81631657f6",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "84da1d9b-b260-8324-ce86-3206323a8382",
+                "direction": "in",
+                "capacity": "multiple",
+                "connectedPortGuids": [
+                    "46ec9c2a-92ab-e98d-f960-b4359c1783c6"
+                ]
+            },
+            "choices": [
+                {
+                    "guid": "497604ff-200d-99eb-4d89-31bc7196f4cd",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "parentGuid": "84da1d9b-b260-8324-ce86-3206323a8382",
+                    "outPort": {
+                        "guid": "2650800a-26ff-c721-54d4-7fe750552613",
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "parentGuid": "84da1d9b-b260-8324-ce86-3206323a8382",
+                        "direction": "out",
+                        "capacity": "single",
+                        "connectedPortGuids": [
+                            "58a29037-902d-5d53-b677-0a5f44266320"
+                        ]
+                    },
+                    "content": ""
+                }
+            ]
+        },
+        {
+            "guid": "6b5834c5-551f-c390-ab51-237be2502a0e",
+            "position": {
+                "x": 1986,
+                "y": -321
+            },
+            "character": {
+                "isDefault": true,
+                "guid": "85fdee29-5ea6-2ec3-471b-02e8e2d75edd",
+                "name": "Dave",
+                "color": "#63b14e"
+            },
+            "label": "",
+            "content": "I'm so full! That was delicious!",
+            "isRoot": false,
+            "inPort": {
+                "guid": "86c5e6d9-da3f-6af2-a74f-7d9b9776687f",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "6b5834c5-551f-c390-ab51-237be2502a0e",
+                "direction": "in",
+                "capacity": "multiple",
+                "connectedPortGuids": [
+                    "2f7703fc-21fc-f249-dbe7-4f5859000ce0",
+                    "cf2e6583-e58c-b3e5-3076-fee69137db67"
+                ]
+            },
+            "choices": [
+                {
+                    "guid": "d58b0f37-a43b-dcd0-1063-968988a80e1f",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "parentGuid": "6b5834c5-551f-c390-ab51-237be2502a0e",
+                    "outPort": {
+                        "guid": "efc48e00-3b13-2ed4-87d6-4052e75c4da8",
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "parentGuid": "6b5834c5-551f-c390-ab51-237be2502a0e",
+                        "direction": "out",
+                        "capacity": "single",
+                        "connectedPortGuids": []
+                    },
+                    "content": ""
+                }
+            ]
+        }
+    ],
+    "comments": [],
+    "events": [
+        {
+            "guid": "ac35a5cc-672a-953f-bd5e-0393f0c5213c",
+            "position": {
+                "x": 1561,
+                "y": 332
+            },
+            "name": "goHomeEvent",
+            "inPort": {
+                "guid": "81598f71-abb4-b70a-30d0-321de9d6c058",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "ac35a5cc-672a-953f-bd5e-0393f0c5213c",
+                "direction": "in",
+                "capacity": "multiple",
+                "connectedPortGuids": [
+                    "a3308648-ccef-a069-ade0-e73d04bc376d"
+                ]
+            },
+            "outPort": {
+                "guid": "46ec9c2a-92ab-e98d-f960-b4359c1783c6",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "ac35a5cc-672a-953f-bd5e-0393f0c5213c",
+                "direction": "out",
+                "capacity": "single",
+                "connectedPortGuids": [
+                    "11c64a0b-fc2e-d2ce-1540-1b81631657f6"
+                ]
+            }
+        },
+        {
+            "guid": "71952eaa-667e-7b57-84b7-323abad6cb11",
+            "position": {
+                "x": 1469,
+                "y": -178
+            },
+            "name": "orderPizzaEvent",
+            "inPort": {
+                "guid": "e6345d8a-5900-97a9-fc6c-3d0fe15a02fe",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "71952eaa-667e-7b57-84b7-323abad6cb11",
+                "direction": "in",
+                "capacity": "multiple",
+                "connectedPortGuids": [
+                    "810f2b44-a7e6-f7b7-6137-8a08ba74aaeb"
+                ]
+            },
+            "outPort": {
+                "guid": "2f7703fc-21fc-f249-dbe7-4f5859000ce0",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "71952eaa-667e-7b57-84b7-323abad6cb11",
+                "direction": "out",
+                "capacity": "single",
+                "connectedPortGuids": [
+                    "86c5e6d9-da3f-6af2-a74f-7d9b9776687f"
+                ]
+            }
+        },
+        {
+            "guid": "7e466c04-463c-6119-a41c-47644d1bb096",
+            "position": {
+                "x": 1482,
+                "y": -62
+            },
+            "name": "orderBurgerEvent",
+            "inPort": {
+                "guid": "a6518fa9-e87f-0732-5e56-db8355881263",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "7e466c04-463c-6119-a41c-47644d1bb096",
+                "direction": "in",
+                "capacity": "multiple",
+                "connectedPortGuids": [
+                    "7784c890-fd69-69b4-9a14-668ce720d547"
+                ]
+            },
+            "outPort": {
+                "guid": "cf2e6583-e58c-b3e5-3076-fee69137db67",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "7e466c04-463c-6119-a41c-47644d1bb096",
+                "direction": "out",
+                "capacity": "single",
+                "connectedPortGuids": [
+                    "86c5e6d9-da3f-6af2-a74f-7d9b9776687f"
+                ]
+            }
+        }
+    ],
+    "conditions": [
+        {
+            "guid": "4a038b1b-6916-c95b-9652-cf6f6a4501fa",
+            "position": {
+                "x": 341,
+                "y": -172
+            },
+            "type": "GREATER",
+            "inPort": {
+                "guid": "576819eb-ffa5-9b39-11f3-1c781a710543",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "4a038b1b-6916-c95b-9652-cf6f6a4501fa",
+                "direction": "in",
+                "capacity": "multiple",
+                "connectedPortGuids": [
+                    "c5474487-5d52-8d3b-dbc6-4db444abfe51"
+                ]
+            },
+            "outPortMatches": {
+                "guid": "d5410713-b0a9-e217-8031-2e3ebb7e9c50",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "4a038b1b-6916-c95b-9652-cf6f6a4501fa",
+                "direction": "out",
+                "capacity": "single",
+                "connectedPortGuids": [
+                    "148f2810-623e-12ac-037e-72e335fa8626"
+                ]
+            },
+            "outPortFails": {
+                "guid": "652b4915-5e7d-7a79-c249-94654faa997d",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "4a038b1b-6916-c95b-9652-cf6f6a4501fa",
+                "direction": "out",
+                "capacity": "single",
+                "connectedPortGuids": [
+                    "f774fb8b-c697-f020-38f1-593b1c7fbb3a"
+                ]
+            },
+            "variable": {
+                "guid": "f5719c71-87a0-0d37-737d-28ad6af4acec",
+                "name": "money",
+                "value": "0",
+                "type": "NUM"
+            },
+            "expectedValue": "30"
+        },
+        {
+            "guid": "9b36de7c-1e76-c2b4-b3bf-58ea2b2c4837",
+            "position": {
+                "x": 337,
+                "y": -32
+            },
+            "type": "GREATER",
+            "inPort": {
+                "guid": "fb4cab32-dc5f-49cb-8c32-78d04beb11f7",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "9b36de7c-1e76-c2b4-b3bf-58ea2b2c4837",
+                "direction": "in",
+                "capacity": "multiple",
+                "connectedPortGuids": [
+                    "607e5fb7-cdbc-72dc-618b-e78a00a89480"
+                ]
+            },
+            "outPortMatches": {
+                "guid": "19224e8a-d1be-fae5-c49e-0f2525dd5e13",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "9b36de7c-1e76-c2b4-b3bf-58ea2b2c4837",
+                "direction": "out",
+                "capacity": "single",
+                "connectedPortGuids": [
+                    "f5a5f44b-e10b-d19c-e19e-d860683fce39"
+                ]
+            },
+            "outPortFails": {
+                "guid": "e2365ea9-ed76-3430-521b-010afd3a7d2d",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "9b36de7c-1e76-c2b4-b3bf-58ea2b2c4837",
+                "direction": "out",
+                "capacity": "single",
+                "connectedPortGuids": [
+                    "f774fb8b-c697-f020-38f1-593b1c7fbb3a"
+                ]
+            },
+            "variable": {
+                "guid": "f5719c71-87a0-0d37-737d-28ad6af4acec",
+                "name": "money",
+                "value": "0",
+                "type": "NUM"
+            },
+            "expectedValue": "20"
+        }
+    ],
+    "randomNodes": [],
+    "repeatNodes": [
+        {
+            "guid": "b01fbe3b-e635-e611-038f-5277ae0b0764",
+            "position": {
+                "x": 1046,
+                "y": -187
+            },
+            "repetitions": 2,
+            "inPort": {
+                "guid": "148f2810-623e-12ac-037e-72e335fa8626",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "b01fbe3b-e635-e611-038f-5277ae0b0764",
+                "direction": "in",
+                "capacity": "multiple",
+                "connectedPortGuids": [
+                    "d5410713-b0a9-e217-8031-2e3ebb7e9c50"
+                ]
+            },
+            "outPort": {
+                "guid": "810f2b44-a7e6-f7b7-6137-8a08ba74aaeb",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "b01fbe3b-e635-e611-038f-5277ae0b0764",
+                "direction": "out",
+                "capacity": "single",
+                "connectedPortGuids": [
+                    "e6345d8a-5900-97a9-fc6c-3d0fe15a02fe"
+                ]
+            }
+        },
+        {
+            "guid": "96bd217b-1959-b020-2873-3b86ffadace7",
+            "position": {
+                "x": 1053,
+                "y": -64
+            },
+            "repetitions": 2,
+            "inPort": {
+                "guid": "f5a5f44b-e10b-d19c-e19e-d860683fce39",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "96bd217b-1959-b020-2873-3b86ffadace7",
+                "direction": "in",
+                "capacity": "multiple",
+                "connectedPortGuids": [
+                    "19224e8a-d1be-fae5-c49e-0f2525dd5e13"
+                ]
+            },
+            "outPort": {
+                "guid": "7784c890-fd69-69b4-9a14-668ce720d547",
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "parentGuid": "96bd217b-1959-b020-2873-3b86ffadace7",
+                "direction": "out",
+                "capacity": "single",
+                "connectedPortGuids": [
+                    "a6518fa9-e87f-0732-5e56-db8355881263"
+                ]
+            }
+        }
+    ],
+    "variables": [
+        {
+            "guid": "f5719c71-87a0-0d37-737d-28ad6af4acec",
+            "name": "money",
+            "value": "0",
+            "type": "NUM"
+        }
+    ],
+    "characters": [
+        {
+            "isDefault": true,
+            "guid": "85fdee29-5ea6-2ec3-471b-02e8e2d75edd",
+            "name": "Dave",
+            "color": "#63b14e"
+        },
+        {
+            "isDefault": false,
+            "guid": "8183025d-21ca-15ed-6494-b702fdcd3a5d",
+            "name": "Fred",
+            "color": "#d66b6b"
+        }
+    ]
+}
