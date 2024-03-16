@@ -22,6 +22,7 @@
 
         <textarea class="text-white"
                   spellcheck="false"
+                  [value]="comment.content"
                   (input)="updateContent($event)">{{comment.content}}</textarea>
     </div>
 </div>

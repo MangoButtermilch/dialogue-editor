@@ -169,7 +169,7 @@ export class CommentNode extends GuiObject {
             importedData.guid,
             importedData.position ?? { x: 0, y: 0 },
             importedData.color,
-            importedData.condition
+            importedData.content
         );
     }
 }
