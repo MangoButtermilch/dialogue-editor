@@ -105,10 +105,9 @@ export class PortComponent implements OnInit, OnDestroy {
   }
 
   private removeAllConnections(): void {
-    this.port.getConnections()
-      .forEach((guid: string) => {
-        this.portService.disconnectPortsByGuid(this.port, guid);
-      })
+    for (const guid of this.port.getConnections()) {
+      this.portService.disconnectPortsByGuid(this.port, guid);
+    }
   }
 
   private resetPort(): void {

@@ -154,9 +154,9 @@ export class PortService {
   public removePortsForNode(node: DialogueNode) {
     this.removePort(node.inPort);
 
-    node.choices.forEach((choice: Choice) => {
+    for (const choice of node.choices) {
       this.removePort(choice.outPort);
-    })
+    }
   }
 
   /**
@@ -175,9 +175,9 @@ export class PortService {
   public removePortsForRandomNode(randomNode: RandomNode) {
     this.removePort(randomNode.inPort);
 
-    randomNode.possibilites.forEach((possibility: Possibility) => {
+    for (const possibility of randomNode.possibilites) {
       this.removePort(possibility.outPort);
-    });
+    }
   }
 
   /**

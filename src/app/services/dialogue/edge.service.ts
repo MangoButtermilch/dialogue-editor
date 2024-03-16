@@ -47,13 +47,12 @@ export class EdgeService {
 
     this.portService.getPorts().subscribe((ports: Port[]) => {
 
-      ports.forEach((port: Port) => {
-
+      for (const port of ports) {
         //Only need one-way connections to avoid overdraw
         if (
           port.connectedPortGuids.length == 0 ||
           port.capacity === PortCapacity.MULTIPLE
-        ) return;
+        ) continue;
 
         for (let guid of port.connectedPortGuids) {
 
@@ -62,7 +61,7 @@ export class EdgeService {
           this.updateEdges();
         }
 
-      });
+      }
 
     }).unsubscribe();
   }
@@ -144,10 +143,9 @@ export class EdgeService {
   public removeEdgesForNode(node: DialogueNode) {
     this.removeAllEdgesFor(node.inPort);
 
-    node.choices.forEach((choice: Choice) => {
+    for (const choice of node.choices) {
       this.removeAllEdgesFor(choice.outPort)
-    });
-
+    }
   }
 
   /**
@@ -165,9 +163,9 @@ export class EdgeService {
    */
   public removeEdgesForRandomNode(randomNode: RandomNode) {
     this.removeAllEdgesFor(randomNode.inPort);
-    randomNode.possibilites.forEach((possibility: Possibility) => {
+    for (const possibility of randomNode.possibilites) {
       this.removeAllEdgesFor(possibility.outPort)
-    });
+    }
   }
 
   /**
