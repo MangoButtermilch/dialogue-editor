@@ -1,7 +1,6 @@
-import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { PanZoomModel } from 'ngx-panzoom';
 import { Subject, takeUntil } from 'rxjs';
-import { DialogueService } from 'src/app/services/dialogue/dialogue.service';
 import { PanZoomService } from 'src/app/services/editor/pan-zoom.service';
 
 @Component({
@@ -10,6 +9,8 @@ import { PanZoomService } from 'src/app/services/editor/pan-zoom.service';
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent implements OnDestroy {
+
+  @Input() dialogueName: string = "";
 
   @Output() onHelpClicked: EventEmitter<void> = new EventEmitter<void>();
   @Output() onNewNodeClicked: EventEmitter<void> = new EventEmitter<void>();

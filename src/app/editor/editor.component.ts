@@ -5,7 +5,8 @@ import { CommentNode, ConditionNode, Dialogue, DialogueNode, EventNode, RandomNo
 import { DialogueService } from '../services/dialogue/dialogue.service';
 import { EditorStateService } from '../services/editor/editor-state.service';
 import { PanZoomService } from '../services/editor/pan-zoom.service';
-import { SerializationService } from '../services/serialization/serialization.service';
+import { ExportService } from '../services/serialization/export.service';
+import { ImportService } from '../services/serialization/import.service';
 
 @Component({
   selector: 'app-editor',
@@ -19,13 +20,13 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   public dialogue$: Observable<Dialogue> = this.dialogueService.getDialoge()
     .pipe(takeUntil(this.destroy$))
 
-
   public characterModalVisible: boolean = false;
   public helpModalVisible: boolean = false;
 
 
   constructor(
-    private serializationService: SerializationService,
+    private exportService: ExportService,
+    private importService: ImportService,
     private editorStateService: EditorStateService,
     private dialogueService: DialogueService,
     private panZoomService: PanZoomService) {
@@ -143,11 +144,11 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public save(): void {
-    this.serializationService.saveToJson();
+    this.exportService.saveToJson();
   }
 
   public load(): void {
-    this.serializationService.loadFromJson();
+    this.importService.loadFromJson();
   }
 
 }

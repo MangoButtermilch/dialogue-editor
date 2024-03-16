@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject, withLatestFrom } from 'rxjs';
+
 import { Choice, ConditionNode, DialogueNode, Edge, EventNode, Port, PortCapacity, Possibility, RandomNode, RepeatNode } from 'src/models/models';
 import { DomEventService } from '../dom/dom-event.service';
 import { EditorStateService } from '../editor/editor-state.service';
@@ -16,15 +17,12 @@ export class EdgeService {
   private portsConnected$: Observable<Port[]> = this.portService.onPortsConnected();
   private portsDisconnected$: Observable<Port[]> = this.portService.onPortsDisconnected();
   private deleteEdge$: Observable<[void, Edge]> = this.domEventService.onDomDblClick()
-    .pipe(
-      withLatestFrom(this.editorStateService.onEdgeSelected())
-    );
-
+    .pipe(withLatestFrom(this.editorStateService.onEdgeSelected()));
 
   constructor(
+    private editorStateService: EditorStateService,
     private guidService: GuidService,
     private domEventService: DomEventService,
-    private editorStateService: EditorStateService,
     private portService: PortService) {
 
     this.handlePortsConnected();
@@ -32,11 +30,16 @@ export class EdgeService {
     this.handleDeleteEdge();
   }
 
-  public generateEdgesAfterImport(): void {
+  private destroyEdges(): void {
     this.edges = [];
     this.updateEdges();
+  }
+
+  public generateEdgesAfterImport(): void {
+    this.destroyEdges();
 
     this.portService.getPorts().subscribe((ports: Port[]) => {
+
       ports.forEach((port: Port) => {
 
         //Only need one-way connections to avoid overdraw
@@ -49,6 +52,7 @@ export class EdgeService {
 
           const otherPort: Port = ports.find((other: Port) => other.guid === guid);
           this.generateEdge(port, otherPort);
+          this.updateEdges();
         }
 
       });
@@ -102,12 +106,14 @@ export class EdgeService {
    * @param portB 
    */
   public generateEdge(portA: Port, portB: Port): void {
-    const edgeExists: boolean = this.edges.some(
-      (other: Edge) => {
-        other.start.guid === portA.guid &&
-          other.end.guid === portB.guid
-      });
+    const edgeExists: boolean = this.edges.some((other: Edge) => {
+      other.start.guid === portA.guid || other.end.guid === portB.guid ||
+        other.end.guid === portA.guid || other.start.guid === portB.guid
+    });
+    console.log(edgeExists)
+
     if (edgeExists) return;
+    console.log("create edge: " + portA.guid + " => " + portB.guid);
 
     this.edges.push(
       new Edge(

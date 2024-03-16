@@ -3,17 +3,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Character, CommentNode, ConditionNode, Dialogue, DialogueNode, EventNode, RandomNode, RepeatNode, Variable, Vector2 } from 'src/models/models';
 import { GuiElementService } from '../editor/gui-element.service';
 import { GuidService } from '../editor/guid.service';
-import { CommentService } from './comment.service';
-import { ConditionService } from './condition.service';
-import { EdgeService } from './edge.service';
-import { EventNodeService } from './event-node.service';
-import { NodeService } from './node.service';
-import { RandomNodeService } from './random-node.service';
-import { RepeatService } from './repeat.service';
-
 import { CharacterService } from '../data/character.service';
 import { VariableService } from '../data/variable.service';
+import { DialougeFactoryService } from './dialouge-factory.service';
+import { EdgeService } from './edge.service';
 import { PortService } from './port.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -23,19 +18,20 @@ export class DialogueService {
   private dialogue: Dialogue = this.generateDialogue();
   private dialogue$: BehaviorSubject<Dialogue> = new BehaviorSubject<Dialogue>(this.dialogue);
 
+  private variables$: Observable<Variable[]> = this.variableService.getVariables();
+  private characters$: Observable<Character[]> = this.characterService.getCharacters();
+
+
   constructor(
-    private guiElementService: GuiElementService,
-    private conditionService: ConditionService,
-    private eventNodeService: EventNodeService,
-    private commentService: CommentService,
-    private randomNodeService: RandomNodeService,
-    private repeatService: RepeatService,
+    private dialogueFactory: DialougeFactoryService,
     private edgeService: EdgeService,
     private guidService: GuidService,
+    private guiElementService: GuiElementService,
     private variableService: VariableService,
     private characterService: CharacterService,
-    private portService: PortService,
-    private nodeService: NodeService) {
+    private portService: PortService) {
+
+
     this.handleVarialesChange();
     this.handleCharactersChange();
   }
@@ -46,6 +42,7 @@ export class DialogueService {
    */
   public loadImportedDialogue(importedDialouge: Dialogue): void {
     this.destroyDialouge();
+
     this.dialogue = importedDialouge;
 
     this.variableService.loadImportedVariables(importedDialouge.variables);
@@ -62,7 +59,7 @@ export class DialogueService {
       "New Dialogue",
       guid,
       new Date().toUTCString(),
-      [this.nodeService.generateNode(true)],
+      [this.dialogueFactory.generateDialogueNode(true)],
     );
   }
 
@@ -98,7 +95,7 @@ export class DialogueService {
    * Subscribes to variable-service to keep variables for dialogue object updated.
    */
   private handleVarialesChange(): void {
-    this.variableService.onVariablesUpdate().subscribe((vars: Variable[]) => {
+    this.variables$.subscribe((vars: Variable[]) => {
       this.dialogue.variables = vars;
       this.updateDialogue();
     })
@@ -108,7 +105,7 @@ export class DialogueService {
    * Subscribes to character-service to keep characters for dialogue object updated.
    */
   private handleCharactersChange(): void {
-    this.characterService.onCharactersUpdate().subscribe((chars: Character[]) => {
+    this.characters$.subscribe((chars: Character[]) => {
       this.dialogue.characters = chars;
       this.updateDialogue();
     });
@@ -120,7 +117,7 @@ export class DialogueService {
    */
   public addNewDialogueNode(mousePosition: Vector2 | null = null): void {
     this.dialogue.addDialogueNode(
-      this.nodeService.generateNode(false, this.guiElementService.getInstantiatePosition(mousePosition))
+      this.dialogueFactory.generateDialogueNode(false, this.guiElementService.getInstantiatePosition(mousePosition))
     );
     this.updateDialogue();
   }
@@ -153,7 +150,7 @@ export class DialogueService {
   public addNewComment(mousePosition: Vector2) {
     const instantiatePos = this.guiElementService.getInstantiatePosition(mousePosition);
     this.dialogue.addCommentNode(
-      this.commentService.generateComment(instantiatePos)
+      this.dialogueFactory.generateComment(instantiatePos)
     );
     this.updateDialogue();
   }
@@ -183,7 +180,7 @@ export class DialogueService {
   public addNewEventNode(mousePosition: Vector2): void {
     const instantiatePos = this.guiElementService.getInstantiatePosition(mousePosition);
     this.dialogue.addEventNode(
-      this.eventNodeService.generateNode(instantiatePos)
+      this.dialogueFactory.generateEventNode(instantiatePos)
     );
     this.updateDialogue();
   }
@@ -215,7 +212,7 @@ export class DialogueService {
   public addNewConditionNode(mousePosition: Vector2): void {
     const instantiatePos = this.guiElementService.getInstantiatePosition(mousePosition);
     this.dialogue.addConditionNode(
-      this.conditionService.generateConditionNode(instantiatePos)
+      this.dialogueFactory.generateConditionNode(instantiatePos)
     );
     this.updateDialogue();
   }
@@ -244,7 +241,7 @@ export class DialogueService {
   public addNewRandomNode(mousePosition: Vector2): void {
     const instantiatePos = this.guiElementService.getInstantiatePosition(mousePosition);
     this.dialogue.addRandomNode(
-      this.randomNodeService.generateRandomNode(instantiatePos)
+      this.dialogueFactory.generateRandomNode(instantiatePos)
     );
     this.updateDialogue();
   }
@@ -265,7 +262,7 @@ export class DialogueService {
   public addNewRepeatNode(mousePosition: Vector2): void {
     const instantiatePos = this.guiElementService.getInstantiatePosition(mousePosition);
     this.dialogue.addRepeatNode(
-      this.repeatService.generateRepeatNode(instantiatePos)
+      this.dialogueFactory.generateRepeatNode(instantiatePos)
     );
     this.updateDialogue();
   }

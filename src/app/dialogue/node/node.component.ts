@@ -2,7 +2,7 @@ import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { CharacterService } from 'src/app/services/data/character.service';
-import { ChoiceService } from 'src/app/services/dialogue/choice.service';
+import { DialougeFactoryService } from 'src/app/services/dialogue/dialouge-factory.service';
 import { EdgeService } from 'src/app/services/dialogue/edge.service';
 import { PortService } from 'src/app/services/dialogue/port.service';
 import { EditorStateService } from 'src/app/services/editor/editor-state.service';
@@ -28,7 +28,7 @@ export class NodeComponent implements OnDestroy {
   constructor(
     private edgeService: EdgeService,
     private editorStateService: EditorStateService,
-    private choiceService: ChoiceService,
+    private dialogueFactory: DialougeFactoryService,
     private characterService: CharacterService,
     private portService: PortService
   ) { }
@@ -78,7 +78,7 @@ export class NodeComponent implements OnDestroy {
 
   public addChoice(): void {
     this.dialogueNode.choices.push(
-      this.choiceService.generateChoiceForNode(this.dialogueNode.guid)
+      this.dialogueFactory.generateChoiceForNode(this.dialogueNode.guid)
     );
 
     this.onUpdate.emit(this.dialogueNode);

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { DialougeFactoryService } from 'src/app/services/dialogue/dialouge-factory.service';
 import { EdgeService } from 'src/app/services/dialogue/edge.service';
-import { RandomNodeService } from 'src/app/services/dialogue/random-node.service';
 import { Possibility, RandomNode } from 'src/models/models';
 
 @Component({
@@ -15,13 +15,13 @@ export class RandomComponent {
   @Input() randomNode: RandomNode;
 
   constructor(
-    private randomNodeService: RandomNodeService,
+    private dialogueFactory: DialougeFactoryService,
     private edgeService: EdgeService,
   ) { }
 
   public addPosibility(): void {
     this.randomNode.possibilites.push(
-      this.randomNodeService.generatePossibility(this.randomNode.guid)
+      this.dialogueFactory.generatePossibility(this.randomNode.guid)
     );
 
     this.onUpdate.emit(this.randomNode);

@@ -1,4 +1,3 @@
-
 export enum PortDirection { IN = "in", OUT = "out" };
 export enum PortCapacity { SINGLE = "single", MULTIPLE = "multiple" };
 export enum CanvasType { STATIC, DYNAMIC };
@@ -13,6 +12,26 @@ export enum ConditionType {
     TRUE = "TRUE",
     FALSE = "FALSE",
 }
+
+/**
+ * Does not include variables and characters since they are defined by an interface
+ */
+export enum DialogeIteratableProperty {
+    NODES = "NODES",
+    COMMENTS = "COMMENTS",
+    EVENTS = "EVENTS",
+    CONDITIONS = "CONDITIONS",
+    RANDOMNODES = "RANDOMNODES",
+    REPEATNODES = "REPEATNODES",
+}
+
+export enum EditorImportState {
+    IMPORT_PREPARE = "IMPORT_PREPARE",
+    IMPORT_AWAIT_CALLBACKS = "IMPORT_AWAIT_CALLBACKS",
+    IMPORT_RUNNING = "IMPORT_RUNNING",
+    IMPORT_FINISHED = "IMPORT_FINISHED"
+}
+
 export interface Vector2 {
     x: number
     y: number
@@ -274,24 +293,12 @@ export class RepeatNode extends GuiObject {
     }
 }
 
-/**
- * Does not include variables and characters since they are defined by an interface
- */
-export enum DialogeIteratableProperty {
-    NODES = "NODES",
-    COMMENTS = "COMMENTS",
-    EVENTS = "EVENTS",
-    CONDITIONS = "CONDITIONS",
-    RANDOMNODES = "RANDOMNODES",
-    REPEATNODES = "REPEATNODES",
-};
-
 export class Dialogue {
     constructor(
-        public name: string,
-        public guid: string,
-        public dateTime: string,
-        public nodes: DialogueNode[],
+        public name: string = "",
+        public guid: string = "",
+        public dateTime: string = "",
+        public nodes: DialogueNode[] = [],
         public comments: CommentNode[] = [],
         public events: EventNode[] = [],
         public conditions: ConditionNode[] = [],
@@ -308,17 +315,19 @@ export class Dialogue {
      * @throws Error If JSON object is not of type Dialogue
      * @returns Dialouge object from JSON.
      */
-    public overrideWithJsonData(jsonStr: string): Dialogue {
+    public static fromJsonData(jsonStr: string): Dialogue {
+        const dialogue: Dialogue = new Dialogue();
+
         let jsonObj = JSON.parse(jsonStr);
         for (let prop in jsonObj) {
 
-            if (this[prop] === undefined) {
+            if (dialogue[prop] === undefined) {
                 throw new Error("Invalid JSON");
             }
 
-            this[prop] = jsonObj[prop];
+            dialogue[prop] = jsonObj[prop];
         }
-        return this;
+        return dialogue;
     }
 
 

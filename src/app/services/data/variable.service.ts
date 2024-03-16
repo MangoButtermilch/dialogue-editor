@@ -14,20 +14,23 @@ export class VariableService {
 
   constructor(private guidService: GuidService) { }
 
-  public loadImportedVariables(variables: Variable[]) {
+  public loadImportedVariables(vars: Variable[]): void {
     this.destroyVariables();
-    this.variables = variables;
+    this.variables = vars;
     this.updateVariables();
   }
 
   /**
-   * Sets variables to empty array and updates stream.
+   * Sets variables to empty array and updates stream
    */
   private destroyVariables(): void {
     this.variables = [];
     this.updateVariables();
   }
 
+  /**
+   * Updates variables$ stream
+   */
   private updateVariables(): void {
     this.variables$.next(this.variables);
   }
@@ -58,14 +61,13 @@ export class VariableService {
     this.updateVariables();
   }
 
+  /**
+   * Used for CDK Drag & Drop
+   * @param previousIndex 
+   * @param currentIndex 
+   */
   public moveItemInArray(previousIndex: number, currentIndex: number): void {
     moveItemInArray(this.variables, previousIndex, currentIndex);
     this.updateVariables();
   }
-
-  public onVariablesUpdate(): Observable<Variable[]> {
-    return this.variables$.asObservable();
-  }
-
-
 }

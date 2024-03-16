@@ -1,24 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { Choice, CommentNode, ConditionNode, DialogeIteratableProperty, Dialogue, DialogueNode, EventNode, Port, Possibility, RandomNode, RepeatNode, Variable } from 'src/models/models';
+import { Dialogue, DialogeIteratableProperty, DialogueNode, Choice, CommentNode, EventNode, ConditionNode, RandomNode, Possibility, RepeatNode, Port } from 'src/models/models';
 import { DialogueService } from '../dialogue/dialogue.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SerializationService {
-
-
-  private dialogue$: Observable<Dialogue> = this.dialogueService.getDialoge();
+export class ImportService {
 
   constructor(private dialogueService: DialogueService) { }
 
-  public saveToJson(): void {
-    this.dialogue$.subscribe((dialoge: Dialogue) => {
-      this.downloadJSON(dialoge, dialoge.name);
-    }).unsubscribe();
-  }
-
+  /**
+   * This function gets triggered by button in toolbar component and inits the import of a dialouge.
+   */
   public loadFromJson(): void {
     this.importJSON((dialouge: Dialogue) => {
       this.reconstructDialougeAfterImport(dialouge);
@@ -114,10 +107,12 @@ export class SerializationService {
     for (const key of Object.keys(iteratable)) {
       const value = iteratable[key];
       const isIteratable = (value instanceof Array || value instanceof Object);
-      if (!isIteratable) continue;
 
       keyPath.push(key);
-      this.reconstructDialougePortsRecursivley(value, keyPath, dialogue);
+      if (isIteratable) {
+        this.reconstructDialougePortsRecursivley(value, keyPath, dialogue);
+      }
+
       keyPath.pop();
 
       const isPort = key.toLowerCase().includes("port") && !key.toLowerCase().includes("connect");
@@ -132,17 +127,17 @@ export class SerializationService {
         value.connectedPortGuids
       );
 
-      //reassigning ports to original dialouge object
+      //reassigning ports to original dialouge object by traversing with the key path
       let currentObject = dialogue;
-      for (const key of keyPath) {
-        currentObject = currentObject[key];
+      for (const subKey of keyPath) {
+        currentObject = currentObject[subKey];
       }
       currentObject[key] = port;
     }
   }
 
   /**
-   * Tries to import Dialogue from JSON file
+   * Tries to import Dialogue from JSON file and sets editor import state to prepared when file has been chosen
    * @param callback called after file has been parsed. Gets Dialogue passed as parameter
    */
   private importJSON(callback: Function): void {
@@ -157,10 +152,12 @@ export class SerializationService {
 
         try {
           const content = readerEvent.target.result as string;
-          const dialoge: Dialogue = new Dialogue("", "", "", []).overrideWithJsonData(content);
+          const dialoge: Dialogue = Dialogue.fromJsonData(content);
+          reader.onload = null;
           callback(dialoge);
         } catch (error) {
           console.warn(error);
+          reader.onload = null;
         }
       };
       reader.readAsText(file);
@@ -168,21 +165,4 @@ export class SerializationService {
     input.click();
     input.remove();
   }
-
-  /**
-   * Creates a JSON file that will be downloaded by the browser to save a file.
-   * @param jsonData 
-   * @param filename 
-   */
-  private downloadJSON(jsonData: object, filename: string) {
-    const blob = new Blob([JSON.stringify(jsonData)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
-} 
+}

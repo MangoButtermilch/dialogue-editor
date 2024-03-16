@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { Subject, BehaviorSubject } from 'rxjs';
-import { Choice, Edge, Port, Vector2 } from 'src/models/models';
+import { Choice, Dialogue, Edge, EditorImportState, Port, Vector2 } from 'src/models/models';
 import { EdgeService } from '../dialogue/edge.service';
 
 @Injectable({

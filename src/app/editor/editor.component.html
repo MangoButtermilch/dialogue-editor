@@ -1,9 +1,11 @@
-<app-toolbar (onNewNodeClicked)="generateNewNode()"
+<app-toolbar *ngIf="dialogue$ | async as dialogue"
+             (onNewNodeClicked)="generateNewNode()"
              (onBackToOriginClicked)="panToOrigin()"
              (onHelpClicked)="showHelpModal()"
              (onLoadClicked)="load()"
              (onSaveClicked)="save()"
-             (onDialogeNameChange)="changeDialogeName($event)"></app-toolbar>
+             (onDialogeNameChange)="changeDialogeName($event)"
+             dialogueName="{{dialogue.name}}"></app-toolbar>
 
 <app-canvas></app-canvas>
 

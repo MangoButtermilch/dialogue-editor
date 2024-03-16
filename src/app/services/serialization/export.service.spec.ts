@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SerializationService } from './serialization.service';
+import { ExportService } from './export.service';
 
-describe('SerializationService', () => {
-  let service: SerializationService;
+describe('ExportService', () => {
+  let service: ExportService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SerializationService);
+    service = TestBed.inject(ExportService);
   });
 
   it('should be created', () => {

@@ -1,6 +1,6 @@
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Character } from 'src/models/models';
 import { GuidService } from '../editor/guid.service';
 
@@ -21,14 +21,6 @@ export class CharacterService {
 
   constructor(private guidService: GuidService) { }
 
-  private updateCharacters(): void {
-    this.characters$.next(this.characters);
-  }
-
-  public getCharacters(): Observable<Character[]> {
-    return this.characters$;
-  }
-
   public loadImportedCharacters(characters: Character[]) {
     this.destroyCharacters();
     this.characters = characters;
@@ -41,6 +33,21 @@ export class CharacterService {
   private destroyCharacters(): void {
     this.characters = [];
     this.updateCharacters();
+  }
+
+  /**
+   * Updates characters$ stream
+   */
+  private updateCharacters(): void {
+    this.characters$.next(this.characters);
+  }
+
+  public getCharacters(): Observable<Character[]> {
+    return this.characters$;
+  }
+  
+  public getDefaultCharacter(): Character {
+    return this.defaultCharacter;
   }
 
   public addCharacter(args: { name: string, color: string }): void {
@@ -65,16 +72,13 @@ export class CharacterService {
     this.updateCharacters();
   }
 
-  public getDefaultCharacter(): Character {
-    return this.defaultCharacter;
-  }
-
+  /**
+   * Used for CDK Drag & Drop
+   * @param previousIndex 
+   * @param currentIndex 
+   */
   public moveItemInArray(previousIndex: number, currentIndex: number): void {
     moveItemInArray(this.characters, previousIndex, currentIndex);
     this.updateCharacters();
-  }
-
-  public onCharactersUpdate(): Observable<Character[]> {
-    return this.characters$.asObservable();
   }
 }
