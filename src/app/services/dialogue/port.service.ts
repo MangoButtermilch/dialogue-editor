@@ -15,14 +15,10 @@ export class PortService {
 
   constructor(private guidService: GuidService) { }
 
-  public loadImportedPorts(dialoge: Dialogue): void {
-    if (dialoge.nodes[-1]) {
-      delete dialoge.nodes[-1];
-    }
+  public loadImportedPorts(dialogue: Dialogue): void {
     this.destroyPorts();
-    this.findPortsRecursivley(dialoge);
+    this.findPortsRecursivley(dialogue);
     this.updatePorts();
-    console.log(this.ports)
   }
 
   /**
@@ -33,7 +29,6 @@ export class PortService {
     for (const key in iteratable) {
       const value = iteratable[key];
       const isIteratable = (typeof (value) === "object");
-
       if (!isIteratable) continue;
 
       this.findPortsRecursivley(value);
