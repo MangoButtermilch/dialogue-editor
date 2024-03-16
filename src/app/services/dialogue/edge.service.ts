@@ -35,6 +35,13 @@ export class EdgeService {
     this.updateEdges();
   }
 
+  /**
+   * Updates edges observable with current edges array.
+   */
+  private updateEdges(): void {
+    this.edges$.next(this.edges);
+  }
+
   public generateEdgesAfterImport(): void {
     this.destroyEdges();
 
@@ -58,13 +65,6 @@ export class EdgeService {
       });
 
     }).unsubscribe();
-  }
-
-  /**
-   * Updates edges observable with current edges array.
-   */
-  private updateEdges(): void {
-    this.edges$.next(this.edges);
   }
 
   private handleDeleteEdge(): void {
@@ -110,10 +110,7 @@ export class EdgeService {
       other.start.guid === portA.guid || other.end.guid === portB.guid ||
         other.end.guid === portA.guid || other.start.guid === portB.guid
     });
-    console.log(edgeExists)
-
     if (edgeExists) return;
-    console.log("create edge: " + portA.guid + " => " + portB.guid);
 
     this.edges.push(
       new Edge(
