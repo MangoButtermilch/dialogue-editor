@@ -25,13 +25,6 @@ export enum DialogeIteratableProperty {
     REPEATNODES = "REPEATNODES",
 }
 
-export enum EditorImportState {
-    IMPORT_PREPARE = "IMPORT_PREPARE",
-    IMPORT_AWAIT_CALLBACKS = "IMPORT_AWAIT_CALLBACKS",
-    IMPORT_RUNNING = "IMPORT_RUNNING",
-    IMPORT_FINISHED = "IMPORT_FINISHED"
-}
-
 export interface Vector2 {
     x: number
     y: number
