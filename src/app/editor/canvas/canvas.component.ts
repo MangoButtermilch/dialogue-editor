@@ -91,6 +91,8 @@ export class CanvasComponent implements OnInit, AfterViewInit, OnDestroy {
   private handleEdges(): void {
     this.renderEdges$.subscribe((edges: Edge[]) => {
       this.renderEdges = edges;
+      //Needs to be cleared since new HTML elements have been created
+      this.elementIdCache.clear();
       this.clear(CanvasType.STATIC);
     });
 
