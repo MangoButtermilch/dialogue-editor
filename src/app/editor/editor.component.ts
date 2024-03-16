@@ -147,6 +147,10 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.exportService.saveToJson();
   }
 
+  public export(): void {
+    this.exportService.exportForEngine();
+  }
+
   public load(): void {
     this.importService.loadFromJson();
   }

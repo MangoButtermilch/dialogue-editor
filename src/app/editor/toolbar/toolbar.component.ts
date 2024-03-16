@@ -17,6 +17,7 @@ export class ToolbarComponent implements OnDestroy {
   @Output() onBackToOriginClicked: EventEmitter<void> = new EventEmitter<void>();
   @Output() onSaveClicked: EventEmitter<void> = new EventEmitter<void>();
   @Output() onLoadClicked: EventEmitter<void> = new EventEmitter<void>();
+  @Output() onExportClicked: EventEmitter<void> = new EventEmitter<void>();
   @Output() onDialogeNameChange: EventEmitter<string> = new EventEmitter<string>();
 
   private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -49,6 +50,10 @@ export class ToolbarComponent implements OnDestroy {
 
   public save(): void {
     this.onSaveClicked.emit();
+  }
+
+  public export(): void {
+    this.onExportClicked.emit();
   }
 
   public load(): void {
