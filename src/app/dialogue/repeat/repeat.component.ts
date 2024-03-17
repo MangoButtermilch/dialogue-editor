@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { RepeatNode } from 'src/models/models';
+import { Port, RepeatNode } from 'src/models/models';
 
 @Component({
   selector: 'app-repeat',
@@ -37,5 +37,15 @@ export class RepeatComponent implements OnInit {
 
   public get inputErrors(): ValidationErrors | null | undefined {
     return this.formGroup?.get("count")?.errors;
+  }
+
+  public updateInPort(port: Port): void {
+    this.repeatNode.outPort = port;
+    this.onUpdate.emit(this.repeatNode);
+  }
+
+  public updateOutPort(port: Port): void {
+    this.repeatNode.outPort = port;
+    this.onUpdate.emit(this.repeatNode);
   }
 }

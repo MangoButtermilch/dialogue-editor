@@ -224,6 +224,11 @@ export class ConditionNode extends GuiObject {
         super(guid, pos);
     }
 
+    public getPortByGuid(guid: string): Port {
+        const ports: Port[] = [this.inPort, this.outPortFails, this.outPortMatches];
+        return ports.find((other: Port) => other.guid === guid);
+    }
+
     public static fromImportedData(importedData: any): ConditionNode {
         return new ConditionNode(
             importedData.guid,

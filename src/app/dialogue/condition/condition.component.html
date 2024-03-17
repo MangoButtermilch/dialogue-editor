@@ -1,11 +1,12 @@
-<div *ngIf="conditionNode && formGroup" 
+<div *ngIf="conditionNode && formGroup"
      [formGroup]="formGroup"
      class="condition-node {{errorMessage !== '' ? 'warning': ''}}">
 
     <div class="warn-message bg-danger text-white text-center">{{errorMessage}}</div>
 
     <div class="color-indicator d-flex justify-content-between p-1">
-        <app-port [port]="conditionNode.inPort"></app-port>
+        <app-port [port]="conditionNode.inPort"
+                  (onUpdate)="updateInPort($event)"></app-port>
 
         <h3>Condition</h3>
         <button (click)="onDelete.emit(conditionNode)"
@@ -44,9 +45,11 @@
         <div class="d-flex flex-column">
 
             <app-port [port]="conditionNode.outPortMatches"
-                      [labelOverride]="'True'"></app-port>
+                      [labelOverride]="'True'"
+                      (onUpdate)="updateOutPortMatches($event)"></app-port>
             <app-port [port]="conditionNode.outPortFails"
-                      [labelOverride]="'False'"></app-port>
+                      [labelOverride]="'False'"
+                      (onUpdate)="updateOutPortFails($event)"></app-port>
         </div>
     </div>
 

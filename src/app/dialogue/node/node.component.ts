@@ -85,7 +85,7 @@ export class NodeComponent implements OnDestroy {
   }
 
   public deleteChoice(choice: Choice): void {
-    this.edgeService.removeAllEdgesFor(choice.outPort);
+    this.edgeService.removeAllEdgesFor(choice.outPort, true);
     this.dialogueNode.choices = this.dialogueNode.choices.filter((other: Choice) => other.guid !== choice.guid);
     this.portService.removePort(choice.outPort);
 

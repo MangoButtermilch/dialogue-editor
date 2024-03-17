@@ -5,7 +5,8 @@
 
 
     <div class="d-flex justify-content-between p-1">
-        <app-port [port]="repeatNode.inPort"></app-port>
+        <app-port [port]="repeatNode.inPort"
+                  (onUpdate)="updateInPort($event)"></app-port>
         <h3>Repeat </h3>
         <button (click)="onDelete.emit(repeatNode)"
                 class="btn btn-danger p-0 me-1">
@@ -24,7 +25,8 @@
                    (input)="onAmountInput($event)" />
         </div>
 
-        <app-port [port]="repeatNode.outPort"></app-port>
+        <app-port [port]="repeatNode.outPort"
+                  (onUpdate)="updateOutPort($event)"></app-port>
 
     </div>
 </div>

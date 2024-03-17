@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DialougeFactoryService } from 'src/app/services/dialogue/dialouge-factory.service';
 import { EdgeService } from 'src/app/services/dialogue/edge.service';
-import { Possibility, RandomNode } from 'src/models/models';
+import { PortService } from 'src/app/services/dialogue/port.service';
+import { Port, Possibility, RandomNode } from 'src/models/models';
 
 @Component({
   selector: 'app-random',
@@ -17,6 +18,7 @@ export class RandomComponent {
   constructor(
     private dialogueFactory: DialougeFactoryService,
     private edgeService: EdgeService,
+    private portService: PortService
   ) { }
 
   public addPosibility(): void {
@@ -28,8 +30,19 @@ export class RandomComponent {
   }
 
   public deletePossibility(possibility: Possibility): void {
-    this.edgeService.removeAllEdgesFor(possibility.outPort);
+    this.edgeService.removeAllEdgesFor(possibility.outPort, true);
     this.randomNode.possibilites = this.randomNode.possibilites.filter((other: Possibility) => other.guid !== possibility.guid);
+    this.portService.removePort(possibility.outPort);
+    this.onUpdate.emit(this.randomNode);
+  }
+
+  public updateInPort(port: Port): void {
+    this.randomNode.inPort = port;
+    this.onUpdate.emit(this.randomNode);
+  }
+
+  public updateOutPort(port: Port, possibility: Possibility): void {
+    possibility.outPort = port;
     this.onUpdate.emit(this.randomNode);
   }
 }

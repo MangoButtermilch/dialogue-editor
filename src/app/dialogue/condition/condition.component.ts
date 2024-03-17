@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { FormControl, FormGroup } from '@angular/forms';
 import { combineLatest, Observable, Subject, takeUntil } from 'rxjs';
 import { VariableService } from 'src/app/services/data/variable.service';
-import { ConditionNode, ConditionType, Variable, VariableType } from 'src/models/models';
+import { ConditionNode, ConditionType, Port, Variable, VariableType } from 'src/models/models';
 
 @Component({
   selector: 'app-condition',
@@ -64,6 +64,21 @@ export class ConditionComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  public updateInPort(port: Port): void {
+    this.conditionNode.inPort = port;
+    this.onUpdate.emit(this.conditionNode);
+  }
+
+  public updateOutPortMatches(port: Port): void {
+    this.conditionNode.outPortMatches = port;
+    this.onUpdate.emit(this.conditionNode);
+  }
+
+  public updateOutPortFails(port: Port): void {
+    this.conditionNode.outPortFails = port;
+    this.onUpdate.emit(this.conditionNode);
+  }
+
   private initFormAndObservables(): void {
 
     const guid = this.conditionNode.variable?.guid ?? null;
@@ -83,7 +98,6 @@ export class ConditionComponent implements OnInit, OnDestroy {
     ]).pipe(takeUntil(this.destroy$));
 
   }
-
 
   public getErrorMessage(): string {
 

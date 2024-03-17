@@ -30,25 +30,35 @@ export class EdgeService {
     this.handleDeleteEdge();
   }
 
+  public getEdges(): Observable<Edge[]> {
+    return this.edges$.asObservable();
+  }
+
+  /**
+   * Updates edges stream 
+   */
+  private updateEdges(): void {
+    this.edges$.next(this.edges);
+  }
+
+  /**
+   * Sets edges array to empty array and updates stream
+   */
   private destroyEdges(): void {
     this.edges = [];
     this.updateEdges();
   }
 
   /**
-   * Updates edges observable with current edges array.
+   * Iterates over all ports and creates edges.
+   * Edges will only be created for SINGLE capacity ports to avoid overdraw.
    */
-  private updateEdges(): void {
-    this.edges$.next(this.edges);
-  }
-
   public generateEdgesAfterImport(): void {
     this.destroyEdges();
 
     this.portService.getPorts().subscribe((ports: Port[]) => {
 
       for (const port of ports) {
-        //Only need one-way connections to avoid overdraw
         if (
           port.connectedPortGuids.length == 0 ||
           port.capacity === PortCapacity.MULTIPLE
@@ -58,11 +68,10 @@ export class EdgeService {
 
           const otherPort: Port = ports.find((other: Port) => other.guid === guid);
           this.generateEdge(port, otherPort);
-          this.updateEdges();
         }
-
       }
 
+      this.updateEdges();
     }).unsubscribe();
   }
 
@@ -70,12 +79,6 @@ export class EdgeService {
     this.deleteEdge$.subscribe((data: [void, Edge]) => {
       const edge: Edge = data[1];
       if (edge === null || edge === undefined) return;
-
-      const deleteEndConnection = edge.end.capacity === "single";
-      const deleteStartConnection = edge.start.capacity === "single";
-
-      if (deleteEndConnection) this.removeAllEdgesFor(edge.end);
-      if (deleteStartConnection) this.removeAllEdgesFor(edge.start);
 
       this.portService.disconnectPorts(edge.start, edge.end);
       this.editorStateService.setDeleteEdge(edge);
@@ -95,12 +98,13 @@ export class EdgeService {
     this.portsDisconnected$.subscribe((ports: Port[]) => {
       const portA = ports[0];
       const portB = ports[1];
-      this.removeAllEdgesFor(portA);
+      if (portA !== undefined) this.removeAllEdgesFor(portA, true);
+      if (portB !== undefined) this.removeAllEdgesFor(portB, true);
     });
   }
 
   /**
-   * Edges will be used for canvas rendering of connections between ports.
+   * Generates an edge between two ports. Edges will be used for canvas rendering of connections between ports.
    * @param portA 
    * @param portB 
    */
@@ -111,29 +115,31 @@ export class EdgeService {
     });
     if (edgeExists) return;
 
-    this.edges.push(
-      new Edge(
-        this.guidService.getGuid(),
-        { x: 0, y: 0 },
-        portA,
-        portB
-      )
-    );
+    this.edges.push(new Edge(
+      this.guidService.getGuid(),
+      { x: 0, y: 0 },
+      portA,
+      portB
+    ));
     this.updateEdges();
   }
 
-  public removeAllEdgesFor(port: Port): void {
-    this.edges = this.edges.filter(
-      (other: Edge) =>
-        other.start.guid !== port.guid &&
-        other.end.guid !== port.guid
+  /**
+   * Will remove all edges for given port.
+   * @param port 
+   * @param singleCapacityOnly If true, will only delete edge if port has SINGLE capacity.
+   * Set to true if deleting edges (this is because edges are only created via SINGLE capacity ports).
+   * Set to false if deleteing whole nodes. 
+   */
+  public removeAllEdgesFor(port: Port, singleCapacityOnly: boolean): void {
+    if (singleCapacityOnly && port.capacity !== PortCapacity.SINGLE) return;
+
+    this.edges = this.edges.filter((other: Edge) =>
+      other.start.guid !== port.guid &&
+      other.end.guid !== port.guid
     );
 
     this.updateEdges();
-  }
-
-  public getEdges(): Observable<Edge[]> {
-    return this.edges$.asObservable();
   }
 
   /**
@@ -141,10 +147,10 @@ export class EdgeService {
    * @param node 
    */
   public removeEdgesForNode(node: DialogueNode) {
-    this.removeAllEdgesFor(node.inPort);
+    this.removeAllEdgesFor(node.inPort, false);
 
     for (const choice of node.choices) {
-      this.removeAllEdgesFor(choice.outPort)
+      this.removeAllEdgesFor(choice.outPort, false);
     }
   }
 
@@ -153,8 +159,8 @@ export class EdgeService {
    * @param event 
    */
   public removeEdgesForEvent(event: EventNode) {
-    this.removeAllEdgesFor(event.inPort);
-    this.removeAllEdgesFor(event.outPort);
+    this.removeAllEdgesFor(event.inPort, false);
+    this.removeAllEdgesFor(event.outPort, false);
   }
 
   /**
@@ -162,9 +168,9 @@ export class EdgeService {
    * @param randomNode 
    */
   public removeEdgesForRandomNode(randomNode: RandomNode) {
-    this.removeAllEdgesFor(randomNode.inPort);
+    this.removeAllEdgesFor(randomNode.inPort, false);
     for (const possibility of randomNode.possibilites) {
-      this.removeAllEdgesFor(possibility.outPort)
+      this.removeAllEdgesFor(possibility.outPort, false);
     }
   }
 
@@ -173,8 +179,8 @@ export class EdgeService {
    * @param node 
    */
   public removeEdgesForRepeatNode(node: RepeatNode) {
-    this.removeAllEdgesFor(node.inPort);
-    this.removeAllEdgesFor(node.outPort);
+    this.removeAllEdgesFor(node.inPort, false);
+    this.removeAllEdgesFor(node.outPort, false);
   }
 
   /**
@@ -182,8 +188,8 @@ export class EdgeService {
    * @param condition 
    */
   public removeEdgesForCondition(condition: ConditionNode) {
-    this.removeAllEdgesFor(condition.inPort);
-    this.removeAllEdgesFor(condition.outPortFails);
-    this.removeAllEdgesFor(condition.outPortMatches);
+    this.removeAllEdgesFor(condition.inPort, false);
+    this.removeAllEdgesFor(condition.outPortFails, false);
+    this.removeAllEdgesFor(condition.outPortMatches, false);
   }
 }

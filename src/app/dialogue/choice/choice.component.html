@@ -11,7 +11,7 @@
            value="{{choice.content}}"
            (input)="updateChoiceInput($event)" />
 
-    <app-port (onUpdate)="updatePort($event)"
-              [port]="choice.outPort"></app-port>
+    <app-port [port]="choice.outPort"
+              (onUpdate)="updatePort($event)"></app-port>
 
 </div>

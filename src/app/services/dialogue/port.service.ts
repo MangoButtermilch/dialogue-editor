@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { Choice, ConditionNode, Dialogue, DialogueNode, EventNode, Port, PortCapacity, PortDirection, Possibility, RandomNode, RepeatNode } from 'src/models/models';
+import { ConditionNode, Dialogue, DialogueNode, EventNode, Port, PortCapacity, PortDirection, RandomNode, RepeatNode } from 'src/models/models';
 import { GuidService } from '../editor/guid.service';
 
 @Injectable({
@@ -22,24 +22,32 @@ export class PortService {
   }
 
   /**
-   * @param iteratable Initial value should be Dialouge object after an import
+   * @returns Observable array of 2 ports that have been connected
    */
-  private findPortsRecursivley(iteratable: any) {
+  public onPortsConnected(): Observable<Port[]> {
+    return this.portsConnectedState$.asObservable();
+  }
 
-    for (const key in iteratable) {
-      const value = iteratable[key];
-      const isIteratable = (typeof (value) === "object");
-      if (!isIteratable) continue;
+  /**
+   * @returns Observable array of 2 ports that have been disconnected
+   */
+  public onPortsDisconnected(): Observable<Port[]> {
+    return this.portsDisconnectedState$.asObservable();
+  }
 
-      this.findPortsRecursivley(value);
+  /**
+   * 
+   * @returns Observable of current ports array
+   */
+  public getPorts(): Observable<Port[]> {
+    return this.ports$.asObservable();
+  }
 
-      const isPort = value instanceof Port;
-      if (!isPort) continue;
-
-      const hasPort = this.ports.some((other: Port) => other.guid === value.guid);
-      if (hasPort) continue;
-      this.ports.push(value);
-    }
+  /**
+   * Updates ports$ stream
+   */
+  private updatePorts(): void {
+    this.ports$.next(this.ports);
   }
 
   /**
@@ -48,42 +56,6 @@ export class PortService {
   private destroyPorts(): void {
     this.ports = [];
     this.updatePorts();
-  }
-
-  public getPorts(): Observable<Port[]> {
-    return this.ports$.asObservable();
-  }
-
-  public generateInputPort(parentGuid: string): Port {
-    const guid: string = this.guidService.getGuid();
-    const port = new Port(
-      guid,
-      { x: 0, y: 0 },
-      parentGuid,
-      PortDirection.IN,
-      PortCapacity.MULTIPLE
-    );
-    this.ports.push(port);
-    this.updatePorts();
-    return port;
-  }
-
-  public generateOutputPort(parentGuid: string): Port {
-    const guid: string = this.guidService.getGuid();
-    const port = new Port(
-      guid,
-      { x: 0, y: 0 },
-      parentGuid,
-      PortDirection.OUT,
-      PortCapacity.SINGLE
-    );
-    this.ports.push(port);
-    this.updatePorts();
-    return port;
-  }
-
-  private updatePorts(): void {
-    this.ports$.next(this.ports);
   }
 
   /**
@@ -115,36 +87,78 @@ export class PortService {
    */
   public disconnectPortsByGuid(portA: Port, guidB: string): void {
     portA.disconnectByGuid(guidB);
-    this.findPortByGuid(guidB)?.disconnectByGuid(portA.guid);
+
+    const portB = this.findPortByGuid(guidB);
+
+    if (portB !== undefined) { //Port B can be undefined if node of port has already been destroyed
+      portB.disconnectByGuid(portA.guid);
+      this.portsDisconnectedState$.next([portA, portB]);
+      return;
+    }
     this.portsDisconnectedState$.next([portA]);
   }
 
-  /**
-   * @returns Observable array of 2 ports that have been connected
-   */
-  public onPortsConnected(): Observable<Port[]> {
-    return this.portsConnectedState$;
-  }
-
-  /**
-   * @returns Observable array of 2 ports that have been disconnected
-   */
-  public onPortsDisconnected(): Observable<Port[]> {
-    return this.portsDisconnectedState$;
-  }
-
-  public removePort(port: Port): void {
-    this.ports = this.ports.filter((other: Port) => other.guid !== port.guid);
+  public generateInputPort(parentGuid: string): Port {
+    const guid: string = this.guidService.getGuid();
+    const port = new Port(
+      guid,
+      { x: 0, y: 0 },
+      parentGuid,
+      PortDirection.IN,
+      PortCapacity.MULTIPLE
+    );
+    this.ports.push(port);
     this.updatePorts();
+    return port;
   }
 
-  public removePortByGuid(guid: string): void {
-    this.ports = this.ports.filter((other: Port) => other.guid !== guid);
+  public generateOutputPort(parentGuid: string): Port {
+    const guid: string = this.guidService.getGuid();
+    const port = new Port(
+      guid,
+      { x: 0, y: 0 },
+      parentGuid,
+      PortDirection.OUT,
+      PortCapacity.SINGLE
+    );
+    this.ports.push(port);
     this.updatePorts();
+    return port;
+  }
+
+  /**
+   * Only call after import of a dialogue.
+   * @param iteratable Initial value should be Dialouge object after an import
+   */
+  private findPortsRecursivley(iteratable: any) {
+
+    for (const key in iteratable) {
+      const value = iteratable[key];
+      const isIteratable = (typeof (value) === "object");
+      if (!isIteratable) continue;
+
+      this.findPortsRecursivley(value);
+
+      const isPort = value instanceof Port;
+      if (!isPort) continue;
+
+      const hasPort = this.ports.some((other: Port) => other.guid === value.guid);
+      if (hasPort) continue;
+      this.ports.push(value);
+    }
   }
 
   private findPortByGuid(guid: string): Port {
     return this.ports.find((other: Port) => other.guid === guid);
+  }
+
+  public removePort(port: Port): void {
+    for (const guid of port.connectedPortGuids) {
+      this.disconnectPortsByGuid(port, guid);
+    }
+    
+    this.ports = this.ports.filter((other: Port) => other.guid !== port.guid);
+    this.updatePorts();
   }
 
   /**
