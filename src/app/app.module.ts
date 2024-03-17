@@ -32,6 +32,7 @@ import { VariableComponent } from './editor/variable-panel/variable/variable.com
 import { GuiElementComponent } from './global/gui-element/gui-element.component';
 import { ModalComponent } from './global/modal/modal.component';
 import { ResizableComponent } from './global/resizable/resizable.component';
+import { VersionComponent } from './global/version/version.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,6 +58,7 @@ import { ResizableComponent } from './global/resizable/resizable.component';
     RandomComponent,
     NotificationPanelComponent,
     NotificationComponent,
+    VersionComponent,
   ],
   imports: [
     NgxPanZoomModule,

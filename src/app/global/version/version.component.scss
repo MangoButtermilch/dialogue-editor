@@ -1,0 +1,10 @@
+.version-hint {
+    position: fixed;
+    z-index: 10;
+    left: 5px;
+    bottom: 5px;
+    color: var(--colorWhite);
+    user-select: none;
+    opacity: .5;
+    pointer-events: none;
+}
