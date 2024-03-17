@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "dialogue-editor-app:build:production"
+              "buildTarget": "dialogue-editor-app:build:production"
             },
             "development": {
-              "browserTarget": "dialogue-editor-app:build:development"
+              "buildTarget": "dialogue-editor-app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "dialogue-editor-app:build"
+            "buildTarget": "dialogue-editor-app:build"
           }
         },
         "test": {

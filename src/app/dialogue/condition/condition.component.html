@@ -1,5 +1,6 @@
-<div *ngIf="conditionNode && formGroup"
-     [formGroup]="formGroup"
+@if (conditionNode && formGroup) {
+
+<div [formGroup]="formGroup"
      class="condition-node {{errorMessage !== '' ? 'warning': ''}}">
 
     <div class="warn-message bg-danger text-white text-center">{{errorMessage}}</div>
@@ -21,22 +22,33 @@
                 id="var"
                 name="var"
                 formControlName="{{guidFieldName}}">
-            <option *ngFor="let variable of variables$ | async; let i = index;"
-                    value="{{variable.guid}}"
+
+            @for (variable of variables$ | async; track variable.guid; let i = $index) {
+
+            <option value="{{variable.guid}}"
                     [selected]="false">
                 {{variable.name}}
             </option>
+
+            }
+
         </select>
 
         <select class="m-1 bg-dark text-white p-0"
                 id="type"
                 name="type"
                 formControlName="{{conditionFieldName}}">
-            <option *ngFor="let enum of conditionTypes | keyvalue"
-                    [selected]="enum.key == conditionNode.type"
+
+            @for (enum of conditionTypes | keyvalue; track $index) {
+
+             
+            <option [selected]="enum.key == conditionNode.type"
                     value="{{enum.key}}">
                 {{getConditionTypeLabel(enum.value)}}
             </option>
+
+            }
+
         </select>
 
         <input type="text"
@@ -52,6 +64,5 @@
                       (onUpdate)="updateOutPortFails($event)"></app-port>
         </div>
     </div>
-
-
 </div>
+}

@@ -16,17 +16,18 @@
         </div>
 
         <div class="p-0">
-   
+
             <div class="list"
                  cdkDropList
                  (cdkDropListDropped)="cdkVariableDropped($event)">
 
-                <app-variable cdkDrag
-                              class="mb-2"
-                              *ngFor="let variable of variables$ | async"
-                              (onUpdateVariable)="updateVariable($event)"
-                              (onDeleteVariable)="deleteVariable($event)"
-                              [variable]="variable"></app-variable>
+                @for (variable of variables$ | async; track variable.guid) {
+                    <app-variable cdkDrag
+                                class="mb-2"
+                                (onUpdateVariable)="updateVariable($event)"
+                                (onDeleteVariable)="deleteVariable($event)"
+                                [variable]="variable"></app-variable>
+                }
             </div>
         </div>
     </div>

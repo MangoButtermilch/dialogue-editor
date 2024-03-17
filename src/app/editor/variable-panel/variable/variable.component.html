@@ -1,5 +1,5 @@
-<div *ngIf="formGroup"
-     class="d-flex align-items-center">
+@if (formGroup) {
+<div class="d-flex align-items-center">
 
 
     <span [formGroup]="formGroup">
@@ -13,10 +13,11 @@
 
     <select class="bg-dark me-1 text-white"
             (input)="updateVariableType($event)">
-        <option *ngFor="let enum of variableTypes | keyvalue"
-                [selected]="enum.key == variable.type">
-            {{enum.key}}
-        </option>
+        @for (enum of variableTypes | keyvalue; track $index) {
+            <option [selected]="enum.key == variable.type">
+                {{enum.key}}
+            </option>
+        }
     </select>
 
 
@@ -26,3 +27,4 @@
     </button>
 
 </div>
+}

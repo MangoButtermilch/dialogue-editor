@@ -1,7 +1,8 @@
+@if (visible) {
+
 <div class="menu text-white p-1"
      [style.left]="left"
-     [style.top]="top"
-     *ngIf="visible">
+     [style.top]="top">
 
     <div class="select bg-dark border-bottom">
         <div class="title p-1">New <span class="icon"><svg-icon name="icon_chevron_right"></svg-icon></span></div>
@@ -40,3 +41,4 @@
     </div>
 
 </div>
+}

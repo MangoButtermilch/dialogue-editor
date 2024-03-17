@@ -1,5 +1,5 @@
-<div *ngIf="port"
-     (click)="onClicked()"
+@if (port) {
+<div (click)="onClicked()"
      class="{{port.direction === 'out' ? 'reverse'  :''}} 
      {{canBeClicked ? 'clickable' : 'unclickable'}}
      {{isCurrentlySelected ? 'selected' : ''}}
@@ -10,3 +10,4 @@
     </button>
     <p class="ms-1 text-light p-1">{{label}}</p>
 </div>
+}

@@ -1,5 +1,5 @@
-<div *ngIf="randomNode"
-     class="random-node ">
+@if (randomNode) {
+<div class="random-node ">
 
 
     <div class="d-flex justify-content-between p-1">
@@ -25,21 +25,24 @@
         </div>
 
         <div class="possibilites">
+            @for (possibility of randomNode.possibilites; track possibility.guid) {
 
-            <div class="d-flex justify-content-end align-items-center"
-                 *ngFor="let possibility of randomNode.possibilites">
+            <div class="d-flex justify-content-end align-items-center">
 
                 <button class="btn btn-danger p-0 me-1"
                         (click)="deletePossibility(possibility)">
                     <svg-icon name="icon_delete"></svg-icon>
                 </button>
                 <app-port [port]="possibility.outPort"
-                (onUpdate)="updateOutPort($event, possibility)"></app-port>
+                          (onUpdate)="updateOutPort($event, possibility)"></app-port>
 
             </div>
-
+            
+            }
         </div>
 
 
     </div>
 </div>
+
+}
