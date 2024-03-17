@@ -24,14 +24,14 @@ import { CharacterPanelComponent } from './editor/character-panel/character-pane
 import { ContextMenuComponent } from './editor/context-menu/context-menu.component';
 import { EditorComponent } from './editor/editor.component';
 import { HelpModalComponent } from './editor/help-modal/help-modal.component';
+import { NotificationPanelComponent } from './editor/notification-panel/notification-panel.component';
+import { NotificationComponent } from './editor/notification-panel/notification/notification.component';
 import { ToolbarComponent } from './editor/toolbar/toolbar.component';
 import { VariablePanelComponent } from './editor/variable-panel/variable-panel.component';
 import { VariableComponent } from './editor/variable-panel/variable/variable.component';
 import { GuiElementComponent } from './global/gui-element/gui-element.component';
 import { ModalComponent } from './global/modal/modal.component';
 import { ResizableComponent } from './global/resizable/resizable.component';
-import { NotificationPanelComponent } from './editor/notification-panel/notification-panel.component';
-import { NotificationComponent } from './editor/notification-panel/notification/notification.component';
 @NgModule({
   declarations: [
     AppComponent,

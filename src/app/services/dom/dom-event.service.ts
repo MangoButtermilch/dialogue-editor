@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { Edge, Port, Vector2 } from 'src/models/models';
-import { EdgeService } from '../dialogue/edge.service';
-import { PortService } from '../dialogue/port.service';
+import { Observable, Subject } from 'rxjs';
+import { Port, Vector2 } from 'src/models/models';
 import { EditorStateService } from '../editor/editor-state.service';
 
 @Injectable({

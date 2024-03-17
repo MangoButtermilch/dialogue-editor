@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PanZoomConfig, PanZoomAPI } from 'ngx-panzoom';
+import { PanZoomAPI, PanZoomConfig } from 'ngx-panzoom';
 import { ReplaySubject } from 'rxjs';
 import { Vector2 } from 'src/models/models';
 

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { PanZoomModel } from 'ngx-panzoom';
-import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { EdgeService } from 'src/app/services/dialogue/edge.service';
 import { DomEventService } from 'src/app/services/dom/dom-event.service';
 import { EditorStateService } from 'src/app/services/editor/editor-state.service';

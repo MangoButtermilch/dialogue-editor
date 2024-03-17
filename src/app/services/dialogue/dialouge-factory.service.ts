@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Vector2, RandomNode, Possibility, RepeatNode, DialogueNode, Choice, CommentNode, ConditionNode, ConditionType, EventNode } from 'src/models/models';
+import { Choice, CommentNode, ConditionNode, ConditionType, DialogueNode, EventNode, Possibility, RandomNode, RepeatNode, Vector2 } from 'src/models/models';
 import { CharacterService } from '../data/character.service';
 import { GuidService } from '../editor/guid.service';
 import { PortService } from './port.service';

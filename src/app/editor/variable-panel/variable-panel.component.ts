@@ -1,6 +1,5 @@
-import { CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { VariableService } from 'src/app/services/data/variable.service';
 import { Variable, VariableType } from 'src/models/models';
 

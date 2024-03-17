@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { NotificationType, Notification } from 'src/models/models';
+import { Notification, NotificationType } from 'src/models/models';
 import { GuidService } from './guid.service';
 
 @Injectable({

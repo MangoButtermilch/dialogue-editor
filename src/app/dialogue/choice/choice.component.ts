@@ -1,6 +1,5 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Choice, Port } from 'src/models/models';
-import { PortComponent } from '../port/port.component';
 
 @Component({
   selector: 'app-choice',

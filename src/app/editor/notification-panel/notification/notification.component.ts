@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NotificationType, Notification } from 'src/models/models';
+import { Notification } from 'src/models/models';
 
 @Component({
   selector: 'app-notification',

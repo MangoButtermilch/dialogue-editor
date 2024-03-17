@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Subject, Observable, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { NotificationService } from 'src/app/services/editor/notification.service';
-import { NotificationType, Notification } from 'src/models/models';
+import { Notification } from 'src/models/models';
 
 @Component({
   selector: 'app-notification-panel',

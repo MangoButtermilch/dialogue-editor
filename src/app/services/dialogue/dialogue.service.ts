@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Character, CommentNode, ConditionNode, Dialogue, DialogueNode, EventNode, RandomNode, RepeatNode, Variable, Vector2 } from 'src/models/models';
-import { GuiElementService } from '../editor/gui-element.service';
-import { GuidService } from '../editor/guid.service';
 import { CharacterService } from '../data/character.service';
 import { VariableService } from '../data/variable.service';
+import { GuiElementService } from '../editor/gui-element.service';
+import { GuidService } from '../editor/guid.service';
 import { DialougeFactoryService } from './dialouge-factory.service';
 import { EdgeService } from './edge.service';
 import { PortService } from './port.service';

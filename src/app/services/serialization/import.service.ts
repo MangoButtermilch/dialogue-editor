@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Dialogue, DialogeIteratableProperty, DialogueNode, Choice, CommentNode, EventNode, ConditionNode, RandomNode, Possibility, RepeatNode, Port } from 'src/models/models';
+import { Choice, CommentNode, ConditionNode, DialogeIteratableProperty, Dialogue, DialogueNode, EventNode, NotificationType, Port, Possibility, RandomNode, RepeatNode } from 'src/models/models';
 import { DialogueService } from '../dialogue/dialogue.service';
 import { NotificationService } from '../editor/notification.service';
-import { NotificationType, Notification } from 'src/models/models';
 
 @Injectable({
   providedIn: 'root'
