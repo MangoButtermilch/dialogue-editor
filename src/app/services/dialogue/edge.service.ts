@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject, withLatestFrom } from 'rxjs';
-
-import { Choice, ConditionNode, DialogueNode, Edge, EventNode, Port, PortCapacity, Possibility, RandomNode, RepeatNode } from 'src/models/models';
+import { Observable, Subject, withLatestFrom } from 'rxjs';
+import { ConditionNode, DialogueNode, Edge, EventNode, Port, PortCapacity, RandomNode, RepeatNode } from 'src/models/models';
 import { DomEventService } from '../dom/dom-event.service';
 import { EditorStateService } from '../editor/editor-state.service';
 import { GuidService } from '../editor/guid.service';
@@ -12,7 +11,7 @@ import { PortService } from './port.service';
 })
 export class EdgeService {
 
-  private edges$: ReplaySubject<Edge[]> = new ReplaySubject<Edge[]>();
+  private edges$: Subject<Edge[]> = new Subject<Edge[]>();
   private edges: Edge[] = [];
   private portsConnected$: Observable<Port[]> = this.portService.onPortsConnected();
   private portsDisconnected$: Observable<Port[]> = this.portService.onPortsDisconnected();
@@ -67,6 +66,13 @@ export class EdgeService {
         for (let guid of port.connectedPortGuids) {
 
           const otherPort: Port = ports.find((other: Port) => other.guid === guid);
+          /**
+           * @TODO find out why port can be undefined.
+           * (check deleting of edges)
+           */
+          if (otherPort === undefined) {
+            continue;
+          }
           this.generateEdge(port, otherPort);
         }
       }
