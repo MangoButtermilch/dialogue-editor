@@ -40,7 +40,7 @@ export class RepeatComponent implements OnInit {
   }
 
   public updateInPort(port: Port): void {
-    this.repeatNode.outPort = port;
+    this.repeatNode.inPort = port;
     this.onUpdate.emit(this.repeatNode);
   }
 
