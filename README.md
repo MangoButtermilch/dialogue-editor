@@ -1,6 +1,6 @@
 # Dialogue Editor
 
-Made with Angular 15.2.2
+Made with Angular 17.3.0 (previously 15.2.2)
 
 Prototype for generating non-linear dialogues in games.
 
