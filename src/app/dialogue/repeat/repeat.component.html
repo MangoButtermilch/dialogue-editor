@@ -1,5 +1,6 @@
-<div *ngIf="repeatNode"
-     class="repeat-node "
+@if (repeatNode) {
+
+<div class="repeat-node "
      [formGroup]="formGroup">
 
 
@@ -30,3 +31,4 @@
 
     </div>
 </div>
+}

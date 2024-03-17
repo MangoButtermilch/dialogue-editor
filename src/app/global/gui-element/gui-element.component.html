@@ -1,5 +1,6 @@
-<div *ngIf="guiElement"
-     id="{{guiElement.guid}}"
+@if (guiElement) {
+
+<div id="{{guiElement.guid}}"
      class="bg-dark"
      [style]="transformStyle"
      (cdkDragEnded)="updatePosition($event)"
@@ -7,3 +8,4 @@
 
     <ng-content></ng-content>
 </div>
+}

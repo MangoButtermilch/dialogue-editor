@@ -1,6 +1,7 @@
 <app-version></app-version>
-<app-toolbar *ngIf="dialogue$ | async as dialogue"
-             (onNewNodeClicked)="generateNewNode()"
+
+@if (dialogue$ | async; as dialogue) {
+<app-toolbar (onNewNodeClicked)="generateNewNode()"
              (onBackToOriginClicked)="panToOrigin()"
              (onHelpClicked)="showHelpModal()"
              (onLoadClicked)="load()"
@@ -10,12 +11,13 @@
              dialogueName="{{dialogue.name}}"></app-toolbar>
 
 <app-canvas></app-canvas>
+}
 
-
-<app-modal *ngIf="helpModalVisible"
-           (onClose)="hideAllModals();">
+@if (helpModalVisible) {
+<app-modal (onClose)="hideAllModals();">
     <app-help-modal></app-help-modal>
 </app-modal>
+}
 
 <app-notification-panel></app-notification-panel>
 <app-context-menu (onNewNode)="generateNewNode($event)"
@@ -32,59 +34,58 @@
           (contextmenu)="openContextMenu($event)">
 
     <app-background></app-background>
-    <span *ngIf="dialogue$ | async as dialogue">
+@if (dialogue$ |async; as dialogue) {
 
-        <app-gui-element *ngFor="let node of dialogue.nodes"
-                         [guiElement]="node">
 
+    @for (node of dialogue.nodes; track node.guid) {
+
+        <app-gui-element [guiElement]="node">
             <app-node (onUpdate)="updateNode($event)"
-                      (onDelete)="deleteNode($event)"
-                      [dialogueNode]="node"></app-node>
-
+                    (onDelete)="deleteNode($event)"
+                    [dialogueNode]="node"></app-node>
         </app-gui-element>
+    }
 
-        <app-gui-element *ngFor="let randomNode of dialogue.randomNodes"
-                         [guiElement]="randomNode">
 
+    @for (randomNode of dialogue.randomNodes; track randomNode.guid) {
+        <app-gui-element [guiElement]="randomNode">
             <app-random (onUpdate)="updateRandomNode($event)"
                         (onDelete)="deleteRandomNode($event)"
                         [randomNode]="randomNode"></app-random>
-
         </app-gui-element>
+    }
 
-        <app-gui-element *ngFor="let repeatNode of dialogue.repeatNodes"
-                         [guiElement]="repeatNode">
 
+    @for (repeatNode of dialogue.repeatNodes; track repeatNode.guid) {
+        <app-gui-element [guiElement]="repeatNode">
             <app-repeat (onUpdate)="updateRepeatNode($event)"
                         (onDelete)="deleteRepeatNode($event)"
                         [repeatNode]="repeatNode"></app-repeat>
-
         </app-gui-element>
+    }
 
-        <app-gui-element *ngFor="let comment of dialogue.comments"
-                         [guiElement]="comment">
-
+    @for (comment of dialogue.comments; track comment.guid) {
+        <app-gui-element [guiElement]="comment">
             <app-comment (onUpdate)="updateComment($event)"
-                         (onDelete)="deleteComment($event)"
-                         [comment]="comment"></app-comment>
+                        (onDelete)="deleteComment($event)"
+                        [comment]="comment"></app-comment>
         </app-gui-element>
+    }
 
-        <app-gui-element *ngFor="let event of dialogue.events"
-                         [guiElement]="event">
-
+    @for (event of dialogue.events; track event.guid) {
+        <app-gui-element [guiElement]="event">
             <app-event (onUpdate)="updateEventNode($event)"
-                       (onDelete)="deleteEventNode($event)"
-                       [eventNode]="event"></app-event>
-
+                    (onDelete)="deleteEventNode($event)"
+                    [eventNode]="event"></app-event>
         </app-gui-element>
+    }
 
-        <app-gui-element *ngFor="let condition of dialogue.conditions"
-                         [guiElement]="condition">
-
+    @for (condition of dialogue.conditions; track condition.guid) {
+        <app-gui-element [guiElement]="condition">
             <app-condition (onUpdate)="updateConditionNode($event)"
-                           (onDelete)="deleteConditionNode($event)"
-                           [conditionNode]="condition"></app-condition>
+                        (onDelete)="deleteConditionNode($event)"
+                        [conditionNode]="condition"></app-condition>
         </app-gui-element>
-
-    </span>
+    }
+}
 </pan-zoom>

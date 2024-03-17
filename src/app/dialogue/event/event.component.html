@@ -1,5 +1,5 @@
-<div *ngIf="eventNode"
-     class="event-node ">
+@if (eventNode) {
+<div class="event-node ">
 
 
     <div class="d-flex justify-content-between p-1">
@@ -21,7 +21,8 @@
         </div>
 
         <app-port [port]="eventNode.outPort"
-        (onUpdate)="updateOutPort($event)"></app-port>
+                  (onUpdate)="updateOutPort($event)"></app-port>
 
     </div>
 </div>
+}

@@ -1,8 +1,9 @@
 <div class="notification-panel">
 
-    <app-notification *ngFor="let notification of notifications$ | async"
-                      class="m-1"
-                      [notification]="notification"
-                      (onDeleteClicked)="deleteNotification(notification)"></app-notification>
+    @for (notification of notifications$ | async; track notification.guid) {
+        <app-notification class="m-1"
+                        [notification]="notification"
+                        (onDeleteClicked)="deleteNotification(notification)"></app-notification>
+    }
 
 </div>
