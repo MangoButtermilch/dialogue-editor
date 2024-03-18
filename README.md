@@ -10,13 +10,6 @@ Prototype for generating non-linear dialogues in games.
 
 ![Zoom-Out](https://raw.githubusercontent.com/MangoButtermilch/dialogue-editor/main/screenshots/example-dialogue-zoom-out.png)
 
-## TODO
-- Unity package as example on how to traverse the dialogue in a game
-- Localization
-- Undo/redo actions
-- adding more nodes
-- rework UI design
-
 
 ## Features
 - custom variables and conditions
@@ -24,6 +17,13 @@ Prototype for generating non-linear dialogues in games.
 - different types of nodes such as events, comments etc.
 - JSON import + export
 - C# setup for parsing the dialogue in the Unity Engine
+
+## TODO
+- Unity package as example on how to traverse the dialogue in a game
+- Localization
+- Undo/redo actions
+- adding more nodes
+- rework UI design
 
 ## Controls explained
 
