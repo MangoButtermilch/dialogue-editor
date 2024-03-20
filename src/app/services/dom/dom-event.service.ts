@@ -96,6 +96,14 @@ export class DomEventService {
     this.domResize$.next();
   }
 
+  private domKeyUpEvent(event: KeyboardEvent): void {
+    this.handleUndoRedoUp(event);
+  }
+
+  private domKeyDownEvent(event: KeyboardEvent): void {
+    this.handleUndoRedoDown(event);
+  }
+
   public onDomResize(): Observable<void> {
     return this.domResize$.asObservable();
   }
@@ -110,14 +118,6 @@ export class DomEventService {
 
   public getMousePosition(): Vector2 {
     return this.mousePosition;
-  }
-
-  private domKeyUpEvent(event: KeyboardEvent): void {
-    this.handleUndoRedoUp(event);
-  }
-
-  private domKeyDownEvent(event: KeyboardEvent): void {
-    this.handleUndoRedoDown(event);
   }
 
   /**
