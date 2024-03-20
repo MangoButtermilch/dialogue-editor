@@ -22,8 +22,6 @@ export class DomEventService {
 
   private mousePosition: Vector2 = { x: 0, y: 0 };
 
-  private undoState$: Subject<void> = new Subject<void>();
-  private redoState$: Subject<void> = new Subject<void>();
   private readonly undoKey = "z";
   private readonly redoKey = "y";
   private readonly ctrlKey = "Control";
@@ -114,14 +112,6 @@ export class DomEventService {
     return this.mousePosition;
   }
 
-  public onUndo(): Observable<void> {
-    return this.undoState$.asObservable();
-  }
-
-  public onRedo(): Observable<void> {
-    return this.redoState$.asObservable();
-  }
-
   private domKeyUpEvent(event: KeyboardEvent): void {
     this.handleUndoRedoUp(event);
   }
@@ -153,22 +143,22 @@ export class DomEventService {
     switch (this.lastKeyPress) {
       case this.ctrlKey:
         if (isUndo) {
-          this.executeUndo();
+          this.editorStateService.triggerUndo();
           this.lastCommand = CommandType.UNDO;
         }
         if (isRedo) {
-          this.executeRedo();
+          this.editorStateService.triggerRedo();
           this.lastCommand = CommandType.REDO;
         }
         break;
       case this.undoKey:
         if (isSameKey && this.lastCommand === CommandType.UNDO) {
-          this.executeUndo();
+          this.editorStateService.triggerUndo();
         }
         break;
       case this.redoKey:
         if (isSameKey && this.lastCommand === CommandType.REDO) {
-          this.executeRedo();
+          this.editorStateService.triggerRedo();
         }
         break;
       default: break;
@@ -177,11 +167,4 @@ export class DomEventService {
     this.lastKeyPress = event.key;
   }
 
-  private executeUndo(): void {
-    this.undoState$.next();
-  }
-
-  private executeRedo(): void {
-    this.redoState$.next();
-  }
 }

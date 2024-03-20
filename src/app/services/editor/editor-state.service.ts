@@ -12,8 +12,26 @@ export class EditorStateService {
   private selectedPortState$: ReplaySubject<Port | null> = new ReplaySubject<Port | null>();
   private selectedEdgeState$: BehaviorSubject<Edge | null> = new BehaviorSubject<Edge | null>(null);
   private deletedEdgeState$: BehaviorSubject<Edge | null> = new BehaviorSubject<Edge | null>(null);
+  private undoState$: Subject<void> = new Subject<void>();
+  private redoState$: Subject<void> = new Subject<void>();
 
   constructor() { }
+
+  public onUndo(): Observable<void> {
+    return this.undoState$.asObservable();
+  }
+
+  public onRedo(): Observable<void> {
+    return this.redoState$.asObservable();
+  }
+
+  public triggerUndo(): void {
+    this.undoState$.next();
+  }
+
+  public triggerRedo(): void {
+    this.redoState$.next();
+  }
 
   /**
    * @returns Observable of Port or null. Port contains the current Port instance that has been selected.
