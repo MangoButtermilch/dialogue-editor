@@ -18,11 +18,17 @@ export class DomEventService {
   private domClick$: Subject<void> = new Subject<void>();
 
   private selectedPort$: Observable<Port | null> = this.editorStateService.onPortSelected();
+  private portClickCount: number = 0;
+
+  private mousePosition: Vector2 = { x: 0, y: 0 };
 
   private undoState$: Subject<void> = new Subject<void>();
   private redoState$: Subject<void> = new Subject<void>();
-
-  private portClickCount: number = 0;
+  private readonly undoKey = "z";
+  private readonly redoKey = "y";
+  private readonly ctrlKey = "Control";
+  private lastKeyPress: string = null;
+  private lastCommand: CommandType = null;
 
   private domDblClickEventRef: any = null;
   private domClickEventRef: any = null;
@@ -31,17 +37,9 @@ export class DomEventService {
   private domKeyDownEventRef: any = null;
   private domKeyUpEventRef: any = null;
 
-  private mousePosition: Vector2 = { x: 0, y: 0 };
-
-
   constructor(private editorStateService: EditorStateService) {
     this.addDomEvents();
-
-    //Everytime a new port has been selected or deselected, we can reset the click count
-    this.selectedPort$
-      .subscribe((port: Port | null) => {
-        this.portClickCount = 0;
-      });
+    this.handlePortSelected();
   }
 
   private addDomEvents(): void {
@@ -60,12 +58,14 @@ export class DomEventService {
     window.addEventListener("keyup", this.domKeyUpEventRef);
   }
 
-  private lastKeyPress: string = null;
-  private lastCommand: CommandType = null;
-
-  private readonly undoKey = "z";
-  private readonly redoKey = "y";
-  private readonly ctrlKey = "Control";
+  /**
+   * Everytime a new port has been selected or deselected, we can reset the click count
+   */
+  private handlePortSelected(): void {
+    this.selectedPort$.subscribe((port: Port | null) => {
+      this.portClickCount = 0;
+    });
+  }
 
   /**
    * Keeps track of the mouse position. 
