@@ -102,9 +102,6 @@ select {
     line-height: var(--bs-body-line-height);
 }
 
-fa-icon {
-}
-
 app-toolbar {
     position: fixed;
     left: 0;
@@ -142,6 +139,17 @@ app-toolbar {
     &:hover {
         box-shadow: var(--nodeBoxShadowHover);
     }
+}
+
+fa-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px;
+}
+
+.btn-danger {
+  max-height: 24px;
 }
 
 .btn-port {
