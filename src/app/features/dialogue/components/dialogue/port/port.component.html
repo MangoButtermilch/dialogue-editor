@@ -1,0 +1,13 @@
+@if (port) {
+<div (click)="onClicked()"
+     class="{{port.direction === 'out' ? 'reverse'  :''}}
+     {{canBeClicked ? 'clickable' : 'unclickable'}}
+     {{isCurrentlySelected ? 'selected' : ''}}
+     d-flex align-items-center">
+    <button class="btn-port"
+            id="{{port.guid}}">
+        <fa-icon [icon]="iconPort"></fa-icon>
+    </button>
+    <p class="ms-1 text-light p-1">{{label}}</p>
+</div>
+}

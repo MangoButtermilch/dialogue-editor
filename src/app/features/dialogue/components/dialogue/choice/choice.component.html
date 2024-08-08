@@ -1,0 +1,17 @@
+<div id="{{choice.guid}}"
+     class="d-flex align-items-center justify-content-between">
+
+  <button class="btn btn-danger p-0 me-1"
+          (click)="onDeleteClicked.emit(choice);">
+    <fa-icon [icon]="iconDelete"></fa-icon>
+  </button>
+
+  <input type="text"
+         class="w-100 bg-dark me-1 text-white"
+         value="{{choice.content}}"
+         (input)="updateChoiceInput($event)" />
+
+  <app-port [port]="choice.outPort"
+            (onUpdate)="updatePort($event)"></app-port>
+
+</div>

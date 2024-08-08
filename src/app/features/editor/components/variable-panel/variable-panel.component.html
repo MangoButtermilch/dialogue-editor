@@ -1,0 +1,34 @@
+<app-resizable [height]="150"
+               [width]="300"
+               [fitWidth]="true"
+               [fitHeight]="true"
+               [left]="5"
+               [top]="55">
+
+    <div class="panel bg-dark p-2">
+        <div class="d-flex align-items-center justify-content-betwen">
+
+            <h3 class="text-light">Variables</h3>
+            <button class="btn btn-success m-1"
+                    (click)="generateVariable()">
+                <fa-icon [icon]="iconAdd"></fa-icon>
+              </button>
+        </div>
+
+        <div class="p-0">
+
+            <div class="list"
+                 cdkDropList
+                 (cdkDropListDropped)="cdkVariableDropped($event)">
+
+                @for (variable of variables$ | async; track variable.guid) {
+                    <app-variable cdkDrag
+                                class="mb-2"
+                                (onUpdateVariable)="updateVariable($event)"
+                                (onDeleteVariable)="deleteVariable($event)"
+                                [variable]="variable"></app-variable>
+                }
+            </div>
+        </div>
+    </div>
+</app-resizable>
