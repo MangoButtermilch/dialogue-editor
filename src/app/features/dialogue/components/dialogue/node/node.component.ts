@@ -1,4 +1,4 @@
-import { CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { CharacterService } from 'src/app/features/editor/services/character.service';
@@ -15,7 +15,7 @@ import { faPlug, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   standalone: true,
-  imports: [PortComponent, ChoiceComponent, FontAwesomeModule, CommonModule, CdkDrag],
+  imports: [PortComponent, ChoiceComponent, FontAwesomeModule, CommonModule, CdkDrag, CdkDropList],
   selector: 'app-node',
   templateUrl: './node.component.html',
   styleUrls: ['./node.component.scss']
