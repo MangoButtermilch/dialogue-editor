@@ -1,0 +1,26 @@
+<div class="boundary">
+  <div cdkDrag
+       cdkDragBoundary=".boundary"
+       class="resizable-draggable"
+       [style.width.px]="clampedWidth"
+       [style.height.px]="clampedHeight"
+       [style.top.px]="top"
+       [style.left.px]="left">
+
+    <div class="drag-handle"
+         cdkDragHandle>
+      <fa-icon [icon]="iconDrag"></fa-icon>
+    </div>
+    <div class="content">
+      <ng-content></ng-content>
+    </div>
+
+    <div class="resizer"
+         draggable="true"
+         (dragstart)="resizeStart($event)"
+         (drag)="resize($event)"
+         (dragend)="resizeEnd($event)">
+      <fa-icon [icon]="iconResize"></fa-icon>
+    </div>
+  </div>
+</div>
